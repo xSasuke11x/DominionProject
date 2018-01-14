@@ -87,12 +87,12 @@ public class GameFlow {
 			System.out.println("Here in Action");
 			
 			Scanner scan = new Scanner(System.in);
-			System.out.println("Press Y to enter Buy Phase");
+			System.out.println("Press [y] to enter Buy Phase");
 			
 			if (scan.hasNextLine()) {
 				String choice = scan.nextLine();
 				switch (choice) {
-					case "Y":
+					case "y":
 						//scan.close();
 						buyPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
 						break;

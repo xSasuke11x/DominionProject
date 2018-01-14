@@ -1,5 +1,7 @@
 package DominionPackage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class CardEffects {
@@ -139,4 +141,85 @@ public class CardEffects {
 		}
 	}
 	
+	public void Merchant(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		if (playerTurnCounter == 1) {
+			
+			// +1 Card
+			player1.drawCard(player1.getDeck().get(0));
+			
+			// +1 Action
+			player1.addNumActions(1);
+			
+			int silverCounter = 0;
+			
+			
+			// Get the cards in play and see if any of them are Silver
+			for (Card card : player1.getCardsInPlay()) {
+				if (card.getName().equals("Silver"))
+					silverCounter++;
+			}
+			
+			// If a silver was played, get an extra coin for this turn
+			if (silverCounter >= 1)
+				player1.addExtraCoins(1);
+		}
+	}
+	
+	public void Vassal(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		if (playerTurnCounter == 1) {
+			
+			// +2 Coins
+			player1.addExtraCoins(2);
+			
+			// This is the card on top of the deck
+			Card card = player1.getDeck().get(0);
+			
+			// Discard the top card of the deck and add it to the discard pile
+			player1.removeCardFromDeck(card);
+			player1.addCardToDiscardPile(card);
+			
+			// This is the card on top of the discard pile
+			Card card2 = player1.getDiscardPile().get(0);
+			
+			// If the top card of the discard pile is an action card...
+			if (card2.getType1().equals("Action")) {
+				System.out.println("The card you just discard: ");
+				System.out.println(player1.getDiscardPile().get(0));
+				System.out.println(" is an Action card. Would you like to play it? Press [y] for yes or [n] for no.");
+				
+				Scanner scan = new Scanner(System.in);
+				String choice;
+				while (scan.hasNext()) {
+					choice = scan.nextLine();
+					
+					// If the player chooses to play the Action card, remove the card from the discard pile and add it to the player's cards in play
+					if (choice.toLowerCase().equals("y")) {
+						player1.removeCardFromDiscardPile(card2);
+						player1.addCardToCardsInPlay(card2);
+					} else 
+						break;
+				}
+			}
+		}
+	}
+	
+	public void Village(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		if (playerTurnCounter == 1) {
+			
+			// +1 Card
+			player1.drawCard(player1.getDeck().get(0));
+			
+			// +1 Action
+			player1.addNumActions(2);
+		}
+	}
+	
+	public void Workshop(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		if (playerTurnCounter == 1) {
+			
+			List<Card> fourCostCards = new ArrayList<Card>();
+			
+			// Get the list of all cards in the supply
+		}
+	}
 }

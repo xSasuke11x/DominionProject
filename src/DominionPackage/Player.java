@@ -19,6 +19,7 @@ public class Player {
 	private int numCardsInHand;
 	private int numCardsInDP;
 	private int numActionsLeft = 1;
+	private int extraCoins = 0;
 	
 	public List<Card> getDeck() {
 		return deck;
@@ -44,8 +45,24 @@ public class Player {
 		return numActionsLeft;
 	}
 	
+	public int getExtraCoins() {
+		return extraCoins;
+	}
+	
 	public void addNumActions(int num) {
 		numActionsLeft = numActionsLeft + num;
+	}
+	
+	public void addExtraCoins(int num) {
+		extraCoins = extraCoins + num;
+	}
+	
+	public void resetNumActions(int num) {
+		numActionsLeft = 1;
+	}
+	
+	public void resetExtraCoins(int num) {
+		extraCoins = 0;
 	}
 	
 	public List<Card> getDiscardPile() {
@@ -67,6 +84,10 @@ public class Player {
 	
 	public void addCardToDiscardPile(Card card) {
 		discardPile.add(card);
+	}
+	
+	public void addCardToCardsInPlay(Card card) {
+		cardsInPlay.add(card);
 	}
 	
 	public void addCardToDeck(Card card) {

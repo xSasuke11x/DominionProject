@@ -32,6 +32,9 @@ public class Kingdom {
 	public List<Card> k10 = new ArrayList<Card>();
 	public List<List<Card>> kingdoms = new ArrayList<List<Card>>();
 	public List<Card> trash = new ArrayList<Card>();
+	public List<List<Card>> supply = new ArrayList<List<Card>>();
+	public List<List<Card>> treasureList = new ArrayList<List<Card>>();
+	public List<List<Card>> victoryList = new ArrayList<List<Card>>();
 
 	public void Setup(CardDatabase cd, int numPlayers, Player player1, Player player2, Player player3, Player player4) {
 		
@@ -231,6 +234,15 @@ public class Kingdom {
         //System.out.println("Player1 deck = " + player1.getDeck()); // Prints out the deck list for the player
 		
         //System.out.println(cd.getCardList().size());
+        
+        // Create list of treasures
+        treasureList = treasureListSetup(copper, silver, gold, platinum);
+        
+        // Create list of victories
+        victoryList = treasureListSetup(estate, duchy, province, colony);
+        
+        // Create the overall supply list
+        //supplyListSetup(kingdoms);
 	}
 	
 	// If a kingdom is a victory card, change the number of cards from 10 to 8
@@ -246,6 +258,45 @@ public class Kingdom {
 		}
 		
 		return kingdom;
+	}
+	
+	public List<List<Card>> treasureListSetup(List<Card> copper, List<Card> silver, List<Card> gold, List<Card> platinum) {
+		List<List<Card>> treasureList = new ArrayList<List<Card>>();
+		
+		treasureList.add(copper);
+		treasureList.add(silver);
+		treasureList.add(gold);
+		treasureList.add(platinum);
+		
+		for (int i = 0; i < this.kingdoms.size(); i++) {
+			if (this.kingdoms.get(i).get(0).getType1().equals("Treasure")) {
+				treasureList.add(this.kingdoms.get(i));
+			}
+		}
+		
+		return treasureList;
+	}
+	
+	public List<List<Card>> vicListSetup(List<Card> estate, List<Card> duchy, List<Card> province, List<Card> colony) {
+		List<List<Card>> vicList = new ArrayList<List<Card>>();
+		
+		treasureList.add(estate);
+		treasureList.add(duchy);
+		treasureList.add(province);
+		treasureList.add(colony);
+		
+		for (int i = 0; i < this.kingdoms.size(); i++) {
+			if (this.kingdoms.get(i).get(0).getType1().equals("Victory") || this.kingdoms.get(i).get(0).getType2().equals("Victory")) {
+				treasureList.add(this.kingdoms.get(i));
+			}
+		}
+		
+		return vicList;
+	}
+	
+	public List<List<Card>> supplyListSetup(Kingdom kingdoms) {
+		
+		return null;
 	}
 	
 	// Create a list of kingdoms and return it
@@ -267,4 +318,10 @@ public class Kingdom {
 		
 		return kingdoms;
 	}
+	
+	/*public List<Card> getSupply() {
+		List<Card> supply = new ArrayList<Card>();
+		
+		return supply();
+	}*/
 }
