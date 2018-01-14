@@ -20,6 +20,7 @@ public class Player {
 	private int numCardsInDP;
 	private int numActionsLeft = 1;
 	private int extraCoins = 0;
+	private int extraVictoryPoints = 0;
 	
 	public List<Card> getDeck() {
 		return deck;
@@ -49,12 +50,20 @@ public class Player {
 		return extraCoins;
 	}
 	
+	public int getExtraVictoryPoints() {
+		return extraVictoryPoints;
+	}
+	
 	public void addNumActions(int num) {
 		numActionsLeft = numActionsLeft + num;
 	}
 	
 	public void addExtraCoins(int num) {
 		extraCoins = extraCoins + num;
+	}
+	
+	public void addExtraVictoryPoints(int num) {
+		extraVictoryPoints = extraVictoryPoints + num;
 	}
 	
 	public void resetNumActions(int num) {
