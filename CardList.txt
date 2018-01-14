@@ -1,0 +1,36 @@
+Copper/Treasure/"null"/+1 Coin/"null"/"null"/"null"/"null"/0/false/60/
+Silver/Treasure/"null"/+2 Coins/"null"/"null"/"null"/"null"/3/false/40/
+Gold/Treasure/"null"/+3 Coins/"null"/"null"/"null"/"null"/6/false/30/
+Platinum/Treasure/"null"/+5 Coins/"null"/"null"/"null"/"null"/9/false/12/
+Curse/Curse/"null"/-1 Victory Point/"null"/"null"/"null"/"null"/0/false/40/
+Estate/Victory/"null"/+1 Victory Point/"null"/"null"/"null"/"null"/2/false/24/
+Duchy/Victory/"null"/+3 Victory Points/"null"/"null"/"null"/"null"/5/false/12/
+Province/Victory/"null"/+6 Victory Points/"null"/"null"/"null"/"null"/8/false/12/
+Colony/Victory/"null"/+10 Victory Points/"null"/"null"/"null"/"null"/11/false/12/
+Cellar/Action/"null"/+1 Action/Discard any number of cards, then draw that many./"null"/"null"/"null"/2/false/10/
+Chapel/Action/"null"/Trash up to 4 cards from your hand./"null"/"null"/"null"/"null"/2/false/10/
+Moat/Action/Reaction/+2 Cards/When another player plays an Attack card, you may first reveal this from your hand, to be unaffected by it./"null"/"null"/"null"/2/false/10/
+Harbinger/Action/"null"/+1 Card/+1 Action/Look through your discard pile. You may put a card from it onto your deck./"null"/"null"/3/false/10/
+Merchant/Action/"null"/+1 Card/+1 Action/The first time you play a Silver this turn, +1 Coin./"null"/"null"/3/false/10/
+Vassal/Action/"null"/+1 Coins/Discard the top card of your deck. If it's an Action card, you may play it./"null"/"null"/"null"/3/false/10/
+Village/Action/"null"/+1 Card/+2 Actions/"null"/"null"/"null"/3/false/10/
+Workshop/Action/"null"/Gain a card costing up to 4 coins/"null"/"null"/"null"/"null"/3/false/10/
+Bureaucrat/Action/Attack/Gain a Silver onto your deck. Each other player reveals a Victory card from their hand and puts it onto their deck (or reveals a hand with no Victory cards)./"null"/"null"/"null"/"null"/4/false/10/
+Gardens/Victory/"null"/Worth 1 Victory Point per 10 cards you have (round down)./"null"/"null"/"null"/"null"/4/false/12/
+Militia/Action/Attack/+2 Coins/Each other player discards down to 3 cards in hand./"null"/"null"/"null"/4/false/10/
+Moneylender/Action/"null"/You may trash a Copper from your hand for +3 Coins./"null"/"null"/"null"/"null"/4/false/10/
+Poacher/Action/"null"/+1 Card/+1 Action/+1 Coin/"null"/"null"/4/false/10/
+Remodel/Action/"null"/Trash a card from your hand. Gain a card costing up to 2 Coins more than it./"null"/"null"/"null"/"null"/5/false/10/
+Smithy/Action/"null"/+3 Cards/"null"/"null"/"null"/"null"/4/false/10/
+Throne Room/Action/"null"/You may play an Action card from your hand twice./"null"/"null"/"null"/"null"/4/false/10/
+Bandit/Action/Attack/Gain a Gold. Each other player reveals the top 2 cards of their deck, trashes a revealed Treasure other than Copper, and discards the rest./"null"/"null"/"null"/"null"/5/false/10/
+Council Room/Action/"null"/+4 Cards/+1 Buy/Each other player draws a card./"null"/"null"/5/false/10/
+Festival/Action/"null"/+2 Actions/+1 Buy/+2 Coins/"null"/"null"/5/false/10/
+Laboratory/Action/"null"/+2 Cards/+1 Action/"null"/"null"/"null"/5/false/10/
+Library/Action/"null"/Draw until you have 7 cards in hand, skipping any Action cards you choose to; set those aside, discarding them afterwards./"null"/"null"/"null"/"null"/5/false/10/
+Market/Action/"null"/+1 Card/+1 Action/+1 Buy/+1 Coin/"null"/5/false/10/
+Mine/Action/"null"/You may trash a Treasure from your hand. Gain a Treasure to your hand costing up to +3 Coins more than it./"null"/"null"/"null"/"null"/5/false/10/
+Sentry/Action/"null"/+1 Card/+1 Action/Look at the top 2 cards of your deck. Trash and/or discard any number of them. Put the rest back on top in any order./"null"/"null"/5/false/10/
+Witch/Action/Attack/+2 Cards/Each other player gains a Curse./"null"/"null"/"null"/5/false/10/
+Artisan/Action/"null"/Gain a card to your hand costing up to +5 Coins. Put a card from your hand onto your deck./"null"/"null"/"null"/"null"/5/false/10/
+Fishing Village/Action/Duration/+2 Actions/+1 Coin/At the start of your next turn: +1 Action and +1 Coin./"null"/"null"/3/false/10/
