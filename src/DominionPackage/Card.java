@@ -3,8 +3,6 @@ package DominionPackage;
 public class Card {
 
 	private String name, type1, type2, effect1, effect2, effect3, effect4, effect5, cost, potion, numLeft;
-	//private String[] cards;
-	//private List<String[]> deckList = new ArrayList<String[]>();
 	
 	public Card(String name, String type1, String type2, String effect1, String effect2, String effect3, String effect4, String effect5, String cost, String potion, String numLeft) {
 		this.name = name;
@@ -19,21 +17,8 @@ public class Card {
 		this.potion = potion;
 		this.numLeft = numLeft;
 	}
-
-	/*
-	public Card(String[] cardArray) {
-		this.cards = cards;
-	}
-
-	public List<String[]> getDeckList() {
-		return this.deckList;
-	}
 	
-	public void addCardToDeck(String[] tokens) {
-		deckList.add(tokens);
-	}
-	*/
-	
+	// Override printing method
 	@Override
 	public String toString() {
 		return (this.getName() + ", " + this.getType1() + ", " + this.getType2() + ", " + this.getEffect1() + ", " + this.getEffect2() 

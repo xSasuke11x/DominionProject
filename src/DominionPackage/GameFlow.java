@@ -7,11 +7,7 @@ import java.util.Scanner;
 
 public class GameFlow {
 	
-	public Player player1 = new Player();
-	
-	public void Board() {
-		Kingdom kingdoms = new Kingdom();
-	}
+	//public Player player1 = new Player();
 	
 	public void drawPhase(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
 		if (playerTurnCounter == 1) {
@@ -97,11 +93,11 @@ public class GameFlow {
 				String choice = scan.nextLine();
 				switch (choice) {
 					case "Y":
-						scan.close();
+						//scan.close();
 						buyPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
 						break;
 					default:
-						scan.close();
+						//scan.close();
 						buyPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
 						break;
 				}
