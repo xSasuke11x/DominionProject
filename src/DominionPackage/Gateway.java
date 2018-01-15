@@ -18,6 +18,9 @@ public class Gateway {
 		Kingdom kingdoms = new Kingdom();
 		kingdoms.Setup(cd, numPlayers, player1, player2, player3, player4);
 		
+		//kingdoms.vicListSetup();
+		//System.out.println(kingdoms.victoryList.size());
+		
 		GameFlow gf = new GameFlow();
 		
 		while (winCondition == false) {

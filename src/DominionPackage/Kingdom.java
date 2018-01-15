@@ -35,6 +35,7 @@ public class Kingdom {
 	public List<List<Card>> supply = new ArrayList<List<Card>>();
 	public List<List<Card>> treasureList = new ArrayList<List<Card>>();
 	public List<List<Card>> victoryList = new ArrayList<List<Card>>();
+	public List<List<Card>> actionList = new ArrayList<List<Card>>();
 
 	public void Setup(CardDatabase cd, int numPlayers, Player player1, Player player2, Player player3, Player player4) {
 		
@@ -235,11 +236,14 @@ public class Kingdom {
 		
         //System.out.println(cd.getCardList().size());
         
+        // Create list of actions
+        actionList = actListSetup();
+        
         // Create list of treasures
-        treasureList = treasureListSetup();
+        treasureList = treasListSetup();
         
         // Create list of victories
-        victoryList = vicListSetup();
+        victoryList = vicListSetup(kingdoms, estate, duchy, province, colony);
         
         // Create the overall supply list
         //supplyListSetup(kingdoms);
@@ -252,15 +256,27 @@ public class Kingdom {
 		
 		for (iterator = kingdom.iterator(), i = 0; iterator.hasNext() && i < 2; i++) {
 			Card card = iterator.next();
-			if (card.getType1().equals("Victory") || card.getType1().equals("Victory")) {
+			if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2())) {
 	        	iterator.remove();
-			}
+			} 
 		}
 		
 		return kingdom;
 	}
 	
-	public List<List<Card>> treasureListSetup() {
+	public List<List<Card>> actListSetup() {
+		List<List<Card>> actList = new ArrayList<List<Card>>();
+		
+		for (int i = 0; i < this.kingdoms.size(); i++) {
+			if ("Action".equals(this.kingdoms.get(i).get(0).getType1())) {
+				actList.add(this.kingdoms.get(i));
+			}
+		}
+		
+		return actList;
+	}
+	
+	public List<List<Card>> treasListSetup() {
 		List<List<Card>> treasureList = new ArrayList<List<Card>>();
 		
 		treasureList.add(this.copper);
@@ -277,34 +293,48 @@ public class Kingdom {
 		return treasureList;
 	}
 	
-	public List<List<Card>> vicListSetup() {
+	public List<List<Card>> vicListSetup(List<List<Card>> kingdoms, List<Card> estate, List<Card> duchy, List<Card> province, List<Card> colony) {
 		List<List<Card>> vicList = new ArrayList<List<Card>>();
 		
-		vicList.add(this.estate);
-		vicList.add(this.duchy);
-		vicList.add(this.province);
-		vicList.add(this.colony);
+		vicList.add(estate);
+		vicList.add(duchy);
+		vicList.add(province);
+		vicList.add(colony);
 		
-		for (int i = 0; i < this.kingdoms.size(); i++) {
-			if (this.kingdoms.get(i).get(0).getType1().equals("Victory") || this.kingdoms.get(i).get(0).getType2().equals("Victory")) {
-				vicList.add(this.kingdoms.get(i));
+		Iterator<List<Card>> iterator;
+		int i;
+		
+		for (iterator = kingdoms.iterator(), i = 0; iterator.hasNext() && i < kingdoms.size(); i++) {
+			List<Card> kingdom = iterator.next();
+			Card card = kingdom.get(0);
+			if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2())) {
+				vicList.add(kingdom);
 			}
 		}
 		
 		return vicList;
 	}
 	
-	/*public List<List<Card>> supplyListSetup() {
+	public List<List<Card>> supplyListSetup() {
 		List<List<Card>> supplyList = new ArrayList<List<Card>>();
 		
-		for (int i = 0; i < this.treasureList.size(); i++) {
-			if () {
-				supplyList.add();
-			}
+		for (int i = 0; i < this.actionList.size(); i++) {
+			supplyList.add(actionList.get(i));
 		}
 		
+		for (int i = 0; i < this.treasureList.size(); i++) {
+			supplyList.add(treasureList.get(i));
+		}
+		
+		// Double check for Action/Victory or Treasure/Victory cards
+		for (int i = 0; i < this.victoryList.size(); i++) {
+			supplyList.add(victoryList.get(i));
+		}
+		
+		supplyList.add(this.curse);
+		
 		return null;
-	}*/
+	}
 	
 	// Create a list of kingdoms and return it
 	public List<List<Card>> kingdomSetup(List<Card> k1, List<Card> k2, List<Card> k3, List<Card> k4, List<Card> k5, List<Card> k6, List<Card> k7, 

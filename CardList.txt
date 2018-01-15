@@ -33,4 +33,5 @@ Mine/Action/"null"/You may trash a Treasure from your hand. Gain a Treasure to y
 Sentry/Action/"null"/+1 Card/+1 Action/Look at the top 2 cards of your deck. Trash and/or discard any number of them. Put the rest back on top in any order./"null"/"null"/5/false/10/
 Witch/Action/Attack/+2 Cards/Each other player gains a Curse./"null"/"null"/"null"/5/false/10/
 Artisan/Action/"null"/Gain a card to your hand costing up to +5 Coins. Put a card from your hand onto your deck./"null"/"null"/"null"/"null"/5/false/10/
+Nobles/Action/Victory/"+3 Cards or +2 Actions/"null"/"null"/"null"/"null"/6/false/10/
 Fishing Village/Action/Duration/+2 Actions/+1 Coin/At the start of your next turn: +1 Action and +1 Coin./"null"/"null"/3/false/10/
