@@ -1,8 +1,12 @@
 package DominionPackage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class CardEffects {
 
@@ -223,9 +227,48 @@ public class CardEffects {
 	public void Workshop(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
 		if (playerTurnCounter == 1) {
 			
-			List<Card> fourCostCards = new ArrayList<Card>();
+			List<List<Card>> fourCostKingdoms = new ArrayList<List<Card>>();
 			
-			// Get the list of all cards in the supply
+			// Add all 4-cost kingdoms to the fourCostKingdoms list
+			for (List<Card> kingdom : kingdoms.supplyList) {
+				try {
+					if (Integer.parseInt(kingdom.get(0).getCost()) <= 4) {
+						fourCostKingdoms.add(kingdom);
+					}
+				} catch (NumberFormatException ex) {
+					// Catch is for formality to catch out integer parsing errors. The Try block still parses all 4-cost kingdoms correctly.
+				}
+			}
+			
+			// Print out the 4-cost kingdoms
+			int i = 1;
+			System.out.println("The following are the 4-cost kingdoms:");
+			for (List<Card> kingdom : fourCostKingdoms) {
+				System.out.println(i + " = " + kingdom);
+				i++;
+			}
+			
+			// Let the player choose a kingdom
+			System.out.println("Press a number between 1 and " + fourCostKingdoms.size() + " to gain the card");
+			Scanner scan = new Scanner(System.in);
+			String choice;
+			while (scan.hasNext()) {
+				choice = scan.nextLine();
+				
+				// Choices must be a number between 1 and the size of the 4-cost kingdoms list
+				if (Integer.parseInt(choice) > 0 && Integer.parseInt(choice) <= fourCostKingdoms.size()) {
+					List<Card> kingdom = new ArrayList<Card>();
+					kingdom = fourCostKingdoms.get(Integer.parseInt(choice) - 1);
+					
+					// Add the card from the kingdom to the discard pile
+					player1.addCardToDiscardPile(kingdom.get(0));
+					
+					// Remove the card from the kingdom
+					kingdoms.removeCardFromSupplyList(kingdom.get(0));
+				} else {
+					System.out.println("Invalid number. Please press a number between 1 and " + fourCostKingdoms.size() + " to gain the card");
+				}
+			}
 		}
 	}
 }

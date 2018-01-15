@@ -44,7 +44,7 @@ public class Gateway {
 			
 			gf.drawPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
 			//CardEffects ce = new CardEffects();
-			//ce.Chapel(kingdoms, playerTurnCounter, player1, player2, player3, player4);
+			//ce.Workshop(kingdoms, playerTurnCounter, player1, player2, player3, player4);
 			winCondition = true;
 			//gf.actionPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
 			//gf.buyPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
