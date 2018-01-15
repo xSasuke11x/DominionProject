@@ -271,4 +271,66 @@ public class CardEffects {
 			}
 		}
 	}
+	
+	public void Bureaucrat(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		if (playerTurnCounter == 1) {
+			
+			// Gain a Silver onto the deck
+			player1.addCardToDeck(kingdoms.silver.get(0));
+			
+			// Remove the Silver from the supply list
+			kingdoms.removeCardFromSupplyList(kingdoms.silver.get(0));
+			
+			// For two players...
+			if (player1.getNumPlayers() == 2) {
+				System.out.println("All other players should now look away until they say it is ok to look.");
+				
+				// Delay next output for 3 seconds
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					// Do nothing
+				}
+				
+				// Print out the cards in the hand
+				int i = 1;
+				List<Card> vicCardsInHand = new ArrayList<Card>();
+				Card returnedCard = new Card(null, null, null, null, null, null, null, null, null, null, null);
+				
+				System.out.println("Here are the victory cards in your hand:");
+				
+				for (Card card : player2.getCardsInHand()) {
+					if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2())) {
+						vicCardsInHand.add(card);
+						System.out.println(i + " = " + card.getName());
+					}
+					i++;
+				}
+				
+				System.out.println("Press a number between 1 and " + vicCardsInHand.size() + " to place the card back onto the deck.");
+				
+				Scanner scan = new Scanner(System.in);
+				String choice;
+				while (scan.hasNext()) {
+					choice = scan.nextLine();
+					
+					if (Integer.parseInt(choice) > 0 && Integer.parseInt(choice) <= vicCardsInHand.size()) {
+						// Put a victory card from the hand onto the deck
+						returnedCard = vicCardsInHand.get(Integer.parseInt(choice) - 1);
+						player2.addCardToDeck(returnedCard);
+						
+						// Remove the first card from the hand that has the same name as the target card
+						for (Card card : player2.getCardsInHand()) {
+							if (returnedCard.getName().equals(card.getName())) {
+								player2.getCardsInHand().remove(card);
+								break;
+							}
+						}
+					} else {
+						System.out.println("Invalid choice. Press a number between 1 and " + vicCardsInHand.size() + " to place the card back onto the deck.");
+					}
+				}
+			}
+		}
+	}
 }

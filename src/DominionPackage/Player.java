@@ -19,6 +19,8 @@ public class Player {
 	private int numActionsLeft = 1;
 	private int extraCoins = 0;
 	private int extraVictoryPoints = 0;
+	private int turnCounter;
+	private int numPlayers = 2;
 	
 	public List<Card> getDeck() {
 		return deck;
@@ -82,6 +84,22 @@ public class Player {
 	
 	public List<Card> getCardsInHand() {
 		return hand;
+	}
+	
+	public int getTurnCounter() {
+		return turnCounter;
+	}
+	
+	public int getNumPlayers() {
+		return numPlayers;
+	}
+	
+	public void setTurnCounter(int num) {
+		turnCounter = num;
+	}
+	
+	public void setNumPlayers(int num) {
+		numPlayers = num;
 	}
 	
 	public void playCard(Card card) {

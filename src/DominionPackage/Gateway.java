@@ -1,22 +1,28 @@
 package DominionPackage;
 
 public class Gateway {
-
+	
 	public static void main(String[] args) {
-		int numPlayers = 2;
+		// Change this to test multiple players
 		int playerTurnCounter = 1;
+		
 		boolean winCondition = false;
 		Player player1 = new Player();
+		player1.setTurnCounter(1);
 		Player player2 = new Player();
+		player1.setTurnCounter(2);
 		Player player3 = new Player();
+		player1.setTurnCounter(3);
 		Player player4 = new Player();
+		player1.setTurnCounter(4);
+		//int numPlayers = setupNumPlayers();
 		
 		CardDatabase cd = new CardDatabase();
 		cd.PopulateDatabase();
 		
 		// Setup the kingdoms and distribute initial hand
 		Kingdom kingdoms = new Kingdom();
-		kingdoms.Setup(cd, numPlayers, player1, player2, player3, player4);
+		kingdoms.Setup(cd, player1.getNumPlayers(), player1, player2, player3, player4);
 		
 		//kingdoms.vicListSetup();
 		//System.out.println(kingdoms.victoryList.size());
@@ -52,4 +58,7 @@ public class Gateway {
 		}
 	}
 
+	/*public static int setupNumPlayers() {
+		return 2;
+	}*/
 }
