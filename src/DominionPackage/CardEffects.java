@@ -333,4 +333,36 @@ public class CardEffects {
 			}
 		}
 	}
+	
+	public void Gardens(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		if (playerTurnCounter == 1) {
+			
+			// Set totalNumCards to the sum of the cards in the deck and the hand 
+			int totalNumCards = player1.getCardsInHand().size() + player1.getDeck().size();
+			
+			// Add the total to the extra victory points for that player
+			player1.addExtraVictoryPoints(totalNumCards);
+		} else if (playerTurnCounter == 2) {
+			
+			// Set totalNumCards to the sum of the cards in the deck and the hand 
+			int totalNumCards = player2.getCardsInHand().size() + player2.getDeck().size();
+			
+			// Add the total to the extra victory points for that player
+			player2.addExtraVictoryPoints(totalNumCards);
+		} else if (playerTurnCounter == 3) {
+			
+			// Set totalNumCards to the sum of the cards in the deck and the hand 
+			int totalNumCards = player3.getCardsInHand().size() + player3.getDeck().size();
+			
+			// Add the total to the extra victory points for that player
+			player3.addExtraVictoryPoints(totalNumCards);
+		} else if (playerTurnCounter == 4) {
+			
+			// Set totalNumCards to the sum of the cards in the deck and the hand 
+			int totalNumCards = player4.getCardsInHand().size() + player4.getDeck().size();
+			
+			// Add the total to the extra victory points for that player
+			player4.addExtraVictoryPoints(totalNumCards);
+		}
+	}
 }
