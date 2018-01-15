@@ -32,7 +32,7 @@ public class Kingdom {
 	public List<Card> k10 = new ArrayList<Card>();
 	public List<List<Card>> kingdoms = new ArrayList<List<Card>>();
 	public List<Card> trash = new ArrayList<Card>();
-	public List<List<Card>> supply = new ArrayList<List<Card>>();
+	public List<List<Card>> supplyList = new ArrayList<List<Card>>();
 	public List<List<Card>> treasureList = new ArrayList<List<Card>>();
 	public List<List<Card>> victoryList = new ArrayList<List<Card>>();
 	public List<List<Card>> actionList = new ArrayList<List<Card>>();
@@ -243,10 +243,10 @@ public class Kingdom {
         treasureList = treasListSetup();
         
         // Create list of victories
-        victoryList = vicListSetup(kingdoms, estate, duchy, province, colony);
+        victoryList = vicListSetup();
         
         // Create the overall supply list
-        //supplyListSetup(kingdoms);
+        supplyList = supplyListSetup();
 	}
 	
 	// If a kingdom is a victory card, change the number of cards from 10 to 8
@@ -267,9 +267,9 @@ public class Kingdom {
 	public List<List<Card>> actListSetup() {
 		List<List<Card>> actList = new ArrayList<List<Card>>();
 		
-		for (int i = 0; i < this.kingdoms.size(); i++) {
-			if ("Action".equals(this.kingdoms.get(i).get(0).getType1())) {
-				actList.add(this.kingdoms.get(i));
+		for (int i = 0; i < kingdoms.size(); i++) {
+			if ("Action".equals(kingdoms.get(i).get(0).getType1())) {
+				actList.add(kingdoms.get(i));
 			}
 		}
 		
@@ -279,21 +279,26 @@ public class Kingdom {
 	public List<List<Card>> treasListSetup() {
 		List<List<Card>> treasureList = new ArrayList<List<Card>>();
 		
-		treasureList.add(this.copper);
-		treasureList.add(this.silver);
-		treasureList.add(this.gold);
-		treasureList.add(this.platinum);
+		treasureList.add(copper);
+		treasureList.add(silver);
+		treasureList.add(gold);
+		treasureList.add(platinum);
 		
-		for (int i = 0; i < this.kingdoms.size(); i++) {
-			if (this.kingdoms.get(i).get(0).getType1().equals("Treasure")) {
-				treasureList.add(this.kingdoms.get(i));
+		Iterator<List<Card>> iterator;
+		int i;
+		
+		for (iterator = kingdoms.iterator(), i = 0; iterator.hasNext() && i < kingdoms.size(); i++) {
+			List<Card> kingdom = iterator.next();
+			Card card = kingdom.get(0);
+			if ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2())) {
+				treasureList.add(kingdom);
 			}
 		}
 		
 		return treasureList;
 	}
 	
-	public List<List<Card>> vicListSetup(List<List<Card>> kingdoms, List<Card> estate, List<Card> duchy, List<Card> province, List<Card> colony) {
+	public List<List<Card>> vicListSetup() {
 		List<List<Card>> vicList = new ArrayList<List<Card>>();
 		
 		vicList.add(estate);
@@ -316,24 +321,41 @@ public class Kingdom {
 	}
 	
 	public List<List<Card>> supplyListSetup() {
-		List<List<Card>> supplyList = new ArrayList<List<Card>>();
+		List<List<Card>> supList = new ArrayList<List<Card>>();
+		Iterator<List<Card>> treasItr, vicItr;
+		int i, j, k;
 		
-		for (int i = 0; i < this.actionList.size(); i++) {
-			supplyList.add(actionList.get(i));
+		// Add all cards that have Action as its first type; second type does not matter
+		for (i = 0; i < actionList.size(); i++) {
+			supList.add(actionList.get(i));
 		}
 		
-		for (int i = 0; i < this.treasureList.size(); i++) {
-			supplyList.add(treasureList.get(i));
+		// Double check for Action/Treasure cards and don't add them if they are
+		for (treasItr = treasureList.iterator(), j = 0; treasItr.hasNext() && j < treasureList.size(); j++) {
+			List<Card> kingdom = treasItr.next();
+			Card card = kingdom.get(0);
+			
+			// Only add the card if Treasure is its first type; second type does not matter as it would have been added already
+			if ("Treasure".equals(card.getType1())) {
+				supList.add(kingdom);
+			}
 		}
 		
-		// Double check for Action/Victory or Treasure/Victory cards
-		for (int i = 0; i < this.victoryList.size(); i++) {
-			supplyList.add(victoryList.get(i));
+		// Double check for Action/Victory or Treasure/Victory cards and don't add them if they are
+		for (vicItr = victoryList.iterator(), k = 0; vicItr.hasNext() && k < victoryList.size(); k++) {
+			List<Card> kingdom = vicItr.next();
+			Card card = kingdom.get(0);
+			
+			// Only add the card if Victory is its first type; second type does not matter as it would have been added already
+			if ("Victory".equals(card.getType1())) {
+				supList.add(kingdom);
+			}
 		}
 		
-		supplyList.add(this.curse);
+		// Add curse pile to the supply list
+		supList.add(curse);
 		
-		return null;
+		return supList;
 	}
 	
 	// Create a list of kingdoms and return it
