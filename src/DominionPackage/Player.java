@@ -13,11 +13,9 @@ public class Player {
 	private List<Card> victory = new ArrayList<Card>();
 	private List<Card> treasure = new ArrayList<Card>();
 	private List<Card> curse = new ArrayList<Card>();
-	private List<Card> attack = new ArrayList<Card>();
-	private List<Card> duration = new ArrayList<Card>();
-	private List<Card> reaction = new ArrayList<Card>();
-	private int numCardsInHand;
-	private int numCardsInDP;
+	//private List<Card> attack = new ArrayList<Card>();
+	//private List<Card> duration = new ArrayList<Card>();
+	//private List<Card> reaction = new ArrayList<Card>();
 	private int numActionsLeft = 1;
 	private int extraCoins = 0;
 	private int extraVictoryPoints = 0;

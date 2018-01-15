@@ -15,6 +15,7 @@ public class CardEffects {
 			// Effect
 			System.out.println("Discard card(s) and redraw the same amount - choose a number between 0 (discard none) and " + player1.getCardsInHand().size());
 			Scanner scan = new Scanner(System.in);
+			int numDiscard = 0;
 			
 			for (int i = 0; i < player1.getCardsInHand().size(); i++) {
 				int choice = scan.nextInt();
@@ -39,11 +40,16 @@ public class CardEffects {
 					// Add the card that was removed from the hand to the discard pile
 					player1.addCardToDiscardPile(card);
 					
-					// Draw the top card from the deck and remove it from the deck - drawCard() adds it to the hand AND removes it from the top of the deck
-					player1.drawCard(player1.getDeck().get(0));
+					numDiscard++;
 				} else {
 					System.out.println("That is not a valid choice");
 				}
+			}
+			
+			for (int i = 0; i < numDiscard; i++) {
+				
+				// Draw the top card from the deck and remove it from the deck - drawCard() adds it to the hand AND removes it from the top of the deck
+				player1.drawCard(player1.getDeck().get(0));
 			}
 		}
 	}
