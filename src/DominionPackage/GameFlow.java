@@ -8,26 +8,28 @@ public class GameFlow {
 	//public Player player1 = new Player();
 	
 	public void drawPhase(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		// Draw 5 cards
+		int initialDraw = 5;
 		if (playerTurnCounter == 1) {
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < initialDraw; i++) {
 				if (player1.getDeck().size() == 0)
 					restartDeck(player1);
 				player1.drawCard(player1.getDeck().get(0));
 			}
 		} else if (playerTurnCounter == 2) {
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < initialDraw; i++) {
 				if (player2.getDeck().size() == 0)
 					restartDeck(player2);
 				player2.drawCard(player2.getDeck().get(0));
 			}
 		} else if (playerTurnCounter == 3) {
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < initialDraw; i++) {
 				if (player3.getDeck().size() == 0)
 					restartDeck(player3);
 				player3.drawCard(player3.getDeck().get(0));
 			}
 		} else {
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < initialDraw; i++) {
 				if (player4.getDeck().size() == 0)
 					restartDeck(player4);
 				player4.drawCard(player4.getDeck().get(0));
@@ -44,7 +46,7 @@ public class GameFlow {
 		boolean actCardsAvailable = false, vicCardsAvailable = false, coinCardsAvailable = false, curseCardsAvailable = false, attCardsAvailable = false, 
 				durCardsAvailable = false, reactCardsAvailable = false;
 		
-		Card card = new Card(null, null, null, null, null, null, null, null, null, null, null);
+		Card card = new Card(null, null, null, null, null, null, null, null);
 		//player1.getDeck();
 		//player2.getDeck();
 		//player3.getDeck();
