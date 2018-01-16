@@ -415,4 +415,45 @@ public class CardEffects {
 			}
 		}
 	}
+	
+	public void Moneylender(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		if (playerTurnCounter == 1) {
+			
+			Scanner scan = new Scanner(System.in);
+			String choice;
+			int handLimit = 1;
+			
+			System.out.println("Do you want to trash a copper for +3 Coins? Press [y] for yes or [n] for no.");
+			while (scan.hasNext()) {
+				choice = scan.nextLine();
+				
+				if (choice.toLowerCase().equals("y")) {
+					// Search through the hand for a copper
+					for (Card card : player1.getCardsInHand()) {
+						if ("Copper".equals(card.getName())) {
+							// Remove the card from the player's hand
+							player1.removeCardFromHand(card);
+							
+							// Add the card to the player's discard pile
+							player1.addCardToDiscardPile(card);
+							
+							// Add 3 extra coins to that player
+							player1.addExtraCoins(3);
+							break;
+						}
+						
+						if (handLimit == player1.getCardsInHand().size()) {
+							System.out.println("You have no coppers to trash!");
+							break;
+						}
+						
+						handLimit++;
+					}
+				} else {
+					// The player chose not to discard a Copper
+					break;
+				}
+			}
+		}
+	}
 }
