@@ -2,28 +2,24 @@ package DominionPackage;
 
 public class Card {
 
-	private String name, type1, type2, effect1, effect2, effect3, effect4, effect5, cost, potion, numLeft;
+	private String name, type1, type2, type3, type4, effect, cost, numLeft;
 	
-	public Card(String name, String type1, String type2, String effect1, String effect2, String effect3, String effect4, String effect5, String cost, String potion, String numLeft) {
+	public Card(String name, String type1, String type2, String type3, String type4, String effect, String cost, String numLeft) {
 		this.name = name;
 		this.type1 = type1;
 		this.type2 = type2;
-		this.effect1 = effect1;
-		this.effect2 = effect2;
-		this.effect3 = effect3;
-		this.effect4 = effect4;
-		this.effect5 = effect5;
+		this.type3 = type3;
+		this.type4 = type4;
+		this.effect = effect;
 		this.cost = cost;
-		this.potion = potion;
 		this.numLeft = numLeft;
 	}
 	
 	// Override printing method
 	@Override
 	public String toString() {
-		return (this.getName() + ", " + this.getType1() + ", " + this.getType2() + ", " + this.getEffect1() + ", " + this.getEffect2() 
-			+ ", " + this.getEffect3() + ", " + this.getEffect4() + ", " + this.getEffect5() + ", " + this.getCost() + ", " + this.getPotion() 
-			+ ", " + this.getNumLeft());
+		return (this.getName() + ", " + this.getType1() + ", " + this.getType2() + ", " + this.getType3() + ", " + this.getType4() + ", " 
+				+ this.getEffect() + ", " + this.getCost() + ", " + this.getNumLeft());
 	}
 	
 	public void setName(String name) {
@@ -50,44 +46,28 @@ public class Card {
 		return type2;
 	}
 	
-	public void setEffect1(String effect1) {
-		this.effect1 = effect1;
+	public void setType3(String type3) {
+		this.type3 = type3;
 	}
 	
-	public String getEffect1() {
-		return effect1;
+	public String getType3() {
+		return type3;
 	}
 	
-	public void setEffect2(String effect2) {
-		this.effect2 = effect2;
+	public void setType4(String type4) {
+		this.type4 = type4;
 	}
 	
-	public String getEffect2() {
-		return effect2;
+	public String getType4() {
+		return type4;
 	}
 	
-	public void setEffect3(String effect3) {
-		this.effect3 = effect3;
+	public void setEffect(String effect) {
+		this.effect = effect;
 	}
 	
-	public String getEffect3() {
-		return effect3;
-	}
-	
-	public void setEffect4(String effect4) {
-		this.effect4 = effect4;
-	}
-	
-	public String getEffect4() {
-		return effect4;
-	}
-	
-	public void setEffect5(String effect5) {
-		this.effect5 = effect5;
-	}
-	
-	public String getEffect5() {
-		return effect5;
+	public String getEffect() {
+		return effect;
 	}
 	
 	public void setCost(String cost) {
@@ -96,14 +76,6 @@ public class Card {
 	
 	public String getCost() {
 		return cost;
-	}
-	
-	public void setPotion(String potion) {
-		this.potion = potion;
-	}
-	
-	public String getPotion() {
-		return potion;
 	}
 	
 	public void setNumLeft(String numLeft) {
