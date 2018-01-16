@@ -49,19 +49,13 @@ public class Kingdom {
 		// Deal initial Copper to all players
 		if (numPlayers == 2) {
 			for (int i = 0; i < 7; i++) {
-				//deck1 = player1.getDeck();
-				//deck2 = player2.getDeck();
-				//deck1.add(cd.getCardList().get(0));
 				player1.addCardToDeck(cd.getCardList().get(0));
 				copper.remove(0);
-				//deck2.add(cd.getCardList().get(0));
 				player2.addCardToDeck(cd.getCardList().get(0));
 				copper.remove(0);
 			}
 		} else if (numPlayers == 3) {
 			for (int i = 0; i < 7; i++) {
-				//deck3 = player3.getDeck();
-				//deck3.add(cd.getCardList().get(0));
 				player1.addCardToDeck(cd.getCardList().get(0));
 				copper.remove(0);
 				player2.addCardToDeck(cd.getCardList().get(0));
@@ -71,8 +65,6 @@ public class Kingdom {
 			}
 		} else {
 			for (int i = 0; i < 7; i++) {
-				//deck4 = player4.getDeck();
-				//deck3.add(cd.getCardList().get(0));
 				player1.addCardToDeck(cd.getCardList().get(0));
 				copper.remove(0);
 				player2.addCardToDeck(cd.getCardList().get(0));
@@ -118,19 +110,13 @@ public class Kingdom {
 		// Distribute initial Estates
 		if (numPlayers == 2) {
 			for (int i = 0; i < 3; i++) {
-				//deck1 = player1.getDeck();
-				//deck2 = player2.getDeck();
-				//deck1.add(cd.getCardList().get(5));
 				player1.addCardToDeck(cd.getCardList().get(5));
 				estate.remove(0);
-				//deck2.add(cd.getCardList().get(5));
 				player2.addCardToDeck(cd.getCardList().get(5));
 				estate.remove(0);
 			}
 		} else if (numPlayers == 3) {
 			for (int i = 0; i < 3; i++) {
-				//deck3 = player3.getDeck();
-				//deck3.add(cd.getCardList().get(5));
 				player1.addCardToDeck(cd.getCardList().get(5));
 				estate.remove(0);
 				player2.addCardToDeck(cd.getCardList().get(5));
@@ -140,8 +126,6 @@ public class Kingdom {
 			}
 		} else {
 			for (int i = 0; i < 3; i++) {
-				//deck4 = player4.getDeck();
-				//deck4.add(cd.getCardList().get(5));
 				player1.addCardToDeck(cd.getCardList().get(5));
 				estate.remove(0);
 				player2.addCardToDeck(cd.getCardList().get(5));
@@ -256,7 +240,8 @@ public class Kingdom {
 		
 		for (iterator = kingdom.iterator(), i = 0; iterator.hasNext() && i < 2; i++) {
 			Card card = iterator.next();
-			if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2())) {
+			if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || 
+				"Victory".equals(card.getType3()) || "Victory".equals(card.getType4())) {
 	        	iterator.remove();
 			} 
 		}
@@ -290,7 +275,8 @@ public class Kingdom {
 		for (iterator = kingdoms.iterator(), i = 0; iterator.hasNext() && i < kingdoms.size(); i++) {
 			List<Card> kingdom = iterator.next();
 			Card card = kingdom.get(0);
-			if ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2())) {
+			if ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2()) || 
+				"Treasure".equals(card.getType3()) || "Treasure".equals(card.getType4())) {
 				treasureList.add(kingdom);
 			}
 		}
@@ -312,7 +298,8 @@ public class Kingdom {
 		for (iterator = kingdoms.iterator(), i = 0; iterator.hasNext() && i < kingdoms.size(); i++) {
 			List<Card> kingdom = iterator.next();
 			Card card = kingdom.get(0);
-			if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2())) {
+			if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || 
+				"Victory".equals(card.getType3()) || "Victory".equals(card.getType4())) {
 				vicList.add(kingdom);
 			}
 		}
