@@ -291,12 +291,13 @@ public class CardEffects {
 				// Print out the cards in the hand
 				int i = 1;
 				List<Card> vicCardsInHand = new ArrayList<Card>();
-				Card returnedCard = new Card(null, null, null, null, null, null, null, null, null, null, null);
+				Card returnedCard = new Card(null, null, null, null, null, null, null, null);
 				
 				System.out.println("Here are the victory cards in your hand:");
 				
 				for (Card card : player2.getCardsInHand()) {
-					if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2())) {
+					if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || 
+						"Victory".equals(card.getType3()) || "Victory".equals(card.getType4())) {
 						vicCardsInHand.add(card);
 						System.out.println(i + " = " + card.getName());
 					}
