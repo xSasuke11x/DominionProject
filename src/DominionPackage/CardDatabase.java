@@ -19,8 +19,7 @@ public class CardDatabase {
 	
 	// Read text version of cards from file and add to final list
 	public void PopulateDatabase() {
-		String name = null, type1 = null, type2 = null, effect1 = null, effect2 = null, effect3 = null, effect4 = null, effect5 = null, cost = null, 
-				potion = null, numLeft = null;
+		String name = null, type1 = null, type2 = null, type3 = null, type4 = null, effect = null,  cost = null, numLeft = null;
 		String fileName = "CardList.txt";
 		String line;
 		//Card cp = new Card(name, type1, type2, effect1, effect2, effect3, effect4, effect5, cost, potion);
@@ -33,44 +32,29 @@ public class CardDatabase {
 	        
 	        for (int i = 0; i < totalNumCards; i++) {
 	        	while((line = bufferedReader.readLine()) != null) {
-	        		Card cp = new Card(name, type1, type2, effect1, effect2, effect3, effect4, effect5, cost, potion, numLeft);
+	        		Card cp = new Card(name, type1, type2, type3, type4, effect, cost, numLeft);
 	            	String[] tokens = line.split(delimiter);
 	            	
 	            	cp.setName(tokens[0]);
 	                cp.setType1(tokens[1]);
 	                cp.setType2(tokens[2]);
-	                cp.setEffect1(tokens[3]);
-	                cp.setEffect2(tokens[4]);
-	                cp.setEffect3(tokens[5]);
-	                cp.setEffect4(tokens[6]);
-	                cp.setEffect5(tokens[7]);
+	                cp.setType3(tokens[3]);
+	                cp.setType4(tokens[4]);
+	                cp.setEffect(tokens[5]);
+	                cp.setCost(tokens[6]);
+	                cp.setNumLeft(tokens[7]);
 	                if (cp.getType2().contains("\"null\"")) {
 	                	tokens[2] = null;
 	                	cp.setType2(tokens[2]);
 	                }
-	                if (cp.getEffect1().contains("\"null\"")) {
+	                if (cp.getType3().contains("\"null\"")) {
 	                	tokens[3] = null;
-	                	cp.setEffect1(tokens[3]);
+	                	cp.setType3(tokens[3]);
 	                }
-	                if (cp.getEffect2().contains("\"null\"")) {
+	                if (cp.getType4().contains("\"null\"")) {
 	                	tokens[4] = null;
-	                	cp.setEffect2(tokens[4]);
+	                	cp.setType4(tokens[4]);
 	                }
-	                if (cp.getEffect3().contains("\"null\"")) {
-	                	tokens[5] = null;
-	                	cp.setEffect3(tokens[5]);
-	                }
-	                if (cp.getEffect4().contains("\"null\"")) {
-	                	tokens[6] = null;
-	                	cp.setEffect4(tokens[6]);
-	                }
-	                if (cp.getEffect5().contains("\"null\"")) {
-	                	tokens[7] = null;
-	                	cp.setEffect5(tokens[7]);
-	                }
-	                cp.setCost(tokens[8]);
-	                cp.setPotion(tokens[9]);
-	                cp.setNumLeft(tokens[10]);
 	            	
 	                cardCreationList.add(cp);
 	                
