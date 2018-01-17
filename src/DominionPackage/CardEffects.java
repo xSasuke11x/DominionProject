@@ -338,28 +338,28 @@ public class CardEffects {
 			int totalNumCards = player1.getCardsInHand().size() + player1.getDeck().size();
 			
 			// Add the total to the extra victory points for that player
-			player1.addExtraVictoryPoints(totalNumCards);
+			player1.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
 		} else if (playerTurnCounter == 2) {
 			
 			// Set totalNumCards to the sum of the cards in the deck and the hand 
 			int totalNumCards = player2.getCardsInHand().size() + player2.getDeck().size();
 			
 			// Add the total to the extra victory points for that player
-			player2.addExtraVictoryPoints(totalNumCards);
+			player2.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
 		} else if (playerTurnCounter == 3) {
 			
 			// Set totalNumCards to the sum of the cards in the deck and the hand 
 			int totalNumCards = player3.getCardsInHand().size() + player3.getDeck().size();
 			
 			// Add the total to the extra victory points for that player
-			player3.addExtraVictoryPoints(totalNumCards);
+			player3.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
 		} else if (playerTurnCounter == 4) {
 			
 			// Set totalNumCards to the sum of the cards in the deck and the hand 
 			int totalNumCards = player4.getCardsInHand().size() + player4.getDeck().size();
 			
 			// Add the total to the extra victory points for that player
-			player4.addExtraVictoryPoints(totalNumCards);
+			player4.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
 		}
 	}
 	
@@ -451,6 +451,73 @@ public class CardEffects {
 					}
 				} else {
 					// The player chose not to discard a Copper
+					break;
+				}
+			}
+		}
+	}
+	
+	public void Poacher(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		if (playerTurnCounter == 1) {
+			
+			// +1 Card
+			player1.drawCard(player1.getDeck().get(0));
+			
+			// +1 Action
+			player1.addNumActions(1);
+			
+			// +1 Coin
+			player1.addExtraCoins(1);
+			
+			// Effect
+			int numEmptyKingdoms = 0;
+			
+			// Keep a running count of how many empty supply piles there are
+			for (List<Card> kingdom : kingdoms.getSupplyList()) {
+				if (kingdom.get(0).equals(null)) {
+					numEmptyKingdoms++;
+				}
+			}
+			
+			// Discard a card for each empty supply pile
+			for (int i = 0; i < numEmptyKingdoms; i++) {
+				// Keep in mind that there might not be cards in the hand to discard
+				if (player1.getCardsInHand().size() > 0) {
+					// Do actions while cards exist in the hand
+					Scanner scan = new Scanner(System.in);
+					String choice;
+					
+					System.out.println("Discard a card per empty supply pile.");
+					while (scan.hasNext()) {
+						choice = scan.nextLine();
+						
+						// Print out the hand and choose a card to discard
+						System.out.println("The following are the cards in your hand. Press a number between 1 and " + player1.getCardsInHand().size() 
+								+ " to discard that card.");
+						for (Card card : player1.getCardsInHand()) {
+							System.out.println(card);
+						}
+						
+						// Valid number
+						if (Integer.parseInt(choice) > 0 && Integer.parseInt(choice) <= player1.getCardsInHand().size()) {
+							Card card = player1.getCardsInHand().get(Integer.parseInt(choice) - 1);
+							
+							// Add the card to the discard pile.
+							player1.addCardToDiscardPile(card);
+							
+							// Remove a card from the player's hand
+							player1.removeCardFromHand(card);
+							
+							// Go back to original loop to keep count of cards to discard and to re-print prompt
+							break;
+						} else {
+							// Invalid choice
+							System.out.println("That is not a valid number. Please choose a number between 1 and " + player1.getCardsInHand().size() 
+								+ " to discard that card.");
+							break;
+						}
+					}
+				} else {
 					break;
 				}
 			}
