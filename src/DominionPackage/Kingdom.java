@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Kingdom {
 	
-	private int vicTwoPlayers = 8, vicThreePlusPlayers = 12, totalNumCards = 36;
+	private int vicTwoPlayers = 8, vicThreePlusPlayers = 12, totalNumCards = 36, vicPointsCutoff = 12;
 	
 	// Allocate space for each of the 19 kingdoms and the trash pile
 	public List<Card> copper = new ArrayList<Card>();
@@ -41,59 +41,26 @@ public class Kingdom {
 		
 		kingdoms = kingdomSetup(k1, k2, k3, k4, k5, k6, k7, k8, k9, k10);
 		
-		// Populate Copper Pile
-		for (int i = 0; i < Integer.parseInt(cd.getCardList().get(0).getNumLeft()); i++) {
-			copper.add(cd.getCardList().get(0));
-		}
-		
-		// Deal initial Copper to all players
-		if (numPlayers == 2) {
-			for (int i = 0; i < 7; i++) {
-				player1.addCardToDeck(cd.getCardList().get(0));
-				copper.remove(0);
-				player2.addCardToDeck(cd.getCardList().get(0));
-				copper.remove(0);
+		// Populate Base Piles
+		for (Card card : cd.getCardList()) {
+			for (int i = 0; i < Integer.parseInt(card.getNumLeft()); i++) {
+				if ("1".equals(card.getID())) {
+					// Populate Copper Pile
+					copper.add(card);
+				} else if ("2".equals(card.getID())) {
+					// Populate Silver Pile
+					silver.add(card);
+				} else if ("3".equals(card.getID())) {
+					// Populate Gold Pile
+					gold.add(card);
+				} else if ("4".equals(card.getID())) {
+					// Populate Platinum Pile
+					platinum.add(card);
+				} else if ("5".equals(card.getID()) && i < (numPlayers * 10) - 10) {
+					// Populate Curse pile based on number of players
+					curse.add(card);
+				} 
 			}
-		} else if (numPlayers == 3) {
-			for (int i = 0; i < 7; i++) {
-				player1.addCardToDeck(cd.getCardList().get(0));
-				copper.remove(0);
-				player2.addCardToDeck(cd.getCardList().get(0));
-				copper.remove(0);
-				player3.addCardToDeck(cd.getCardList().get(0));
-				copper.remove(0);
-			}
-		} else {
-			for (int i = 0; i < 7; i++) {
-				player1.addCardToDeck(cd.getCardList().get(0));
-				copper.remove(0);
-				player2.addCardToDeck(cd.getCardList().get(0));
-				copper.remove(0);
-				player3.addCardToDeck(cd.getCardList().get(0));
-				copper.remove(0);
-				player4.addCardToDeck(cd.getCardList().get(0));
-				copper.remove(0);
-			}
-		}
-		
-		// Populate Silver pile
-		for (int i = 0; i < Integer.parseInt(cd.getCardList().get(1).getNumLeft()); i++) {
-			silver.add(cd.getCardList().get(1));
-		}
-		
-		// Populate Gold pile
-		for (int i = 0; i < Integer.parseInt(cd.getCardList().get(2).getNumLeft()); i++) {
-			gold.add(cd.getCardList().get(2));
-		}
-		
-		// Populate Platinum pile
-		for (int i = 0; i < Integer.parseInt(cd.getCardList().get(3).getNumLeft()); i++) {
-			platinum.add(cd.getCardList().get(3));
-		}
-		
-		// Populate Curse pile based on number of players
-		for (int i = 0; i < (numPlayers * 10) - 10; i++) {
-			curse.add(cd.getCardList().get(4));
 		}
 		
 		// Populate Estate pile
@@ -104,36 +71,6 @@ public class Kingdom {
 		} else {
 			for (int i = 0; i < vicThreePlusPlayers + (3 * numPlayers); i++) {
 				estate.add(cd.getCardList().get(5));
-			}
-		}
-		
-		// Distribute initial Estates
-		if (numPlayers == 2) {
-			for (int i = 0; i < 3; i++) {
-				player1.addCardToDeck(cd.getCardList().get(5));
-				estate.remove(0);
-				player2.addCardToDeck(cd.getCardList().get(5));
-				estate.remove(0);
-			}
-		} else if (numPlayers == 3) {
-			for (int i = 0; i < 3; i++) {
-				player1.addCardToDeck(cd.getCardList().get(5));
-				estate.remove(0);
-				player2.addCardToDeck(cd.getCardList().get(5));
-				estate.remove(0);
-				player3.addCardToDeck(cd.getCardList().get(5));
-				estate.remove(0);
-			}
-		} else {
-			for (int i = 0; i < 3; i++) {
-				player1.addCardToDeck(cd.getCardList().get(5));
-				estate.remove(0);
-				player2.addCardToDeck(cd.getCardList().get(5));
-				estate.remove(0);
-				player3.addCardToDeck(cd.getCardList().get(5));
-				estate.remove(0);
-				player4.addCardToDeck(cd.getCardList().get(5));
-				estate.remove(0);
 			}
 		}
 		
@@ -152,16 +89,72 @@ public class Kingdom {
 			}
 		}
 		
+		// Deal initial Copper to all players
+		if (numPlayers == 2) {
+			for (int i = 0; i < 7; i++) {
+				Card copperCard = copper.get(0);
+				if (numPlayers == 2) {
+					player1.addCardToDeck(copperCard);
+					copper.remove(0);
+					player2.addCardToDeck(copperCard);
+					copper.remove(0);
+				} else if (numPlayers == 3) {
+					player1.addCardToDeck(copperCard);
+					copper.remove(0);
+					player2.addCardToDeck(copperCard);
+					copper.remove(0);
+					player3.addCardToDeck(copperCard);
+					copper.remove(0);
+				} else {
+					player1.addCardToDeck(copperCard);
+					copper.remove(0);
+					player2.addCardToDeck(copperCard);
+					copper.remove(0);
+					player3.addCardToDeck(copperCard);
+					copper.remove(0);
+					player4.addCardToDeck(copperCard);
+					copper.remove(0);
+				}
+			}
+		}
+		
+		// Deal initial Estates
+		for (int i = 0; i < 3; i++) {
+			Card estateCard = estate.get(0);
+			
+			if (numPlayers == 2) {
+				player1.addCardToDeck(estateCard);
+				estate.remove(0);
+				player2.addCardToDeck(estateCard);
+				estate.remove(0);
+			} else if (numPlayers == 3) {
+				player1.addCardToDeck(estateCard);
+				estate.remove(0);
+				player2.addCardToDeck(estateCard);
+				estate.remove(0);
+				player3.addCardToDeck(estateCard);
+				estate.remove(0);
+			} else {
+				player1.addCardToDeck(estateCard);
+				estate.remove(0);
+				player2.addCardToDeck(estateCard);
+				estate.remove(0);
+				player3.addCardToDeck(estateCard);
+				estate.remove(0);
+				player4.addCardToDeck(estateCard);
+				estate.remove(0);
+			}
+		}
+		
 		// Populate the random 10 Kingdoms
 		Random generator = new Random();
         generator.setSeed((int)System.currentTimeMillis());
         int num, i;
-        List<Card> list = new ArrayList<Card>(); 
-        list = cd.getCardList();
+        List<Card> list = new ArrayList<Card>(cd.getCardList()); 
         List<Card> subList = list.subList(9, totalNumCards); // Remove base cards from the card list
         List<Card> temp = new ArrayList<Card>();
         Iterator<Card> iterator;
-        Collections.shuffle(subList);
+        Collections.shuffle(subList); // Shuffle the non-base cards to be randomly selected
         for (iterator = subList.iterator(), i = 0; iterator.hasNext() && i < 10; i++) {
         	num = Math.abs(generator.nextInt()) % totalNumCards + 9;
             Card card = iterator.next();
@@ -231,6 +224,12 @@ public class Kingdom {
         
         // Create the overall supply list
         supplyList = supplyListSetup();
+        
+        /*for (Card temp2 : estate) {
+        	System.out.println(temp2);
+        }*/
+        
+        //System.out.println(player1.getDeck());
 	}
 	
 	// If a kingdom is a victory card, change the number of cards from 10 to 8
