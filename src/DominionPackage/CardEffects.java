@@ -646,4 +646,12 @@ public class CardEffects {
 			}
 		}
 	}
+	
+	/*public void ThroneRoom(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		if (playerTurnCounter == 1) {
+			
+			player1.addNumActions(1);
+			
+		}
+	}*/
 }

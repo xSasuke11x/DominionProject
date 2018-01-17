@@ -17,6 +17,7 @@ public class Player {
 	//private List<Card> duration = new ArrayList<Card>();
 	//private List<Card> reaction = new ArrayList<Card>();
 	private int numActionsLeft = 1;
+	private int numBuysLeft = 1;
 	private int extraCoins = 0;
 	private int extraVictoryPoints = 0;
 	private int turnCounter;
@@ -46,6 +47,10 @@ public class Player {
 		return numActionsLeft;
 	}
 	
+	public int getNumBuys() {
+		return numBuysLeft;
+	}
+	
 	public int getExtraCoins() {
 		return extraCoins;
 	}
@@ -56,6 +61,10 @@ public class Player {
 	
 	public void addNumActions(int num) {
 		numActionsLeft = numActionsLeft + num;
+	}
+	
+	public void addNumBuys(int num) {
+		numBuysLeft = numBuysLeft + num;
 	}
 	
 	public void addExtraCoins(int num) {

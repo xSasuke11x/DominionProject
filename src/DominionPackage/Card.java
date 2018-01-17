@@ -2,15 +2,15 @@ package DominionPackage;
 
 public class Card {
 
-	private String name, type1, type2, type3, type4, effect, cost, numLeft;
+	private String name, type1, type2, type3, type4, ID, cost, numLeft;
 	
-	public Card(String name, String type1, String type2, String type3, String type4, String effect, String cost, String numLeft) {
+	public Card(String name, String type1, String type2, String type3, String type4, String ID, String cost, String numLeft) {
 		this.name = name;
 		this.type1 = type1;
 		this.type2 = type2;
 		this.type3 = type3;
 		this.type4 = type4;
-		this.effect = effect;
+		this.ID = ID;
 		this.cost = cost;
 		this.numLeft = numLeft;
 	}
@@ -19,7 +19,7 @@ public class Card {
 	@Override
 	public String toString() {
 		return (this.getName() + ", " + this.getType1() + ", " + this.getType2() + ", " + this.getType3() + ", " + this.getType4() + ", " 
-				+ this.getEffect() + ", " + this.getCost() + ", " + this.getNumLeft());
+				+ this.getID() + ", " + this.getCost() + ", " + this.getNumLeft());
 	}
 	
 	public void setName(String name) {
@@ -62,12 +62,12 @@ public class Card {
 		return type4;
 	}
 	
-	public void setEffect(String effect) {
-		this.effect = effect;
+	public void setID(String ID) {
+		this.ID = ID;
 	}
 	
-	public String getEffect() {
-		return effect;
+	public String getID() {
+		return ID;
 	}
 	
 	public void setCost(String cost) {

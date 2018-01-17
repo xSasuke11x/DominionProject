@@ -19,7 +19,7 @@ public class CardDatabase {
 	
 	// Read text version of cards from file and add to final list
 	public void PopulateDatabase() {
-		String name = null, type1 = null, type2 = null, type3 = null, type4 = null, effect = null,  cost = null, numLeft = null;
+		String name = null, type1 = null, type2 = null, type3 = null, type4 = null, ID = null,  cost = null, numLeft = null;
 		String fileName = "CardList.txt";
 		String line;
 		//Card cp = new Card(name, type1, type2, effect1, effect2, effect3, effect4, effect5, cost, potion);
@@ -32,7 +32,7 @@ public class CardDatabase {
 	        
 	        for (int i = 0; i < totalNumCards; i++) {
 	        	while((line = bufferedReader.readLine()) != null) {
-	        		Card cp = new Card(name, type1, type2, type3, type4, effect, cost, numLeft);
+	        		Card cp = new Card(name, type1, type2, type3, type4, ID, cost, numLeft);
 	            	String[] tokens = line.split(delimiter);
 	            	
 	            	cp.setName(tokens[0]);
@@ -40,7 +40,7 @@ public class CardDatabase {
 	                cp.setType2(tokens[2]);
 	                cp.setType3(tokens[3]);
 	                cp.setType4(tokens[4]);
-	                cp.setEffect(tokens[5]);
+	                cp.setID(tokens[5]);
 	                cp.setCost(tokens[6]);
 	                cp.setNumLeft(tokens[7]);
 	                if (cp.getType2().contains("\"null\"")) {
