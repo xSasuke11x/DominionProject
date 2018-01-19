@@ -366,7 +366,7 @@ public class CardEffects {
 				// Print out the cards in the hand
 				int i = 1;
 				List<Card> vicCardsInHand = new ArrayList<Card>();
-				Card returnedCard = new Card(null, null, null, null, null, null, null, null);
+				Card returnedCard = new Card(null, null, null, null, null, null, null, null, null);
 				
 				System.out.println("Here are the victory cards in your hand:");
 				

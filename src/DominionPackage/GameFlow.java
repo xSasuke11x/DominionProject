@@ -332,7 +332,7 @@ public class GameFlow {
 	
 	public void availableCards(Player player) {
 		// Search through the hand for an action cards
-		Card card = new Card(null, null, null, null, null, null, null, null);
+		Card card = new Card(null, null, null, null, null, null, null, null, null);
 		Iterator<Card> itr = player.getCardsInHand().iterator();
 		
 		while (itr.hasNext()) {

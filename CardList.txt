@@ -1,37 +1,37 @@
-Copper/Treasure/"null"/"null"/"null"/1/0/60/
-Silver/Treasure/"null"/"null"/"null"/2/3/40/
-Gold/Treasure/"null"/"null"/"null"/3/6/30/
-Platinum/Treasure/"null"/"null"/"null"/4/9/12/
-Curse/Curse/"null"/"null"/"null"/5/0/40/
-Estate/Victory/"null"/"null"/"null"/6/2/24/
-Duchy/Victory/"null"/"null"/"null"/7/5/12/
-Province/Victory/"null"/"null"/"null"/8/8/12/
-Colony/Victory/"null"/"null"/"null"/9/11/12/
-Cellar/Action/"null"/"null"/"null"/10/2/10/
-Chapel/Action/"null"/"null"/"null"/11/2/10/
-Moat/Action/Reaction/"null"/"null"/12/2/10/
-Harbinger/Action/"null"/"null"/"null"/13/3/10/
-Merchant/Action/"null"/"null"/"null"/14/3/10/
-Vassal/Action/"null"/"null"/"null"/15/3/10/
-Village/Action/"null"/"null"/"null"/16/3/10/
-Workshop/Action/"null"/"null"/"null"/17/3/10/
-Bureaucrat/Action/Attack/"null"/"null"/18/4/10/
-Gardens/Victory/"null"/"null"/"null"/19/4/12/
-Militia/Action/Attack/"null"/"null"/20/4/10/
-Moneylender/Action/"null"/"null"/"null"/21/4/10/
-Poacher/Action/"null"/"null"/"null"/22/4/10/
-Remodel/Action/"null"/"null"/"null"/23/5/10/
-Smithy/Action/"null"/"null"/"null"/24/4/10/
-Throne Room/Action/"null"/"null"/"null"/25/4/10/
-Bandit/Action/Attack/"null"/"null"/26/5/10/
-Council Room/Action/"null"/"null"/"null"/27/5/10/
-Festival/Action/"null"/"null"/"null"/28/5/10/
-Laboratory/Action/"null"/"null"/"null"/29/5/10/
-Library/Action/"null"/"null"/"null"/30/5/10/
-Market/Action/"null"/"null"/"null"/31/5/10/
-Mine/Action/"null"/"null"/"null"/32/5/10/
-Sentry/Action/"null"/"null"/"null"/33/5/10/
-Witch/Action/Attack/"null"/"null"/34/5/10/
-Artisan/Action/"null"/"null"/"null"/35/5/10/
-Nobles/Action/Victory/"null"/"null"/36/6/10/
-Fishing Village/Action/Duration/"null"/"null"/37/3/10/
+Copper/Treasure/"null"/"null"/"null"/+1 Coin/1/0/60/
+Silver/Treasure/"null"/"null"/"null"/+2 Coins/2/3/40/
+Gold/Treasure/"null"/"null"/"null"/+3 Coins/3/6/30/
+Platinum/Treasure/"null"/"null"/"null"/+5 Coins/4/9/12/
+Curse/Curse/"null"/"null"/"null"/-1 Victory Point/5/0/40/
+Estate/Victory/"null"/"null"/"null"/+1 Victory Point/6/2/24/
+Duchy/Victory/"null"/"null"/"null"/+3 Victory Points/7/5/12/
+Province/Victory/"null"/"null"/"null"/+6 Victory Points/8/8/12/
+Colony/Victory/"null"/"null"/"null"/+10 Victory Points/9/11/12/
+Cellar/Action/"null"/"null"/"null"/+1 Action | Discard any number of cards, then draw that many./10/2/10/
+Chapel/Action/"null"/"null"/"null"/Trash up to 4 cards from your hand./11/2/10/
+Moat/Action/Reaction/"null"/"null"/+2 Cards | When another player plays an Attack card, you may first reveal this from your hand, to be unaffected by it./12/2/10/
+Harbinger/Action/"null"/"null"/"null"/+1 Card | +1 Action | Look through your discard pile. You may put a card from it onto your deck./13/3/10/
+Merchant/Action/"null"/"null"/"null"/+1 Card | +1 Action | The first time you play a Silver this turn, +1 Coin./14/3/10/
+Vassal/Action/"null"/"null"/"null"/+1 Coin | Discard the top card of your deck. If it's an Action card, you may play it./15/3/10/
+Village/Action/"null"/"null"/"null"/+1 Card | +2 Actions/16/3/10/
+Workshop/Action/"null"/"null"/"null"/Gain a card costing up to 4 coins./17/3/10/
+Bureaucrat/Action/Attack/"null"/"null"/Gain a Silver onto your deck. Each other player reveals a Victory card from their hand and puts it onto their deck (or reveals a hand with no Victory cards)./18/4/10/
+Gardens/Victory/"null"/"null"/"null"/Worth 1 Victory Point per 10 cards you have (round down)./19/4/12/
+Militia/Action/Attack/"null"/"null"/+2 Coins | Each other player discards down to 3 cards in hand./20/4/10/
+Moneylender/Action/"null"/"null"/"null"/You may trash a Copper from your hand for +3 Coins./21/4/10/
+Poacher/Action/"null"/"null"/"null"/+1 Card | +1 Action | +1 Coin/Discard a card per empty Supple pile./22/4/10/
+Remodel/Action/"null"/"null"/"null"/Trash a card from your hand. Gain a card costing up to 2 Coins more than it./23/5/10/
+Smithy/Action/"null"/"null"/"null"/+3 Cards/24/4/10/
+Throne Room/Action/"null"/"null"/"null"/You may play an Action card from your hand twice./25/4/10/
+Bandit/Action/Attack/"null"/"null"/Gain a Gold. Each other player reveals the top 2 cards of their deck, trashes a revealed Treasure other than Copper, and discards the rest./26/5/10/
+Council Room/Action/"null"/"null"/"null"/+4 Cards | +1 Buy | Each other player draws a card./27/5/10/
+Festival/Action/"null"/"null"/"null"/+2 Actions | +1 Buy | +2 Coins/28/5/10/
+Laboratory/Action/"null"/"null"/"null"/+2 Cards | +1 Action/29/5/10/
+Library/Action/"null"/"null"/"null"/Draw until you have 7 cards in hand, skipping any Action cards you choose to; set those aside, discarding them afterwards./30/5/10/
+Market/Action/"null"/"null"/"null"/+1 Card | +1 Action | +1 Buy | +1 Coin/31/5/10/
+Mine/Action/"null"/"null"/"null"/You may trash a Treasure from your hand. Gain a Treasure to your hand costing up to +3 Coins more than it./32/5/10/
+Sentry/Action/"null"/"null"/"null"/+1 Card | +1 Action | Look at the top 2 cards of your deck. Trash and/or discard any number of them. Put the rest back on top in any order./33/5/10/
+Witch/Action/Attack/"null"/"null"/+2 Cards | Each other player gains a Curse./34/5/10/
+Artisan/Action/"null"/"null"/"null"/Gain a card to your hand costing up to +5 Coins. Put a card from your hand onto your deck./35/5/10/
+Nobles/Action/Victory/"null"/"null"/+3 Cards or +2 Actions./36/6/10/
+Fishing Village/Action/Duration/"null"/"null"/+2 Actions | +1 Coin | At the start of your next turn: +1 Action and +1 Coin./37/3/10/
