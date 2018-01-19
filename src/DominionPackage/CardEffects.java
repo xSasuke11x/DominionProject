@@ -1,10 +1,49 @@
 package DominionPackage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CardEffects {
+	
+	public Runnable getCardEffect(int IDOfCard, Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		Map<Integer, Runnable> effects = new HashMap<>();
+		
+		effects.put(1, () -> Cellar(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(2, () -> Chapel(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(3, () -> Moat(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(4, () -> Harbinger(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(5, () -> Merchant(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(6, () -> Vassal(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(7, () -> Village(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(8, () -> Workshop(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(9, () -> Bureaucrat(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(10, () -> Gardens(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(11, () -> Militia(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(12, () -> Moneylender(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(13, () -> Poacher(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(14, () -> Remodel(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(15, () -> Smithy(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		/*effects.put(16, () -> ThroneRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(17, () -> Bandit(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(18, () -> CouncilRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(19, () -> Festival(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(20, () -> Laboratory(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(21, () -> Library(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(22, () -> Market(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(23, () -> Mine(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(24, () -> Sentry(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(25, () -> Witch(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(26, () -> Artisan(kingdoms, playerTurnCounter, player1, player2, player3, player4));*/
+		
+		// Invoke the command by:
+        //int cmd = 1;
+        //commands.get(cmd).run();   // Prints "Teleport"
+		
+		return effects.get(IDOfCard);
+	}
 
 	public void Cellar(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
 		if (playerTurnCounter == 1) {

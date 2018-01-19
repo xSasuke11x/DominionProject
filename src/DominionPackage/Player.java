@@ -22,6 +22,7 @@ public class Player {
 	private int extraVictoryPoints = 0;
 	private int turnCounter;
 	private int numPlayers = 2;
+	private boolean actCardsAvailable = false, vicCardsAvailable = false, coinCardsAvailable = false, curseCardsAvailable = false;
 	
 	public List<Card> getDeck() {
 		return deck;
@@ -75,12 +76,23 @@ public class Player {
 		extraVictoryPoints = extraVictoryPoints + num;
 	}
 	
-	public void resetNumActions(int num) {
+	public void resetNumActions() {
 		numActionsLeft = 1;
 	}
 	
-	public void resetExtraCoins(int num) {
+	public void resetNumBuys() {
+		numBuysLeft = 1;
+	}
+	
+	public void resetExtraCoins() {
 		extraCoins = 0;
+	}
+	
+	public void resetCardsAvailable() {
+		actCardsAvailable = false;
+		vicCardsAvailable = false;
+		coinCardsAvailable = false;
+		curseCardsAvailable = false;
 	}
 	
 	public List<Card> getDiscardPile() {
@@ -109,6 +121,22 @@ public class Player {
 	
 	public void setNumPlayers(int num) {
 		numPlayers = num;
+	}
+	
+	public void setActCardsAvailable(boolean availability) {
+		actCardsAvailable = availability;
+	}
+	
+	public void setVicCardsAvailable(boolean availability) {
+		vicCardsAvailable = availability;
+	}
+	
+	public void setCoinCardsAvailable(boolean availability) {
+		coinCardsAvailable = availability;
+	}
+	
+	public void setCurseCardsAvailable(boolean availability) {
+		curseCardsAvailable = availability;
 	}
 	
 	public void playCard(Card card) {

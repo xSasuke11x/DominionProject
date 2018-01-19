@@ -38,7 +38,6 @@ public class Kingdom {
 	public List<List<Card>> actionList = new ArrayList<List<Card>>();
 
 	public void Setup(CardDatabase cd, int numPlayers, Player player1, Player player2, Player player3, Player player4) {
-		
 		kingdoms = kingdomSetup(k1, k2, k3, k4, k5, k6, k7, k8, k9, k10);
 		
 		// Populate Base Piles
