@@ -74,7 +74,7 @@ public class GameFlow {
 	}
 	
 	public void actionPhaseSteps(Player player, Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
-		// What type of cards in the deck are available
+		// Add each type of card to their respective lists for the player
 		availableCards(player);
 		
 		// Print available actions
@@ -157,7 +157,7 @@ public class GameFlow {
 			playerTurnCounter = 1;
 		}
 		
-		resetCardsAvailable(players);
+		//resetCardsAvailable(players);
 		resetNumActionsLeft(players);
 		resetNumBuysLeft(players);
 		resetExtraCoins(players);
@@ -198,11 +198,11 @@ public class GameFlow {
 		}
 	}
 	
-	public void resetCardsAvailable(List<Player> players) {
+	/*public void resetCardsAvailable(List<Player> players) {
 		for (Player player : players) {
 			player.resetCardsAvailable();
 		}
-	}
+	}*/
 	
 	public void availableCards(Player player) {
 		// Search through the hand for an action cards
@@ -213,19 +213,19 @@ public class GameFlow {
 			if (player.getCardsInHand().size() != 0)
 				card = itr.next();
 			if ("Action".equals(card.getType1())) {
-				player.setActCardsAvailable(true);
+				//player.setActCardsAvailable(true);
 				player.addCardToAction(card);
 			}
 			if ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2()) || "Treasure".equals(card.getType3()) || "Treasure".equals(card.getType4())) {
-				player.setCoinCardsAvailable(true);
+				//player.setCoinCardsAvailable(true);
 				player.addCardToTreasure(card);
 			}
 			if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || "Victory".equals(card.getType3()) || "Victory".equals(card.getType4())) {
-				player.setVicCardsAvailable(true);
+				//player.setVicCardsAvailable(true);
 				player.addCardToVictory(card);
 			}
 			if (card.getType1().equals("Curse")) {
-				player.setCurseCardsAvailable(true);
+				//player.setCurseCardsAvailable(true);
 				player.addCardToCurse(card);
 			} /*else if (card.getType2().equals("Attack")) {
 				attCardsAvailable = true;

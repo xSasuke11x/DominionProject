@@ -22,7 +22,7 @@ public class Player {
 	private int extraVictoryPoints = 0;
 	private int turnCounter;
 	private int numPlayers = 2;
-	private boolean actCardsAvailable = false, vicCardsAvailable = false, coinCardsAvailable = false, curseCardsAvailable = false;
+	//private boolean actCardsAvailable = false, vicCardsAvailable = false, coinCardsAvailable = false, curseCardsAvailable = false;
 	
 	public List<Card> getDeck() {
 		return deck;
@@ -88,12 +88,12 @@ public class Player {
 		extraCoins = 0;
 	}
 	
-	public void resetCardsAvailable() {
+	/*public void resetCardsAvailable() {
 		actCardsAvailable = false;
 		vicCardsAvailable = false;
 		coinCardsAvailable = false;
 		curseCardsAvailable = false;
-	}
+	}*/
 	
 	public List<Card> getDiscardPile() {
 		return discardPile;
@@ -123,7 +123,7 @@ public class Player {
 		numPlayers = num;
 	}
 	
-	public void setActCardsAvailable(boolean availability) {
+	/*public void setActCardsAvailable(boolean availability) {
 		actCardsAvailable = availability;
 	}
 	
@@ -137,7 +137,7 @@ public class Player {
 	
 	public void setCurseCardsAvailable(boolean availability) {
 		curseCardsAvailable = availability;
-	}
+	}*/
 	
 	public void playCard(Card card) {
 		cardsInPlay.add(card);
