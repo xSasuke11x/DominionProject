@@ -369,13 +369,16 @@ public class Kingdom {
 	public void removeCardFromSupplyList(Card card) {
 		// Search through each kingdom in the supply list
 		for (List<Card> kingdom : supplyList) {
-			//System.out.println("Test kingdom size = " + kingdom.size());
+			//System.out.println("Test " + kingdom + " size = " + kingdom.size());
 			
 			// If the card of concern has the same name as the kingdom, remove a card from that kingdom
 			if (card.getName().equals(kingdom.get(0).getName())) {
 				kingdom.remove(0);
 				//System.out.println("Test kingdom size after remove = " + kingdom.size());
+				break;
 			}
 		}
+		
+		//System.out.println(supplyList);
 	}
 }

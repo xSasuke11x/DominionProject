@@ -256,8 +256,49 @@ public class GameFlow {
 		}
 		
 		System.out.println("Total coins in play: " + player.getExtraCoins());
+		buyCards(player, kingdoms);
+	}
+	
+	public void buyCards(Player player, Kingdom kingdoms) {
+		List<List<Card>> kingdomChoices = availableCardsToBuy(player, kingdoms);
 		
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		int choice;
 		
+		System.out.println("Press -1 to not buy any cards");
+		System.out.println("Press a number between 0 and " + (kingdomChoices.size() - 1) + " to buy that kingdom");
+		while (scan.hasNext()) {
+			choice = scan.nextInt();
+			
+			if (choice >= 0 && choice <= kingdomChoices.size()) {
+				Card card = kingdomChoices.get(choice).get(0);
+				System.out.println("Adding " + card.getName() + " to discard pile");
+				player.addCardToDiscardPile(card);
+				kingdoms.removeCardFromSupplyList(card);
+				break;
+			} else if (choice == -1) {
+				break;
+			} else {
+				System.out.println("Invalid choice. Press -1 to not buy any cards");
+				System.out.println("Press a number between 0 and " + (kingdomChoices.size() - 1) + " to buy that kingdom");
+				choice = scan.nextInt();
+			}
+		}
+	}
+	
+	public List<List<Card>> availableCardsToBuy(Player player, Kingdom kingdoms) {
+		List<List<Card>> availableToBuy = new ArrayList<List<Card>>();
+		int i = 0;
+		for (List<Card> kingdom : kingdoms.getSupplyList()) {
+			if (Integer.parseInt(kingdom.get(0).getCost()) <= player.getExtraCoins()) {
+				System.out.println(i + " = " + kingdom);
+				availableToBuy.add(kingdom);
+				i++;
+			}
+		}
+		
+		return availableToBuy;
 	}
 	
 	public void cleanupPhase(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
