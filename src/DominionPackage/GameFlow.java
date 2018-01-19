@@ -328,8 +328,15 @@ public class GameFlow {
 		resetNumActionsLeft(players);
 		resetNumBuysLeft(players);
 		resetExtraCoins(players);
+		//boolean winCondition = checkWinCondition(players, kingdoms);
 		
 		//return true;
+	}
+	
+	public boolean checkWinCondition(Player player, Kingdom kingdoms) {
+		// Check for 3 empty piles and if province is empty and if colony is empty
+		
+		return false;
 	}
 	
 	public void restartDeck(Player player) {
