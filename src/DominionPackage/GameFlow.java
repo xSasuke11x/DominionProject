@@ -55,6 +55,7 @@ public class GameFlow {
 			actionPhaseSteps(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);
 		}
 		
+		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Press [y] to enter Buy Phase");
 		
@@ -98,7 +99,7 @@ public class GameFlow {
 	}
 	
 	public void printActionsInHand(Player player) {
-		int i = 1;
+		int i = 0;
 		System.out.println();
 		System.out.println("Action cards in hand:");
 		for (Card card : player.getAction()) {
@@ -110,28 +111,153 @@ public class GameFlow {
 	
 	public void playActionCard(Player player, Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
 		CardEffects ce = new CardEffects();
+		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		int choice;
 		
-		System.out.println("Press a number between 1 and " + player.getCardsInHand().size() + " to play the action card");
+		System.out.println("Press -1 to not play an Action card");
+		System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to play the action card");
 		while (scan.hasNext()) {
 			choice = scan.nextInt();
 			
-			// Choices must be a number between 1 and the size of the player's hand
-			if (choice > 0 && choice <= player.getCardsInHand().size() && player.getNumActions() != 0) {
-				int IDOfCard = Integer.parseInt(player.getCardsInHand().get(choice).getID());
-				player.addNumActions(-1);
-				ce.getCardEffect(IDOfCard, kingdoms, playerTurnCounter, player1, player2, player3, player4).run();
+			// Choices must be a number between -1 and the size of the number of actions in the player's hand
+			if (choice > 0 && choice <= player.getAction().size() && player.getNumActions() != 0) {
+				Card card = player.getAction().get(choice);
+				int IDOfCard = Integer.parseInt(card.getID());
+				player.addNumActions(-1);				// Use up an action
+				player.addCardToCardsInPlay(card);		// Add the card to play
+				for (Card theCard : player.getCardsInHand()) {
+					if (card.getName().equals(theCard.getName())) {
+						player.removeCardFromAction(card);
+						player.removeCardFromHand(card);			// Remove the card from the hand
+						break;
+					}
+				}
+				ce.getCardEffect(IDOfCard, kingdoms, playerTurnCounter, player1, player2, player3, player4).run();		// Find the card in the map and play it
+			} else if (choice == -1) {
+				break;
 			} else {
-				System.out.println("Invalid number. Press a number between 1 and " + player.getCardsInHand().size() + " to play the card");
+				System.out.println("Invalid number. Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to play the card");
 				choice = scan.nextInt();
 			}
+			printActionsInHand(player);
 		}
 	}
 	
 	public void buyPhase(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
 		System.out.println("Here in Buy");
+		
+		Player player = new Player();
+		
+		if (playerTurnCounter == 1) {
+			player = player1;
+			playTreasureCards(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);
+		} else if (playerTurnCounter == 2) {
+			player = player2;
+			playTreasureCards(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);
+		} else if (playerTurnCounter == 3) {
+			player = player3;
+			playTreasureCards(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);
+		} else if (playerTurnCounter == 4) {
+			player = player4;
+			playTreasureCards(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);
+		}
+		
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Press [y] to enter Cleanup Phase");
+		
+		if (scan.hasNextLine()) {
+			String choice = scan.nextLine();
+			switch (choice) {
+				case "y":
+					//scan.close();
+					cleanupPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
+					break;
+				default:
+					//scan.close();
+					cleanupPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
+					break;
+			}
+		}
+		
 		cleanupPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
+	}
+	
+	public void printTreasuresInHand(Player player) {
+		int i = 0;
+		System.out.println();
+		System.out.println("Treasures in hand:");
+		for (Card card : player.getTreasure()) {
+			System.out.println(i + " = " + card);
+			i++;
+		}
+		System.out.println();
+	}
+	
+	public void playTreasureCards(Player player, Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		
+		CardEffects ce = new CardEffects();
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		int choice;
+		
+		printTreasuresInHand(player);
+		
+		System.out.println("Press -2 to not play any treasure cards");
+		System.out.println("Press -1 to play all treasures in your hand");
+		System.out.println("Press a number between 0 and " + (player.getTreasure().size() - 1) + " to play a treasure card");
+		
+		while (scan.hasNext()) {
+			choice = scan.nextInt();
+			
+			// Choices must be a number between -2 and the size of the player's hand
+			if (choice >= 0 && choice <= player.getCardsInHand().size()) {
+				Card card = player.getTreasure().get(choice);		// Get the first card in the Treasure list
+				int IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the first card in the Treasure list
+				player.addCardToCardsInPlay(card);					// Put the treasure in play
+				for (Card theCard : player.getCardsInHand()) {
+					if (card.getName().equals(theCard.getName())) {
+						player.removeCardFromTreasure(card);		// Remove the card from the Treasure list
+						player.removeCardFromHand(card);			// Remove the card from the hand
+						break;
+					}
+				}
+				ce.getCardEffect(IDOfCard, kingdoms, playerTurnCounter, player1, player2, player3, player4).run();
+				System.out.println();
+				if (player.getTreasure().size() != 0) {
+					System.out.println("Press -2 to not play any treasure cards");
+					System.out.println("Press -1 to play all treasures in your hand");
+					System.out.println("Press a number between 0 and " + (player.getTreasure().size() - 1) + " to play another treasure card");
+				} else
+					break;
+			} else if (choice == -1) {
+				while (player.getTreasure().size() != 0) {
+					Card card = player.getTreasure().get(0);			// Get the first card in the Treasure list
+					int IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the first card in the Treasure list
+					player.addCardToCardsInPlay(card);					// Put the treasure in play
+					for (Card theCard : player.getCardsInHand()) {
+						if (card.getName().equals(theCard.getName())) {
+							player.removeCardFromTreasure(card);		// Remove the card from the Treasure list
+							player.removeCardFromHand(card);			// Remove the card from the hand
+							ce.getCardEffect(IDOfCard, kingdoms, playerTurnCounter, player1, player2, player3, player4).run();		// Run the card base on its ID
+							break;
+						}
+					}
+				}
+				break;
+			} else if (choice == -2) {
+				break;
+			} else {
+				System.out.println("Invalid number. Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to play the card");
+				choice = scan.nextInt();
+			}
+			printTreasuresInHand(player);
+		}
+		
+		System.out.println("Total coins in play: " + player.getExtraCoins());
+		
+		
 	}
 	
 	public void cleanupPhase(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {

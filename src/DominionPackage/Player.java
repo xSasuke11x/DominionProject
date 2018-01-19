@@ -172,6 +172,22 @@ public class Player {
 		curse.add(card);
 	}
 	
+	public void removeCardFromAction(Card card) {
+		action.remove(card);
+	}
+	
+	public void removeCardFromTreasure(Card card) {
+		treasure.remove(card);
+	}
+	
+	public void removeCardFromVictory(Card card) {
+		victory.remove(card);
+	}
+	
+	public void removeCardFromCurse(Card card) {
+		curse.remove(card);
+	}
+	
 	public void removeCardFromDeck(Card card) {
 		deck.remove(card);
 	}

@@ -11,32 +11,36 @@ public class CardEffects {
 	public Runnable getCardEffect(int IDOfCard, Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
 		Map<Integer, Runnable> effects = new HashMap<>();
 		
-		effects.put(1, () -> Cellar(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(2, () -> Chapel(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(3, () -> Moat(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(4, () -> Harbinger(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(5, () -> Merchant(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(6, () -> Vassal(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(7, () -> Village(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(8, () -> Workshop(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(9, () -> Bureaucrat(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(10, () -> Gardens(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(11, () -> Militia(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(12, () -> Moneylender(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(13, () -> Poacher(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(14, () -> Remodel(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(15, () -> Smithy(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		/*effects.put(16, () -> ThroneRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(17, () -> Bandit(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(18, () -> CouncilRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(19, () -> Festival(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(20, () -> Laboratory(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(21, () -> Library(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(22, () -> Market(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(23, () -> Mine(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(24, () -> Sentry(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(25, () -> Witch(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(26, () -> Artisan(kingdoms, playerTurnCounter, player1, player2, player3, player4));*/
+		effects.put(1, () -> Copper(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(2, () -> Silver(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(3, () -> Gold(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(4, () -> Platinum(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(10, () -> Cellar(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(11, () -> Chapel(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(12, () -> Moat(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(13, () -> Harbinger(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(14, () -> Merchant(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(15, () -> Vassal(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(16, () -> Village(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(17, () -> Workshop(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(18, () -> Bureaucrat(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(19, () -> Gardens(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(20, () -> Militia(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(21, () -> Moneylender(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(22, () -> Poacher(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(23, () -> Remodel(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(24, () -> Smithy(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		/*effects.put(25, () -> ThroneRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(26, () -> Bandit(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(27, () -> CouncilRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(28, () -> Festival(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(29, () -> Laboratory(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(30, () -> Library(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(31, () -> Market(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(32, () -> Mine(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(33, () -> Sentry(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(34, () -> Witch(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(35, () -> Artisan(kingdoms, playerTurnCounter, player1, player2, player3, player4));*/
 		
 		// Invoke the command by:
         //int cmd = 1;
@@ -45,6 +49,34 @@ public class CardEffects {
 		return effects.get(IDOfCard);
 	}
 
+	public void Copper(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		System.out.println("Copper being played");
+		if (playerTurnCounter == 1) {
+			player1.addExtraCoins(1);
+		}
+	}
+	
+	public void Silver(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		System.out.println("Silver being played");
+		if (playerTurnCounter == 1) {
+			player1.addExtraCoins(2);
+		}
+	}
+	
+	public void Gold(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		System.out.println("Gold being played");
+		if (playerTurnCounter == 1) {
+			player1.addExtraCoins(3);
+		}
+	}
+	
+	public void Platinum(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+		System.out.println("Platinum being played");
+		if (playerTurnCounter == 1) {
+			player1.addExtraCoins(5);
+		}
+	}
+	
 	public void Cellar(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
 		if (playerTurnCounter == 1) {
 			
@@ -103,8 +135,6 @@ public class CardEffects {
 			int choice;
 			
 			for (int i = 0; i < 4; i++) {
-				choice = scan.nextInt();
-				
 				// Print out the cards with the value
 				System.out.println("Cards in hand:");
 				for (int j = 0; j < player1.getCardsInHand().size(); j++) {
@@ -112,10 +142,12 @@ public class CardEffects {
 					System.out.println((j + 1) + " = " + player1.getCardsInHand().get(j).getName());
 				}
 				
+				choice = scan.nextInt();
+				
 				// Remove the chosen card from the hand and add it to the discard pile
 				if (choice == 0) {
 					break;
-				} else if (choice >= 1 || choice <= player1.getCardsInHand().size()) {
+				} else if (choice > 0 || choice <= player1.getCardsInHand().size()) {
 					
 					// Get the selected card
 					Card card = player1.getCardsInHand().get(choice - 1);

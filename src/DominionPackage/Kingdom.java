@@ -148,15 +148,14 @@ public class Kingdom {
 		// Populate the random 10 Kingdoms
 		Random generator = new Random();
         generator.setSeed((int)System.currentTimeMillis());
-        int num, i;
+        int i;
         List<Card> list = new ArrayList<Card>(cd.getCardList()); 
         List<Card> subList = list.subList(9, totalNumCards); // Remove base cards from the card list
         List<Card> temp = new ArrayList<Card>();
         Iterator<Card> iterator;
         Collections.shuffle(subList); // Shuffle the non-base cards to be randomly selected
         for (iterator = subList.iterator(), i = 0; iterator.hasNext() && i < 10; i++) {
-        	num = Math.abs(generator.nextInt()) % totalNumCards + 9;
-            Card card = iterator.next();
+        	Card card = iterator.next();
             
             for (int j = 0; j < 10; j++) {
             	kingdoms.get(i).add(card);
