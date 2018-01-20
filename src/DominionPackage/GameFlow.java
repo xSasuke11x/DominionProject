@@ -82,7 +82,7 @@ public class GameFlow {
 		if (player.getAction().size() != 0) {
 			printCardsInHand(player);			// Print the cards in the hand
 			//printActionsInHand(player);			// Print action cards in hand
-			playActionCard(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);				// Play the card
+			playActionCards(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);				// Play the card
 		} else
 			System.out.println("No available action cards to play");
 	}
@@ -109,7 +109,7 @@ public class GameFlow {
 		System.out.println();
 	}
 	
-	public void playActionCard(Player player, Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+	public void playActionCards(Player player, Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
 		CardEffects ce = new CardEffects();
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
@@ -123,7 +123,7 @@ public class GameFlow {
 			choice = scan.nextInt();
 			
 			// Choices must be a number between -1 and the size of the number of actions in the player's hand
-			if (choice >= 0 && choice <= player.getAction().size()) {
+			if (choice >= 0 && choice <= player.getAction().size() && player.getNumActions() != 0) {
 				Card card = player.getAction().get(choice);
 				int IDOfCard = Integer.parseInt(card.getID());
 				player.addNumActions(-1);				// Use up an action
@@ -136,6 +136,12 @@ public class GameFlow {
 					}
 				}
 				ce.getCardEffect(IDOfCard, kingdoms, playerTurnCounter, player1, player2, player3, player4).run();		// Find the card in the map and play it
+				System.out.println();
+				if (player.getAction().size() != 0) {
+					System.out.println("Press -1 to not play any Action cards");
+					System.out.println("Press a number between 0 and " + (player.getAction().size() - 1) + " to play another action card");
+				} else
+					break;
 			} else if (choice == -1) {
 				break;
 			} else {
@@ -182,8 +188,6 @@ public class GameFlow {
 					break;
 			}
 		}
-		
-		//cleanupPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
 	}
 	
 	public void printTreasuresInHand(Player player) {

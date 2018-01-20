@@ -167,10 +167,18 @@ public class CardEffects {
 	
 	public void Moat(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
 		if (playerTurnCounter == 1) {
+			Card card = player1.getDeck().get(0);
+			Card card2 = player1.getDeck().get(1);
 			
 			// +2 Cards
-			player1.drawCard(player1.getDeck().get(0));
-			player1.drawCard(player1.getDeck().get(0));
+			player1.drawCard(card);
+			System.out.println("You drew " + card);
+			player1.drawCard(card2);
+			System.out.println("You drew " + card);
+			System.out.println();
+			System.out.println("Your hand: ");
+			for (Card card3 : player1.getCardsInHand())
+				System.out.println(card3);
 		}
 	}
 	
@@ -178,46 +186,57 @@ public class CardEffects {
 		if (playerTurnCounter == 1) {
 			
 			// +1 Card
-			player1.drawCard(player1.getDeck().get(0));
+			Card card = player1.getDeck().get(0);
+			player1.drawCard(card);
+			System.out.println("You drew " + card);
 			
 			// +1 Action
 			player1.addNumActions(1);
 			
 			// Effect
-			System.out.println("Look through the discard pile and place it onto your deck - choose a number between 0 (cancel effect) and " 
-					+ player1.getDiscardPile().size());
-			Scanner scan = new Scanner(System.in);
-			boolean continueLooping = true;
-			
-			while (continueLooping) {
-				int choice = scan.nextInt();
+			if (player1.getDiscardPile().size() != 0) {
+				System.out.println("Look through the discard pile and place it onto your deck");
+				System.out.println("Press -1 to cancel the effect or press a number between 0 and " + (player1.getDiscardPile().size() - 1) + "to place a card from"
+						+ " your discard pile onto the deck");
 				
-				// Print out the cards with the value
-				System.out.println("Cards in discard pile:");
-				for (int i = 0; i < player1.getDiscardPile().size(); i++) {
-					System.out.println((i + 1) + " = " + player1.getDiscardPile().get(i).getName());
-				}
+				@SuppressWarnings("resource")
+				Scanner scan = new Scanner(System.in);
+				//boolean continueLooping = true;
 				
-				// Remove the chosen card from the hand and add it to the discard pile
-				if (choice == 0) {
-					break;
-				} else if (choice >= 1 || choice <= player1.getDiscardPile().size()) {
+				while (scan.hasNext()) {
+					int choice = scan.nextInt();
 					
-					// Get the selected card
-					Card card = player1.getDiscardPile().get(choice - 1);
+					// Print out the cards with the value
+					System.out.println("Cards in discard pile:");
+					for (int i = 0; i < player1.getDiscardPile().size(); i++) {
+						System.out.println((i + 1) + " = " + player1.getDiscardPile().get(i).getName());
+					}
 					
-					// Remove the card from the discard pile
-					player1.removeCardFromDiscardPile(card);
-					
-					// Add the card that was removed from the hand to the deck
-					player1.addCardToDeck(card);
-					
-					continueLooping = false;
-				} else {
-					System.out.println("That is not a valid choice. Choose a number between 0 (cancel effect) and " + player1.getDiscardPile().size());
-					choice = scan.nextInt();
+					// Remove the chosen card from the hand and add it to the discard pile
+					if (choice == -1) {
+						break;
+					} else if (choice >= 0 || choice <= player1.getDiscardPile().size() - 1) {
+						
+						// Get the selected card
+						Card card2 = player1.getDiscardPile().get(choice);
+						System.out.println("You selected " + card2 + " to place onto your deck");
+						
+						// Remove the card from the discard pile
+						player1.removeCardFromDiscardPile(card);
+						
+						// Add the card that was removed from the hand to the deck
+						player1.addCardToDeck(card);
+						
+						//continueLooping = false;
+						break;
+					} else {
+						System.out.println("Invalid input. Press -1 to cancel the effect or press a number between 0 and " + (player1.getDiscardPile().size() - 1) + 
+								"to place a card from your discard pile onto the deck");
+						choice = scan.nextInt();
+					}
 				}
-			}
+			} else
+				System.out.println("Your discard pile is empty");
 		}
 	}
 	
@@ -255,17 +274,14 @@ public class CardEffects {
 			Card card = player1.getDeck().get(0);
 			
 			// Discard the top card of the deck and add it to the discard pile
-			player1.removeCardFromDeck(card);
 			player1.addCardToDiscardPile(card);
+			player1.removeCardFromDeck(card);
 			
-			// This is the card on top of the discard pile
-			Card card2 = player1.getDiscardPile().get(0);
+			System.out.println("You discarded " + card);
 			
 			// If the top card of the discard pile is an action card...
-			if ("Action".equals(card2.getType1())) {
-				System.out.println("The card you just discard: ");
-				System.out.println(player1.getDiscardPile().get(0));
-				System.out.println(" is an Action card. Would you like to play it? Press [y] for yes or [n] for no.");
+			if ("Action".equals(card.getType1())) {
+				System.out.println(player1.getDiscardPile().get(0).getName() + " is an Action card. Would you like to play it? Press [y] for yes or [n] for no.");
 				
 				Scanner scan = new Scanner(System.in);
 				String choice;
@@ -274,8 +290,8 @@ public class CardEffects {
 					
 					// If the player chooses to play the Action card, remove the card from the discard pile and add it to the player's cards in play
 					if (choice.toLowerCase().equals("y")) {
-						player1.removeCardFromDiscardPile(card2);
-						player1.addCardToCardsInPlay(card2);
+						player1.addCardToCardsInPlay(card);
+						player1.removeCardFromDiscardPile(card);
 					} else 
 						break;
 				}
@@ -695,26 +711,54 @@ public class CardEffects {
 			
 			// +3 Cards
 			for (int i = 0; i < 3; i++) {
-				player1.drawCard(player1.getDeck().get(0));
+				Card card = player1.getDeck().get(0);
+				player1.drawCard(card);
+				System.out.println("You drew " + card);
 			}
+			
+			System.out.println();
+			System.out.println("Cards in your hand:");
+			for (Card card2 : player1.getCardsInHand())
+				System.out.println(card2);
 		} else if (playerTurnCounter == 2) {
 			
 			// +3 Cards
 			for (int i = 0; i < 3; i++) {
-				player2.drawCard(player2.getDeck().get(0));
+				Card card = player1.getDeck().get(0);
+				player1.drawCard(card);
+				System.out.println("You drew " + card);
 			}
+			
+			System.out.println();
+			System.out.println("Cards in your hand:");
+			for (Card card2 : player1.getCardsInHand())
+				System.out.println(card2);
 		} else if (playerTurnCounter == 3) {
 			
 			// +3 Cards
 			for (int i = 0; i < 3; i++) {
-				player3.drawCard(player3.getDeck().get(0));
+				Card card = player1.getDeck().get(0);
+				player1.drawCard(card);
+				System.out.println("You drew " + card);
 			}
+			
+			System.out.println();
+			System.out.println("Cards in your hand:");
+			for (Card card2 : player1.getCardsInHand())
+				System.out.println(card2);
 		} else if (playerTurnCounter == 4) {
 			
 			// +3 Cards
 			for (int i = 0; i < 3; i++) {
-				player4.drawCard(player4.getDeck().get(0));
+				Card card = player1.getDeck().get(0);
+				player1.drawCard(card);
+				System.out.println("You drew " + card);
 			}
+			
+			System.out.println();
+			System.out.println("Cards in your hand:");
+			for (Card card2 : player1.getCardsInHand())
+				System.out.println(card2);
 		}
 	}
 	
