@@ -2,6 +2,8 @@ package DominionPackage;
 
 public class Gateway {
 	
+	private boolean winCondition = false;
+	
 	public static void main(String[] args) {
 		// Change this to test multiple players
 		int playerTurnCounter = 1;
@@ -51,11 +53,19 @@ public class Gateway {
 			gf.drawPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
 			//CardEffects ce = new CardEffects();
 			//ce.Workshop(kingdoms, playerTurnCounter, player1, player2, player3, player4);
-			winCondition = true;
+			//winCondition = true;
 			//gf.actionPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
 			//gf.buyPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
 			//winCondition = gf.cleanupPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
 		}
+	}
+	
+	public void setWinCondition(boolean winCondition) {
+		this.winCondition = winCondition;
+	}
+	
+	public boolean getWinCondition() {
+		return winCondition;
 	}
 
 	/*public static int setupNumPlayers() {

@@ -81,19 +81,19 @@ public class GameFlow {
 		// Print available actions
 		if (player.getAction().size() != 0) {
 			printCardsInHand(player);			// Print the cards in the hand
-			printActionsInHand(player);			// Print action cards in hand
+			//printActionsInHand(player);			// Print action cards in hand
 			playActionCard(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);				// Play the card
 		} else
 			System.out.println("No available action cards to play");
 	}
 	
 	public void printCardsInHand(Player player) {
-		int i = 1;
+		//int i = 0;
 		System.out.println();
 		System.out.println("Cards in hand:");
 		for (Card card : player.getCardsInHand()) {
-			System.out.println(i + " = " + card.getName());
-			i++;
+			System.out.println(card.getName());
+			//i++;
 		}
 		System.out.println();
 	}
@@ -115,13 +115,15 @@ public class GameFlow {
 		Scanner scan = new Scanner(System.in);
 		int choice;
 		
+		printActionsInHand(player);
+		
 		System.out.println("Press -1 to not play an Action card");
-		System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to play the action card");
+		System.out.println("Press a number between 0 and " + (player.getAction().size() - 1) + " to play the action card");
 		while (scan.hasNext()) {
 			choice = scan.nextInt();
 			
 			// Choices must be a number between -1 and the size of the number of actions in the player's hand
-			if (choice > 0 && choice <= player.getAction().size() && player.getNumActions() != 0) {
+			if (choice >= 0 && choice <= player.getAction().size()) {
 				Card card = player.getAction().get(choice);
 				int IDOfCard = Integer.parseInt(card.getID());
 				player.addNumActions(-1);				// Use up an action
@@ -137,7 +139,7 @@ public class GameFlow {
 			} else if (choice == -1) {
 				break;
 			} else {
-				System.out.println("Invalid number. Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to play the card");
+				System.out.println("Invalid number. Press a number between 0 and " + (player.getAction().size() - 1) + " to play the card");
 				choice = scan.nextInt();
 			}
 			printActionsInHand(player);
@@ -181,7 +183,7 @@ public class GameFlow {
 			}
 		}
 		
-		cleanupPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
+		//cleanupPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
 	}
 	
 	public void printTreasuresInHand(Player player) {
@@ -325,18 +327,46 @@ public class GameFlow {
 		}
 		
 		//resetCardsAvailable(players);
+		discardHand(players);
 		resetNumActionsLeft(players);
 		resetNumBuysLeft(players);
 		resetExtraCoins(players);
-		//boolean winCondition = checkWinCondition(players, kingdoms);
+		checkWinCondition(kingdoms);
 		
-		//return true;
+		//return winCondition;
 	}
 	
-	public boolean checkWinCondition(Player player, Kingdom kingdoms) {
-		// Check for 3 empty piles and if province is empty and if colony is empty
+	public void discardHand(List<Player> players) {
+		for (Player player : players) {
+			while (player.getCardsInHand().size() != 0) {
+				Card card = player.getCardsInHand().get(0);
+				player.addCardToDiscardPile(card);
+				player.removeCardFromHand(card);
+			}
+		}
+	}
+	
+	public void checkWinCondition(Kingdom kingdoms) {
+		Gateway gw = new Gateway();
 		
-		return false;
+		//boolean winCondition = false;
+		int supplyCount = 0;
+		
+		if (kingdoms.province.size() == 0)
+			gw.setWinCondition(true);
+		else if (kingdoms.colony.size() == 0)
+			gw.setWinCondition(true);
+		else {
+			for (List<Card> kingdom : kingdoms.getSupplyList()) {
+				if (kingdom.size() == 0)
+					supplyCount++;
+			}
+			if (supplyCount == 3) {
+				gw.setWinCondition(true);
+			}
+		}
+		
+		//return winCondition;
 	}
 	
 	public void restartDeck(Player player) {
