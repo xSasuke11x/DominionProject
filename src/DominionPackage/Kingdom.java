@@ -37,7 +37,7 @@ public class Kingdom {
 	public List<List<Card>> victoryList = new ArrayList<List<Card>>();
 	public List<List<Card>> actionList = new ArrayList<List<Card>>();
 
-	public void Setup(CardDatabase cd, int numPlayers, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
+	public void Setup(CardDatabase cd, int numPlayers, List<Player> players) {
 		kingdoms = kingdomSetup(k1, k2, k3, k4, k5, k6, k7, k8, k9, k10);
 		
 		// Populate Base Piles
@@ -89,58 +89,35 @@ public class Kingdom {
 		}
 		
 		// Deal initial Copper to all players
-		if (numPlayers == 2) {
-			for (int i = 0; i < 7; i++) {
-				Card copperCard = copper.get(0);
-				if (numPlayers == 2) {
-					player1.addCardToDeck(copperCard);
-					copper.remove(0);
-					player2.addCardToDeck(copperCard);
-					copper.remove(0);
-				} else if (numPlayers == 3) {
-					player1.addCardToDeck(copperCard);
-					copper.remove(0);
-					player2.addCardToDeck(copperCard);
-					copper.remove(0);
-					player3.addCardToDeck(copperCard);
-					copper.remove(0);
-				} else {
-					player1.addCardToDeck(copperCard);
-					copper.remove(0);
-					player2.addCardToDeck(copperCard);
-					copper.remove(0);
-					player3.addCardToDeck(copperCard);
-					copper.remove(0);
-					player4.addCardToDeck(copperCard);
-					copper.remove(0);
-				}
+		for (int i = 0; i < 7; i++) {
+			Card copperCard = copper.get(0);
+			players.get(0).addCardToDeck(copperCard);
+			copper.remove(0);
+			players.get(1).addCardToDeck(copperCard);
+			copper.remove(0);
+			if (numPlayers == 3) {
+				players.get(2).addCardToDeck(copperCard);
+				copper.remove(0);
+			} 
+			if (numPlayers == 4) {
+				players.get(3).addCardToDeck(copperCard);
+				copper.remove(0);
 			}
 		}
 		
 		// Deal initial Estates
 		for (int i = 0; i < 3; i++) {
 			Card estateCard = estate.get(0);
-			
-			if (numPlayers == 2) {
-				player1.addCardToDeck(estateCard);
+			players.get(0).addCardToDeck(estateCard);
+			estate.remove(0);
+			players.get(1).addCardToDeck(estateCard);
+			estate.remove(0);
+			if (numPlayers == 3) {
+				players.get(2).addCardToDeck(estateCard);
 				estate.remove(0);
-				player2.addCardToDeck(estateCard);
-				estate.remove(0);
-			} else if (numPlayers == 3) {
-				player1.addCardToDeck(estateCard);
-				estate.remove(0);
-				player2.addCardToDeck(estateCard);
-				estate.remove(0);
-				player3.addCardToDeck(estateCard);
-				estate.remove(0);
-			} else {
-				player1.addCardToDeck(estateCard);
-				estate.remove(0);
-				player2.addCardToDeck(estateCard);
-				estate.remove(0);
-				player3.addCardToDeck(estateCard);
-				estate.remove(0);
-				player4.addCardToDeck(estateCard);
+			}
+			if (numPlayers == 4) {
+				players.get(3).addCardToDeck(estateCard);
 				estate.remove(0);
 			}
 		}

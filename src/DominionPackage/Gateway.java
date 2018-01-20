@@ -33,7 +33,7 @@ public class Gateway {
 		
 		// Setup the kingdoms and distribute initial hand
 		Kingdom kingdoms = new Kingdom();
-		kingdoms.Setup(cd, player1.getNumPlayers(), players, player1, player2, player3, player4);
+		kingdoms.Setup(cd, player1.getNumPlayers(), players);
 		
 		//kingdoms.vicListSetup();
 		//System.out.println(kingdoms.victoryList.size());
@@ -41,10 +41,8 @@ public class Gateway {
 		GameFlow gf = new GameFlow();
 		
 		while (winCondition == false) {
-			player1.shuffleDeck(player1.getDeck());
-			player2.shuffleDeck(player2.getDeck());
-			player3.shuffleDeck(player3.getDeck());
-			player4.shuffleDeck(player4.getDeck());
+			for (Player player : players)
+				player.shuffleDeck(player.getDeck());
 			
 			if (player1.getDeck().size() == 0) {
 				player1.shuffleDeck(player1.getDeck());
