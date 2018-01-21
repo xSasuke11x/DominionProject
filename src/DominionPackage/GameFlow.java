@@ -7,7 +7,9 @@ import java.util.Scanner;
 
 public class GameFlow {
 	
-	public void drawPhase(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+	private boolean winCondition = false;
+	
+	public void drawPhase(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println();
 		System.out.println("Here in Draw");
 		
@@ -15,44 +17,44 @@ public class GameFlow {
 		int initialDraw = 5;
 		for (int i = 0; i < initialDraw; i++) {
 			if (playerTurnCounter == 1) {
-				if (player1.getDeck().size() == 0)
-					restartDeck(player1);
-				player1.drawCard(player1.getDeck().get(0));
+				if (players.get(0).getDeck().size() == 0)
+					restartDeck(players.get(0));
+				players.get(0).drawCard(players.get(0).getDeck().get(0));
 			} else if (playerTurnCounter == 2) {
-				if (player2.getDeck().size() == 0)
-					restartDeck(player2);
-				player2.drawCard(player2.getDeck().get(0));
+				if (players.get(1).getDeck().size() == 0)
+					restartDeck(players.get(1));
+				players.get(1).drawCard(players.get(1).getDeck().get(0));
 			} else if (playerTurnCounter == 3) {
-				if (player3.getDeck().size() == 0)
-					restartDeck(player3);
-				player3.drawCard(player3.getDeck().get(0));
+				if (players.get(2).getDeck().size() == 0)
+					restartDeck(players.get(2));
+				players.get(2).drawCard(players.get(2).getDeck().get(0));
 			} else {
-				if (player4.getDeck().size() == 0)
-					restartDeck(player4);
-				player4.drawCard(player4.getDeck().get(0));
+				if (players.get(3).getDeck().size() == 0)
+					restartDeck(players.get(3));
+				players.get(3).drawCard(players.get(3).getDeck().get(0));
 			}
 		}
 		
-		actionPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
+		actionPhase(kingdoms, playerTurnCounter, players);
 	}
 	
-	public void actionPhase(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+	public void actionPhase(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Here in Action");
 		
 		Player player = new Player();
 		
 		if (playerTurnCounter == 1) {
-			player = player1;
-			actionPhaseSteps(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);
+			player = players.get(0);
+			actionPhaseSteps(player, kingdoms, playerTurnCounter, players);
 		} else if (playerTurnCounter == 2) {
-			player = player2;
-			actionPhaseSteps(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);
+			player = players.get(1);
+			actionPhaseSteps(player, kingdoms, playerTurnCounter, players);
 		} else if (playerTurnCounter == 3) {
-			player = player3;
-			actionPhaseSteps(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);
+			player = players.get(2);
+			actionPhaseSteps(player, kingdoms, playerTurnCounter, players);
 		} else if (playerTurnCounter == 4) {
-			player = player4;
-			actionPhaseSteps(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);
+			player = players.get(3);
+			actionPhaseSteps(player, kingdoms, playerTurnCounter, players);
 		}
 		
 		@SuppressWarnings("resource")
@@ -64,17 +66,17 @@ public class GameFlow {
 			switch (choice) {
 				case "y":
 					//scan.close();
-					buyPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
+					buyPhase(kingdoms, playerTurnCounter, players);
 					break;
 				default:
 					//scan.close();
-					buyPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
+					buyPhase(kingdoms, playerTurnCounter, players);
 					break;
 			}
 		}
 	}
 	
-	public void actionPhaseSteps(Player player, Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+	public void actionPhaseSteps(Player player, Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		// Add each type of card to their respective lists for the player
 		availableCards(player);
 		
@@ -82,7 +84,7 @@ public class GameFlow {
 		if (player.getAction().size() != 0) {
 			printCardsInHand(player);			// Print the cards in the hand
 			//printActionsInHand(player);			// Print action cards in hand
-			playActionCards(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);				// Play the card
+			playActionCards(player, kingdoms, playerTurnCounter, players);				// Play the card
 		} else
 			System.out.println("No available action cards to play");
 	}
@@ -109,7 +111,7 @@ public class GameFlow {
 		System.out.println();
 	}
 	
-	public void playActionCards(Player player, Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+	public void playActionCards(Player player, Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		CardEffects ce = new CardEffects();
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
@@ -135,7 +137,7 @@ public class GameFlow {
 						break;
 					}
 				}
-				ce.getCardEffect(IDOfCard, kingdoms, playerTurnCounter, player1, player2, player3, player4).run();		// Find the card in the map and play it
+				ce.getCardEffect(IDOfCard, kingdoms, playerTurnCounter, players).run();		// Find the card in the map and play it
 				System.out.println();
 				if (player.getAction().size() != 0) {
 					System.out.println("Press -1 to not play any Action cards");
@@ -152,23 +154,23 @@ public class GameFlow {
 		}
 	}
 	
-	public void buyPhase(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+	public void buyPhase(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Here in Buy");
 		
 		Player player = new Player();
 		
 		if (playerTurnCounter == 1) {
-			player = player1;
-			playTreasureCards(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);
+			player = players.get(0);
+			playTreasureCards(player, kingdoms, playerTurnCounter, players);
 		} else if (playerTurnCounter == 2) {
-			player = player2;
-			playTreasureCards(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);
+			player = players.get(1);
+			playTreasureCards(player, kingdoms, playerTurnCounter, players);
 		} else if (playerTurnCounter == 3) {
-			player = player3;
-			playTreasureCards(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);
+			player = players.get(2);
+			playTreasureCards(player, kingdoms, playerTurnCounter, players);
 		} else if (playerTurnCounter == 4) {
-			player = player4;
-			playTreasureCards(player, kingdoms, playerTurnCounter, player1, player2, player3, player4);
+			player = players.get(3);
+			playTreasureCards(player, kingdoms, playerTurnCounter, players);
 		}
 		
 		@SuppressWarnings("resource")
@@ -180,11 +182,11 @@ public class GameFlow {
 			switch (choice) {
 				case "y":
 					//scan.close();
-					cleanupPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
+					cleanupPhase(kingdoms, playerTurnCounter, players);
 					break;
 				default:
 					//scan.close();
-					cleanupPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
+					cleanupPhase(kingdoms, playerTurnCounter, players);
 					break;
 			}
 		}
@@ -201,7 +203,7 @@ public class GameFlow {
 		System.out.println();
 	}
 	
-	public void playTreasureCards(Player player, Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+	public void playTreasureCards(Player player, Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		
 		CardEffects ce = new CardEffects();
 		@SuppressWarnings("resource")
@@ -229,7 +231,7 @@ public class GameFlow {
 						break;
 					}
 				}
-				ce.getCardEffect(IDOfCard, kingdoms, playerTurnCounter, player1, player2, player3, player4).run();
+				ce.getCardEffect(IDOfCard, kingdoms, playerTurnCounter, players).run();
 				System.out.println();
 				if (player.getTreasure().size() != 0) {
 					System.out.println("Press -2 to not play any treasure cards");
@@ -246,7 +248,7 @@ public class GameFlow {
 						if (card.getName().equals(theCard.getName())) {
 							player.removeCardFromTreasure(card);		// Remove the card from the Treasure list
 							player.removeCardFromHand(card);			// Remove the card from the hand
-							ce.getCardEffect(IDOfCard, kingdoms, playerTurnCounter, player1, player2, player3, player4).run();		// Run the card base on its ID
+							ce.getCardEffect(IDOfCard, kingdoms, playerTurnCounter, players).run();		// Run the card base on its ID
 							break;
 						}
 					}
@@ -307,26 +309,26 @@ public class GameFlow {
 		return availableToBuy;
 	}
 	
-	public void cleanupPhase(Kingdom kingdoms, int playerTurnCounter, Player player1, Player player2, Player player3, Player player4) {
+	public void cleanupPhase(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Here in Cleanup");
 		
-		List<Player> players = new ArrayList<Player>();
+		/*List<Player> players = new ArrayList<Player>();
 		players.add(player1);
 		players.add(player2);
 		players.add(player3);
-		players.add(player4);
+		players.add(player4);*/
 		
 		if (playerTurnCounter == 1) {
-			resetBoard(player1);
+			resetBoard(players.get(0));
 			playerTurnCounter++;
 		} else if (playerTurnCounter == 2) {
-			resetBoard(player2);
+			resetBoard(players.get(1));
 			playerTurnCounter++;
 		} else if (playerTurnCounter == 3) {
-			resetBoard(player3);
+			resetBoard(players.get(2));
 			playerTurnCounter++;
 		} else if (playerTurnCounter == 4) {
-			resetBoard(player4);
+			resetBoard(players.get(3));
 			playerTurnCounter = 1;
 		}
 		
@@ -351,22 +353,20 @@ public class GameFlow {
 	}
 	
 	public void checkWinCondition(Kingdom kingdoms) {
-		Gateway gw = new Gateway();
-		
 		//boolean winCondition = false;
 		int supplyCount = 0;
 		
 		if (kingdoms.province.size() == 0)
-			gw.setWinCondition(true);
+			setWinCondition(true);
 		else if (kingdoms.colony.size() == 0)
-			gw.setWinCondition(true);
+			setWinCondition(true);
 		else {
 			for (List<Card> kingdom : kingdoms.getSupplyList()) {
 				if (kingdom.size() == 0)
 					supplyCount++;
 			}
 			if (supplyCount == 3) {
-				gw.setWinCondition(true);
+				setWinCondition(true);
 			}
 		}
 		
@@ -445,4 +445,11 @@ public class GameFlow {
 		}
 	}
 	
+	public void setWinCondition(boolean winCondition) {
+		this.winCondition = winCondition;
+	}
+	
+	public boolean getWinCondition() {
+		return winCondition;
+	}
 }
