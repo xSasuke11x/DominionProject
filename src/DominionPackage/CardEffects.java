@@ -11,11 +11,11 @@ public class CardEffects {
 	public Runnable getCardEffect(int IDOfCard, Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		Map<Integer, Runnable> effects = new HashMap<>();
 		
-		effects.put(1, () -> Copper(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		effects.put(2, () -> Silver(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		effects.put(3, () -> Gold(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		effects.put(4, () -> Platinum(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		effects.put(10, () -> Cellar(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
+		effects.put(1, () -> Copper(kingdoms, playerTurnCounter, players));
+		effects.put(2, () -> Silver(kingdoms, playerTurnCounter, players));
+		effects.put(3, () -> Gold(kingdoms, playerTurnCounter, players));
+		effects.put(4, () -> Platinum(kingdoms, playerTurnCounter, players));
+		effects.put(10, () -> Cellar(kingdoms, playerTurnCounter, players));
 		effects.put(11, () -> Chapel(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(12, () -> Moat(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(13, () -> Harbinger(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
@@ -48,81 +48,134 @@ public class CardEffects {
 		
 		return effects.get(IDOfCard);
 	}
+	
+	public void printCardsInHand(Player player) {
+		System.out.println("Cards in hand:");
+		for (int i = 0; i < player.getCardsInHand().size(); i++) {
+			System.out.println(i + " = " + player.getCardsInHand().get(i).getName());
+		}
+	}
 
-	public void Copper(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
+	public void Copper(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Copper being played");
 		if (playerTurnCounter == 1) {
-			player1.addExtraCoins(1);
-		}
+			players.get(0).addExtraCoins(1);
+		} else if (playerTurnCounter == 2) {
+			players.get(1).addExtraCoins(1);
+		} else if (playerTurnCounter == 3) {
+			players.get(2).addExtraCoins(1);
+		} else
+			players.get(3).addExtraCoins(1);
 	}
 	
-	public void Silver(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
+	public void Silver(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Silver being played");
 		if (playerTurnCounter == 1) {
-			player1.addExtraCoins(2);
-		}
+			players.get(0).addExtraCoins(2);
+		} else if (playerTurnCounter == 2) {
+			players.get(1).addExtraCoins(2);
+		} else if (playerTurnCounter == 3) {
+			players.get(2).addExtraCoins(2);
+		} else
+			players.get(3).addExtraCoins(2);
 	}
 	
-	public void Gold(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
+	public void Gold(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Gold being played");
 		if (playerTurnCounter == 1) {
-			player1.addExtraCoins(3);
-		}
+			players.get(0).addExtraCoins(3);
+		} else if (playerTurnCounter == 2) {
+			players.get(1).addExtraCoins(3);
+		} else if (playerTurnCounter == 3) {
+			players.get(2).addExtraCoins(3);
+		} else
+			players.get(3).addExtraCoins(3);
 	}
 	
-	public void Platinum(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
+	public void Platinum(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Platinum being played");
 		if (playerTurnCounter == 1) {
-			player1.addExtraCoins(5);
-		}
+			players.get(0).addExtraCoins(5);
+		} else if (playerTurnCounter == 2) {
+			players.get(1).addExtraCoins(5);
+		} else if (playerTurnCounter == 3) {
+			players.get(2).addExtraCoins(5);
+		} else
+			players.get(3).addExtraCoins(5);
 	}
 	
-	public void Cellar(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
+	public void Cellar(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		if (playerTurnCounter == 1) {
 			
 			// +1 Action
-			player1.addNumActions(1);
+			players.get(0).addNumActions(1);
 			
 			// Effect
-			System.out.println("Discard card(s) and redraw the same amount - choose a number between 0 (discard none) and " + player1.getCardsInHand().size());
+			System.out.println("Discard card(s) and redraw the same amount.");
+			// Print out the cards with the value
+			printCardsInHand(players.get(0));
+			System.out.println("Press -1 to not discard cards");
+			System.out.println("Press a number between 0 and " + (players.get(0).getCardsInHand().size() - 1) + " to discard the card");
+			
+			@SuppressWarnings("resource")
 			Scanner scan = new Scanner(System.in);
 			int numDiscard = 0;
 			
-			for (int i = 0; i < player1.getCardsInHand().size(); i++) {
+			if (players.get(0).getCardsInHand().size() == 0) {
+				System.out.println("Your hand is empty");
+			}
+			
+			for (; players.get(0).getCardsInHand().size() != 0;) {
 				int choice = scan.nextInt();
 				
-				// Print out the cards with the value
-				System.out.println("Cards in hand:");
-				for (int j = 0; j < player1.getCardsInHand().size(); j++) {
-					System.out.println((j + 1) + " = " + player1.getCardsInHand().get(j).getName());
-				}
-				
 				// Remove the chosen card from the hand and add it to the discard pile
-				if (choice == 0) {
+				if (choice == -1) {
 					break;
-				} else if (choice >= 1 || choice <= player1.getCardsInHand().size()) {
-					
+				} else if (choice >= 0 && choice <= players.get(0).getCardsInHand().size() - 1 && players.get(0).getCardsInHand().size() != 0) {
 					// Get the selected card
-					Card card = player1.getCardsInHand().get(choice - 1);
+					Card card = players.get(0).getCardsInHand().get(choice);
 					
 					// Remove the card from the hand
-					player1.removeCardFromHand(card);
+					System.out.println("You chose to remove " + card.getName() + " from your hand");
+					players.get(0).removeCardFromHand(card);
+					players.get(0).removeCardFromTreasure(card);
 					
 					// Add the card that was removed from the hand to the discard pile
-					player1.addCardToDiscardPile(card);
+					players.get(0).addCardToDiscardPile(card);
 					
 					numDiscard++;
+					
+					// Print out the cards with the value
+					if (players.get(0).getCardsInHand().size() != 0) {
+						printCardsInHand(players.get(0));
+						System.out.println("Press -1 to not discard cards");
+						System.out.println("Press a number between 0 and " + (players.get(0).getCardsInHand().size() - 1) + " to discard the card");
+					} else {
+						System.out.println("Your hand is now empty");
+						break;
+					}
 				} else {
-					System.out.println("That is not a valid choice. Choose a number between between 0 (discard none) and " + player1.getCardsInHand().size());
+					System.out.println("That is not a valid choice. Press -1 to not discard cards");
+					System.out.println("Press a number between 0 and " + (players.get(0).getCardsInHand().size() - 1) + " to discard the card");
 					choice = scan.nextInt();
 				}
 			}
 			
 			for (int i = 0; i < numDiscard; i++) {
-				
-				// Draw the top card from the deck and remove it from the deck - drawCard() adds it to the hand AND removes it from the top of the deck
-				player1.drawCard(player1.getDeck().get(0));
+				// Draw the top card from the deck and remove it from the deck
+				Card card = players.get(0).getDeck().get(0);
+				players.get(0).drawCard(card);
+				if ("Action".equals(card.getType1()))
+					players.get(0).addCardToAction(card);
+				else if ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2()) || "Treasure".equals(card.getType3()) 
+						|| "Treasure".equals(card.getType4()))
+					players.get(0).addCardToTreasure(card);
+				else if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || "Victory".equals(card.getType3()) || "Victory".equals(card.getType4()))
+					players.get(0).addCardToVictory(card);
+				System.out.println("You drew " + card);
 			}
+			
+			printCardsInHand(players.get(0));
 		}
 	}
 	
@@ -310,4 +363,148 @@ public class CardEffects {
 		}
 	}
 	
+	public void Workshop(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
+		if (playerTurnCounter == 1) {
+			
+			List<List<Card>> fourCostKingdoms = new ArrayList<List<Card>>();
+			
+			// Add all 4-cost kingdoms to the fourCostKingdoms list
+			for (List<Card> kingdom : kingdoms.supplyList) {
+				try {
+					if (Integer.parseInt(kingdom.get(0).getCost()) <= 4) {
+						fourCostKingdoms.add(kingdom);
+					}
+				} catch (NumberFormatException ex) {
+					// Catch is for formality to catch out integer parsing errors. The Try block still parses all 4-cost kingdoms correctly.
+				}
+			}
+			
+			// Print out the 4-cost kingdoms
+			int i = 1;
+			System.out.println("The following are the 4-cost kingdoms:");
+			for (List<Card> kingdom : fourCostKingdoms) {
+				System.out.println(i + " = " + kingdom);
+				i++;
+			}
+			
+			// Let the player choose a kingdom
+			System.out.println("Press a number between 1 and " + fourCostKingdoms.size() + " to gain the card");
+			Scanner scan = new Scanner(System.in);
+			String choice;
+			while (scan.hasNext()) {
+				choice = scan.nextLine();
+				
+				// Choices must be a number between 1 and the size of the 4-cost kingdoms list
+				if (Integer.parseInt(choice) > 0 && Integer.parseInt(choice) <= fourCostKingdoms.size()) {
+					List<Card> kingdom = new ArrayList<Card>();
+					kingdom = fourCostKingdoms.get(Integer.parseInt(choice) - 1);
+					
+					// Add the card from the kingdom to the discard pile
+					player1.addCardToDiscardPile(kingdom.get(0));
+					
+					// Remove the card from the kingdom
+					kingdoms.removeCardFromSupplyList(kingdom.get(0));
+				} else {
+					System.out.println("Invalid number. Please press a number between 1 and " + fourCostKingdoms.size() + " to gain the card");
+					choice = scan.nextLine();
+				}
+			}
+		}
+	}
+	
+	public void Bureaucrat(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
+		if (playerTurnCounter == 1) {
+			
+			// Gain a Silver onto the deck
+			player1.addCardToDeck(kingdoms.silver.get(0));
+			
+			// Remove the Silver from the supply list
+			kingdoms.removeCardFromSupplyList(kingdoms.silver.get(0));
+			
+			// For two players...
+			if (player1.getNumPlayers() == 2) {
+				System.out.println("All other players should now look away until they say it is ok to look.");
+				
+				// Delay next output for 3 seconds
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					// Do nothing
+				}
+				
+				// Print out the cards in the hand
+				int i = 1;
+				List<Card> vicCardsInHand = new ArrayList<Card>();
+				Card returnedCard = new Card(null, null, null, null, null, null, null, null, null);
+				
+				System.out.println("Here are the victory cards in your hand:");
+				
+				for (Card card : player2.getCardsInHand()) {
+					if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || 
+						"Victory".equals(card.getType3()) || "Victory".equals(card.getType4())) {
+						vicCardsInHand.add(card);
+						System.out.println(i + " = " + card.getName());
+					}
+					i++;
+				}
+				
+				System.out.println("Press a number between 1 and " + vicCardsInHand.size() + " to place the card back onto the deck.");
+				
+				Scanner scan = new Scanner(System.in);
+				String choice;
+				while (scan.hasNext()) {
+					choice = scan.nextLine();
+					
+					if (Integer.parseInt(choice) > 0 && Integer.parseInt(choice) <= vicCardsInHand.size()) {
+						// Put a victory card from the hand onto the deck
+						returnedCard = vicCardsInHand.get(Integer.parseInt(choice) - 1);
+						player2.addCardToDeck(returnedCard);
+						
+						// Remove the first card from the hand that has the same name as the target card
+						for (Card card : player2.getCardsInHand()) {
+							if (returnedCard.getName().equals(card.getName())) {
+								player2.getCardsInHand().remove(card);
+								break;
+							}
+						}
+					} else {
+						System.out.println("Invalid choice. Press a number between 1 and " + vicCardsInHand.size() + " to place the card back onto the deck.");
+						choice = scan.nextLine();
+					}
+				}
+			}
+		}
+	}
+	
+	public void Gardens(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
+		if (playerTurnCounter == 1) {
+			
+			// Set totalNumCards to the sum of the cards in the deck and the hand 
+			int totalNumCards = player1.getCardsInHand().size() + player1.getDeck().size();
+			
+			// Add the total to the extra victory points for that player
+			player1.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
+		} else if (playerTurnCounter == 2) {
+			
+			// Set totalNumCards to the sum of the cards in the deck and the hand 
+			int totalNumCards = player2.getCardsInHand().size() + player2.getDeck().size();
+			
+			// Add the total to the extra victory points for that player
+			player2.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
+		} else if (playerTurnCounter == 3) {
+			
+			// Set totalNumCards to the sum of the cards in the deck and the hand 
+			int totalNumCards = player3.getCardsInHand().size() + player3.getDeck().size();
+			
+			// Add the total to the extra victory points for that player
+			player3.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
+		} else if (playerTurnCounter == 4) {
+			
+			// Set totalNumCards to the sum of the cards in the deck and the hand 
+			int totalNumCards = player4.getCardsInHand().size() + player4.getDeck().size();
+			
+			// Add the total to the extra victory points for that player
+			player4.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
+		}
+	}
 }

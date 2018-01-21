@@ -1,0 +1,18 @@
+Militia/Action/Attack/"null"/"null"/+2 Coins | Each other player discards down to 3 cards in hand./20/4/10/
+Moneylender/Action/"null"/"null"/"null"/You may trash a Copper from your hand for +3 Coins./21/4/10/
+Poacher/Action/"null"/"null"/"null"/+1 Card | +1 Action | +1 Coin/Discard a card per empty Supple pile./22/4/10/
+Remodel/Action/"null"/"null"/"null"/Trash a card from your hand. Gain a card costing up to 2 Coins more than it./23/5/10/
+Smithy/Action/"null"/"null"/"null"/+3 Cards/24/4/10/
+Throne Room/Action/"null"/"null"/"null"/You may play an Action card from your hand twice./25/4/10/
+Bandit/Action/Attack/"null"/"null"/Gain a Gold. Each other player reveals the top 2 cards of their deck, trashes a revealed Treasure other than Copper, and discards the rest./26/5/10/
+Council Room/Action/"null"/"null"/"null"/+4 Cards | +1 Buy | Each other player draws a card./27/5/10/
+Festival/Action/"null"/"null"/"null"/+2 Actions | +1 Buy | +2 Coins/28/5/10/
+Laboratory/Action/"null"/"null"/"null"/+2 Cards | +1 Action/29/5/10/
+Library/Action/"null"/"null"/"null"/Draw until you have 7 cards in hand, skipping any Action cards you choose to; set those aside, discarding them afterwards./30/5/10/
+Market/Action/"null"/"null"/"null"/+1 Card | +1 Action | +1 Buy | +1 Coin/31/5/10/
+Mine/Action/"null"/"null"/"null"/You may trash a Treasure from your hand. Gain a Treasure to your hand costing up to +3 Coins more than it./32/5/10/
+Sentry/Action/"null"/"null"/"null"/+1 Card | +1 Action | Look at the top 2 cards of your deck. Trash and/or discard any number of them. Put the rest back on top in any order./33/5/10/
+Witch/Action/Attack/"null"/"null"/+2 Cards | Each other player gains a Curse./34/5/10/
+Artisan/Action/"null"/"null"/"null"/Gain a card to your hand costing up to +5 Coins. Put a card from your hand onto your deck./35/5/10/
+Nobles/Action/Victory/"null"/"null"/+3 Cards or +2 Actions./36/6/10/
+Fishing Village/Action/Duration/"null"/"null"/+2 Actions | +1 Coin | At the start of your next turn: +1 Action and +1 Coin./37/3/10/

@@ -130,6 +130,7 @@ public class GameFlow {
 				int IDOfCard = Integer.parseInt(card.getID());
 				player.addNumActions(-1);				// Use up an action
 				player.addCardToCardsInPlay(card);		// Add the card to play
+				//player.removeCardFromHand(card);
 				for (Card theCard : player.getCardsInHand()) {
 					if (card.getName().equals(theCard.getName())) {
 						player.removeCardFromAction(card);
