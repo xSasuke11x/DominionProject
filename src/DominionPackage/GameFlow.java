@@ -18,32 +18,58 @@ public class GameFlow {
 		// Draw 5 cards
 		int initialDraw = 5;
 		for (int i = 0; i < initialDraw; i++) {
-			if (playerTurnCounter == 1) {
-				if (player.getDeck().size() == 0)
-					restartDeck(player);
+			if (playerTurnCounter == 1) {	
 				try {
 					Card card = player.getDeck().get(0);
 					player.drawCard(card);
 				} catch (IndexOutOfBoundsException e) {
-					System.out.println("You have no more cards to draw");
+					if (player.getDeck().size() > 0 || player.getDiscardPile().size() > 0) {
+						System.out.println("You have no more cards to draw. Reshuffling deck");
+						restartDeck(player);
+						Card card = player.getDeck().get(0);
+						player.drawCard(card);
+					} else
+						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
 				}
 			} else if (playerTurnCounter == 2) {
-				if (player.getDeck().size() == 0)
-					restartDeck(player);
 				try {
 					Card card = player.getDeck().get(0);
 					player.drawCard(card);
 				} catch (IndexOutOfBoundsException e) {
-					System.out.println("You have no more cards to draw");
+					if (player.getDeck().size() > 0 || player.getDiscardPile().size() > 0) {
+						System.out.println("You have no more cards to draw. Reshuffling deck");
+						restartDeck(player);
+						Card card = player.getDeck().get(0);
+						player.drawCard(card);
+					} else
+						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
 				}
 			} else if (playerTurnCounter == 3) {
-				if (player.getDeck().size() == 0)
-					restartDeck(player);
-				player.drawCard(player.getDeck().get(0));
+				try {
+					Card card = player.getDeck().get(0);
+					player.drawCard(card);
+				} catch (IndexOutOfBoundsException e) {
+					if (player.getDeck().size() > 0 || player.getDiscardPile().size() > 0) {
+						System.out.println("You have no more cards to draw. Reshuffling deck");
+						restartDeck(player);
+						Card card = player.getDeck().get(0);
+						player.drawCard(card);
+					} else
+						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
+				}
 			} else {
-				if (player.getDeck().size() == 0)
-					restartDeck(player);
-				player.drawCard(player.getDeck().get(0));
+				try {
+					Card card = player.getDeck().get(0);
+					player.drawCard(card);
+				} catch (IndexOutOfBoundsException e) {
+					if (player.getDeck().size() > 0 || player.getDiscardPile().size() > 0) {
+						System.out.println("You have no more cards to draw. Reshuffling deck");
+						restartDeck(player);
+						Card card = player.getDeck().get(0);
+						player.drawCard(card);
+					} else
+						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
+				}
 			}
 		}
 		
@@ -107,7 +133,9 @@ public class GameFlow {
 				System.out.println(i + " = " + card.getName());
 				i++;
 			}
-		} else
+		} else if (player.getNumActions() == 0)
+			System.out.println("You have no Actions left to play Action cards");
+		else if (player.getAction().size() != 0)
 			System.out.println("You have no Action cards to play");
 		System.out.println();
 	}
@@ -205,7 +233,7 @@ public class GameFlow {
 			choice = scan.nextInt();
 			
 			// Choices must be a number between -2 and the size of the player's hand
-			if (choice >= 0 && choice <= player.getCardsInHand().size()) {
+			if (choice >= 0 && choice <= player.getTreasure().size() - 1) {
 				Card card = player.getTreasure().get(choice);		// Get the first card in the Treasure list
 				int IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the first card in the Treasure list
 				
@@ -364,10 +392,12 @@ public class GameFlow {
 	
 	public void restartDeck(Player player) {
 		while (player.getDiscardPile().size() != 0) {
-			player.addCardToDeck(player.getDiscardPile().get(0));
-			player.removeCardFromDiscardPile(player.getDiscardPile().get(0));
+			Card card = player.getDiscardPile().get(0);
+			player.addCardToDeck(card);
+			player.removeCardFromDiscardPile(card);
 		}
 		Collections.shuffle(player.getDeck());
+		System.out.println("Your deck has been shuffled");
 	}
 	
 	public void resetBoard(Player player) {

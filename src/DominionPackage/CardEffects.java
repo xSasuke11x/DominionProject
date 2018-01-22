@@ -1,6 +1,7 @@
 package DominionPackage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +106,8 @@ public class CardEffects {
 	}
 	
 	public void Cellar(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Playing Cellar");
+		
 		Player player = players.get(playerTurnCounter - 1);
 		
 		// +1 Action
@@ -181,6 +184,7 @@ public class CardEffects {
 					player.addCardToDeck(card);
 					player.removeCardFromDiscardPile(card);
 				}
+				Collections.shuffle(player.getDeck());
 				Card card2 = player.getDeck().get(0);
 				player.drawCard(card2);
 				System.out.println("You drew " + card2);
@@ -191,6 +195,9 @@ public class CardEffects {
 	}
 	
 	public void Chapel(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Playing Chapel");
+		System.out.println();
+		
 		Player player = players.get(playerTurnCounter - 1);
 			
 		// Effect
@@ -221,14 +228,20 @@ public class CardEffects {
 				// Get the selected card
 				Card card = player.getCardsInHand().get(choice);
 				
-				// Remove the card from the hand
+				// Remove the card from the hand and remove it from the type list
 				player.removeCardFromHand(card);
+				System.out.println("You trashed " + card.getName());
 				
 				// Remove the card from the type list
-				player.removeCardFromTypeList(card);
+				//player.removeCardFromTypeList(card);
 				
 				// Add the card that was removed from the hand to the trash pile
 				kingdoms.trash.add(card);
+				
+				if (player.getCardsInHand().size() != 0) {
+					System.out.println("Press -1 to not trash any more cards");
+					System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to trash another card");
+				}	
 			} else {
 				System.out.println("That is not a valid choice. Press -1 to not trash any cards");
 				System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to trash that card");
