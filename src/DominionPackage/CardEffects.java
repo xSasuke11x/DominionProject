@@ -16,7 +16,7 @@ public class CardEffects {
 		effects.put(3, () -> Gold(kingdoms, playerTurnCounter, players));
 		effects.put(4, () -> Platinum(kingdoms, playerTurnCounter, players));
 		effects.put(10, () -> Cellar(kingdoms, playerTurnCounter, players));
-		effects.put(11, () -> Chapel(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
+		effects.put(11, () -> Chapel(kingdoms, playerTurnCounter, players));
 		effects.put(12, () -> Moat(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(13, () -> Harbinger(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(14, () -> Merchant(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
@@ -55,6 +55,36 @@ public class CardEffects {
 			System.out.println(i + " = " + player.getCardsInHand().get(i).getName());
 		}
 	}
+	
+	/*public void addCardToTypeList(Player player, Card card) {
+		if ("Action".equals(card.getType1()))
+			player.addCardToAction(card);
+		else if ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2()) || "Treasure".equals(card.getType3()) 
+				|| "Treasure".equals(card.getType4()))
+			player.addCardToTreasure(card);
+		else if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || "Victory".equals(card.getType3()) || "Victory".equals(card.getType4()))
+			player.addCardToVictory(card);
+	}*/
+	
+	/*public void removeCardFromTypeList(Player player, Card card) {
+		if ("Action".equals(card.getType1())) {
+			for (Card theCard : player.getAction()) {
+				if (theCard.getName().equals(card.getName()))	
+					player.removeCardFromAction(card);
+			}
+		}
+		else if ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2()) || "Treasure".equals(card.getType3()) 
+				|| "Treasure".equals(card.getType4()))
+			for (Card theCard : player.getAction()) {
+				if (theCard.getName().equals(card.getName()))	
+					player.removeCardFromAction(card);
+			}
+		else if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || "Victory".equals(card.getType3()) || "Victory".equals(card.getType4()))
+			for (Card theCard : player.getAction()) {
+				if (theCard.getName().equals(card.getName()))	
+					player.removeCardFromAction(card);
+			}
+	}*/
 
 	public void Copper(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Copper being played");
@@ -105,115 +135,134 @@ public class CardEffects {
 	}
 	
 	public void Cellar(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
-		if (playerTurnCounter == 1) {
-			
-			// +1 Action
-			players.get(0).addNumActions(1);
-			
-			// Effect
-			System.out.println("Discard card(s) and redraw the same amount.");
-			// Print out the cards with the value
-			printCardsInHand(players.get(0));
-			System.out.println("Press -1 to not discard cards");
-			System.out.println("Press a number between 0 and " + (players.get(0).getCardsInHand().size() - 1) + " to discard the card");
-			
-			@SuppressWarnings("resource")
-			Scanner scan = new Scanner(System.in);
-			int numDiscard = 0;
-			
-			if (players.get(0).getCardsInHand().size() == 0) {
-				System.out.println("Your hand is empty");
-			}
-			
-			for (; players.get(0).getCardsInHand().size() != 0;) {
-				int choice = scan.nextInt();
-				
-				// Remove the chosen card from the hand and add it to the discard pile
-				if (choice == -1) {
-					break;
-				} else if (choice >= 0 && choice <= players.get(0).getCardsInHand().size() - 1 && players.get(0).getCardsInHand().size() != 0) {
-					// Get the selected card
-					Card card = players.get(0).getCardsInHand().get(choice);
-					
-					// Remove the card from the hand
-					System.out.println("You chose to remove " + card.getName() + " from your hand");
-					players.get(0).removeCardFromHand(card);
-					players.get(0).removeCardFromTreasure(card);
-					
-					// Add the card that was removed from the hand to the discard pile
-					players.get(0).addCardToDiscardPile(card);
-					
-					numDiscard++;
-					
-					// Print out the cards with the value
-					if (players.get(0).getCardsInHand().size() != 0) {
-						printCardsInHand(players.get(0));
-						System.out.println("Press -1 to not discard cards");
-						System.out.println("Press a number between 0 and " + (players.get(0).getCardsInHand().size() - 1) + " to discard the card");
-					} else {
-						System.out.println("Your hand is now empty");
-						break;
-					}
-				} else {
-					System.out.println("That is not a valid choice. Press -1 to not discard cards");
-					System.out.println("Press a number between 0 and " + (players.get(0).getCardsInHand().size() - 1) + " to discard the card");
-					choice = scan.nextInt();
-				}
-			}
-			
-			for (int i = 0; i < numDiscard; i++) {
-				// Draw the top card from the deck and remove it from the deck
-				Card card = players.get(0).getDeck().get(0);
-				players.get(0).drawCard(card);
-				if ("Action".equals(card.getType1()))
-					players.get(0).addCardToAction(card);
-				else if ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2()) || "Treasure".equals(card.getType3()) 
-						|| "Treasure".equals(card.getType4()))
-					players.get(0).addCardToTreasure(card);
-				else if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || "Victory".equals(card.getType3()) || "Victory".equals(card.getType4()))
-					players.get(0).addCardToVictory(card);
-				System.out.println("You drew " + card);
-			}
-			
-			printCardsInHand(players.get(0));
+		Player player = players.get(playerTurnCounter - 1);
+		
+		// +1 Action
+		player.addNumActions(1);
+		
+		// Effect
+		System.out.println("Discard card(s) and redraw the same amount.");
+		// Print out the cards with the value
+		printCardsInHand(player);
+		System.out.println("Press -1 to not discard cards");
+		System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to discard the card");
+		
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		int numDiscard = 0;
+		
+		// Don't do anything if there are no cards in the hand
+		if (player.getCardsInHand().size() == 0) {
+			System.out.println("Your hand is empty");
+			System.out.println();
 		}
+		
+		while (player.getCardsInHand().size() != 0) {
+			int choice = scan.nextInt();
+			
+			// Remove the chosen card from the hand and add it to the discard pile
+			if (choice == -1) {
+				System.out.println("You chose not to discard a card");
+				System.out.println();
+				break;
+			} else if (choice >= 0 && choice <= player.getCardsInHand().size() - 1 && player.getCardsInHand().size() != 0) {
+				// Get the selected card
+				Card card = player.getCardsInHand().get(choice);
+				
+				// Remove the card from the hand
+				System.out.println("You chose to remove " + card.getName() + " from your hand");
+				player.removeCardFromHand(card);
+				
+				// Remove the card from the type list
+				//player.removeCardFromTypeList(card);
+				
+				// Add the card that was removed from the hand to the discard pile
+				player.addCardToDiscardPile(card);
+				
+				numDiscard++;
+				
+				// Print out the cards with the value
+				if (player.getCardsInHand().size() != 0) {
+					printCardsInHand(player);
+					System.out.println("Press -1 to not discard cards");
+					System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to discard the card");
+				} else {
+					System.out.println("Your hand is now empty");
+					System.out.println();
+					break;
+				}
+			} else {
+				System.out.println("That is not a valid choice. Press -1 to not discard cards");
+				System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to discard the card");
+				choice = scan.nextInt();
+			}
+		}
+		
+		for (int i = 0; i < numDiscard; i++) {
+			// Draw the top card from the deck and remove it from the deck
+			if (player.getDeck().size() != 0) {
+				Card card = player.getDeck().get(0);
+				player.drawCard(card);
+				System.out.println("You drew " + card);
+			} else {
+				System.out.println("Your deck is empty. Reshuffling now");
+				while (player.getDiscardPile().size() != 0) {
+					Card card = player.getDiscardPile().get(0);
+					player.addCardToDeck(card);
+					player.removeCardFromDiscardPile(card);
+				}
+				Card card2 = player.getDeck().get(0);
+				player.drawCard(card2);
+				System.out.println("You drew " + card2);
+			}
+		}
+		
+		printCardsInHand(player);
 	}
 	
-	public void Chapel(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
-		if (playerTurnCounter == 1) {
+	public void Chapel(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		Player player = players.get(playerTurnCounter - 1);
 			
-			// Effect
-			System.out.println("Trash card(s) up to 4 - choose a number between 0 (trash none) and " + player1.getCardsInHand().size());
-			Scanner scan = new Scanner(System.in);
-			int choice;
+		// Effect
+		System.out.println("Trash card(s) up to 4");
+		
+		// Do nothing if the player has no cards in their hand
+		if (player.getCardsInHand().size() == 0)
+			System.out.println("You have no cards in your hand to trash");
+		
+		System.out.println("Press -1 to not trash any cards");
+		System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to trash that card");
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		int choice;
+		
+		for (int i = 0; i < 4 && player.getCardsInHand().size() != 0; i++) {
+			// Print out the cards in the player's hand
+			printCardsInHand(player);
 			
-			for (int i = 0; i < 4; i++) {
-				// Print out the cards with the value
-				System.out.println("Cards in hand:");
-				for (int j = 0; j < player1.getCardsInHand().size(); j++) {
-					
-					System.out.println((j + 1) + " = " + player1.getCardsInHand().get(j).getName());
-				}
+			choice = scan.nextInt();
+			
+			// Remove the chosen card from the hand and add it to the discard pile
+			if (choice == -1) {
+				System.out.println("You chose not to trash a card");
+				break;
+			} else if (choice >= 0 && choice <= player.getCardsInHand().size() - 1) {
 				
+				// Get the selected card
+				Card card = player.getCardsInHand().get(choice);
+				
+				// Remove the card from the hand
+				player.removeCardFromHand(card);
+				
+				// Remove the card from the type list
+				player.removeCardFromTypeList(card);
+				
+				// Add the card that was removed from the hand to the trash pile
+				kingdoms.trash.add(card);
+			} else {
+				System.out.println("That is not a valid choice. Press -1 to not trash any cards");
+				System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to trash that card");
 				choice = scan.nextInt();
-				
-				// Remove the chosen card from the hand and add it to the discard pile
-				if (choice == 0) {
-					break;
-				} else if (choice > 0 || choice <= player1.getCardsInHand().size()) {
-					
-					// Get the selected card
-					Card card = player1.getCardsInHand().get(choice - 1);
-					
-					// Remove the card from the hand
-					player1.removeCardFromHand(card);
-					
-					// Add the card that was removed from the hand to the trash pile
-					kingdoms.trash.add(card);
-				} else {
-					System.out.println("That is not a valid choice. Choose a number between 0 (trash none) and " + player1.getCardsInHand().size());
-					choice = scan.nextInt();
-				}
 			}
 		}
 	}
@@ -336,6 +385,7 @@ public class CardEffects {
 			if ("Action".equals(card.getType1())) {
 				System.out.println(player1.getDiscardPile().get(0).getName() + " is an Action card. Would you like to play it? Press [y] for yes or [n] for no.");
 				
+				@SuppressWarnings("resource")
 				Scanner scan = new Scanner(System.in);
 				String choice;
 				while (scan.hasNext()) {
@@ -389,6 +439,7 @@ public class CardEffects {
 			
 			// Let the player choose a kingdom
 			System.out.println("Press a number between 1 and " + fourCostKingdoms.size() + " to gain the card");
+			@SuppressWarnings("resource")
 			Scanner scan = new Scanner(System.in);
 			String choice;
 			while (scan.hasNext()) {
@@ -450,6 +501,7 @@ public class CardEffects {
 				
 				System.out.println("Press a number between 1 and " + vicCardsInHand.size() + " to place the card back onto the deck.");
 				
+				@SuppressWarnings("resource")
 				Scanner scan = new Scanner(System.in);
 				String choice;
 				while (scan.hasNext()) {

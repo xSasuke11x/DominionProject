@@ -38,30 +38,39 @@ public class Gateway {
 		
 		GameFlow gf = new GameFlow();
 		
-		while (gf.getWinCondition() == false) {
-			for (Player player : players)
-				player.shuffleDeck(player.getDeck());
-			
-			if (player1.getDeck().size() == 0) {
-				player1.shuffleDeck(player1.getDeck());
+		// Shuffle the cards in each player's deck
+		for (Player player : players)
+			player.shuffleDeck(player.getDeck());
+		
+		// Initiate gameplay
+		for (; gf.getWinCondition() == false;) {
+			if (playerTurnCounter == 1) {
+				System.out.println();
+				System.out.println("It is player 1's turn");
+				gf.drawPhase(kingdoms, playerTurnCounter, players);
+				playerTurnCounter++;
+			} else if (playerTurnCounter == 2) {
+				System.out.println();
+				System.out.println("It is player 2's turn");
+				gf.drawPhase(kingdoms, playerTurnCounter, players);
+				if (player1.getNumPlayers() == 3)
+					playerTurnCounter++;
+				else
+					playerTurnCounter = 1;
+			} else if (playerTurnCounter == 3) {
+				System.out.println();
+				System.out.println("It is player 3's turn");
+				gf.drawPhase(kingdoms, playerTurnCounter, players);
+				if (player1.getNumPlayers() == 4)
+					playerTurnCounter++;
+				else
+					playerTurnCounter = 1;
+			} else {
+				System.out.println();
+				System.out.println("It is player 4's turn");
+				gf.drawPhase(kingdoms, playerTurnCounter, players);
+				playerTurnCounter = 1;
 			}
-			if (player2.getDeck().size() == 0) {
-				player2.shuffleDeck(player2.getDeck());
-			}
-			if (player3.getDeck().size() == 0) {
-				player3.shuffleDeck(player3.getDeck());
-			}
-			if (player4.getDeck().size() == 0) {
-				player4.shuffleDeck(player4.getDeck());
-			}
-			
-			gf.drawPhase(kingdoms, playerTurnCounter, players);
-			//CardEffects ce = new CardEffects();
-			//ce.Workshop(kingdoms, playerTurnCounter, player1, player2, player3, player4);
-			//winCondition = true;
-			//gf.actionPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
-			//gf.buyPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
-			//winCondition = gf.cleanupPhase(kingdoms, playerTurnCounter, player1, player2, player3, player4);
 		}
 	}
 

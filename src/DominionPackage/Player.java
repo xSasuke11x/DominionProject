@@ -22,7 +22,45 @@ public class Player {
 	private int extraVictoryPoints = 0;
 	private int turnCounter;
 	private int numPlayers = 2;
-	//private boolean actCardsAvailable = false, vicCardsAvailable = false, coinCardsAvailable = false, curseCardsAvailable = false;
+	
+	public void addCardToTypeList(Card card) {
+		if ("Action".equals(card.getType1()))
+			action.add(card);
+		if ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2()) || "Treasure".equals(card.getType3()) || "Treasure".equals(card.getType4()))
+			treasure.add(card);
+		if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || "Victory".equals(card.getType3()) || "Victory".equals(card.getType4()))
+			victory.add(card);
+	}
+	
+	public void removeCardFromTypeList(Card card) {
+		/*for (Card theCard : player.getCardsInHand()) {
+			if (theCard.getName().equals(card.getName()) && "Action".equals(card.getType1())) {
+				player.removeCardFromAction(card);
+				break;
+			}
+			if (theCard.getName().equals(card.getName()) && ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2()) || "Treasure".equals(card.getType3()) 
+					|| "Treasure".equals(card.getType4()))) {	
+				player.removeCardFromTreasure(card);
+				break;
+			}
+			if (theCard.getName().equals(card.getName()) && ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || "Victory".equals(card.getType3()) 
+					|| "Victory".equals(card.getType4()))) {	
+				player.removeCardFromVictory(card);
+				break;
+			}
+		}*/
+		if ("Action".equals(card.getType1())) {
+			removeCardFromAction(card);
+		}
+		if ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2()) || "Treasure".equals(card.getType3()) 
+				|| "Treasure".equals(card.getType4())) {	
+			removeCardFromTreasure(card);
+		}
+		if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || "Victory".equals(card.getType3()) 
+				|| "Victory".equals(card.getType4())) {	
+			removeCardFromVictory(card);
+		}
+	}
 	
 	public List<Card> getDeck() {
 		return deck;
@@ -194,6 +232,7 @@ public class Player {
 	
 	public void removeCardFromHand(Card card) {
 		hand.remove(card);
+		removeCardFromTypeList(card);
 	}
 	
 	public void removeCardFromPlay(Card card) {
@@ -207,6 +246,7 @@ public class Player {
 	public void drawCard(Card card) {
 		hand.add(card);
 		removeCardFromDeck(card);
+		addCardToTypeList(card);
 	}
 	
 	public void shuffleDeck(List<Card> deck) {
