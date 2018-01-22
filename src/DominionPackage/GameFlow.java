@@ -24,7 +24,6 @@ public class GameFlow {
 				try {
 					Card card = player.getDeck().get(0);
 					player.drawCard(card);
-					//player.addCardToTypeList(player, card);
 				} catch (IndexOutOfBoundsException e) {
 					System.out.println("You have no more cards to draw");
 				}
@@ -34,7 +33,6 @@ public class GameFlow {
 				try {
 					Card card = player.getDeck().get(0);
 					player.drawCard(card);
-					//player.addCardToTypeList(player, card);
 				} catch (IndexOutOfBoundsException e) {
 					System.out.println("You have no more cards to draw");
 				}

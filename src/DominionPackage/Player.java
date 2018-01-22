@@ -33,22 +33,6 @@ public class Player {
 	}
 	
 	public void removeCardFromTypeList(Card card) {
-		/*for (Card theCard : player.getCardsInHand()) {
-			if (theCard.getName().equals(card.getName()) && "Action".equals(card.getType1())) {
-				player.removeCardFromAction(card);
-				break;
-			}
-			if (theCard.getName().equals(card.getName()) && ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2()) || "Treasure".equals(card.getType3()) 
-					|| "Treasure".equals(card.getType4()))) {	
-				player.removeCardFromTreasure(card);
-				break;
-			}
-			if (theCard.getName().equals(card.getName()) && ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || "Victory".equals(card.getType3()) 
-					|| "Victory".equals(card.getType4()))) {	
-				player.removeCardFromVictory(card);
-				break;
-			}
-		}*/
 		if ("Action".equals(card.getType1())) {
 			removeCardFromAction(card);
 		}
@@ -126,13 +110,6 @@ public class Player {
 		extraCoins = 0;
 	}
 	
-	/*public void resetCardsAvailable() {
-		actCardsAvailable = false;
-		vicCardsAvailable = false;
-		coinCardsAvailable = false;
-		curseCardsAvailable = false;
-	}*/
-	
 	public List<Card> getDiscardPile() {
 		return discardPile;
 	}
@@ -160,22 +137,6 @@ public class Player {
 	public void setNumPlayers(int num) {
 		numPlayers = num;
 	}
-	
-	/*public void setActCardsAvailable(boolean availability) {
-		actCardsAvailable = availability;
-	}
-	
-	public void setVicCardsAvailable(boolean availability) {
-		vicCardsAvailable = availability;
-	}
-	
-	public void setCoinCardsAvailable(boolean availability) {
-		coinCardsAvailable = availability;
-	}
-	
-	public void setCurseCardsAvailable(boolean availability) {
-		curseCardsAvailable = availability;
-	}*/
 	
 	public void playCard(Card card) {
 		cardsInPlay.add(card);

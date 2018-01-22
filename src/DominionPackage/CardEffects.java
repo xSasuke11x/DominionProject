@@ -56,36 +56,6 @@ public class CardEffects {
 		}
 	}
 	
-	/*public void addCardToTypeList(Player player, Card card) {
-		if ("Action".equals(card.getType1()))
-			player.addCardToAction(card);
-		else if ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2()) || "Treasure".equals(card.getType3()) 
-				|| "Treasure".equals(card.getType4()))
-			player.addCardToTreasure(card);
-		else if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || "Victory".equals(card.getType3()) || "Victory".equals(card.getType4()))
-			player.addCardToVictory(card);
-	}*/
-	
-	/*public void removeCardFromTypeList(Player player, Card card) {
-		if ("Action".equals(card.getType1())) {
-			for (Card theCard : player.getAction()) {
-				if (theCard.getName().equals(card.getName()))	
-					player.removeCardFromAction(card);
-			}
-		}
-		else if ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2()) || "Treasure".equals(card.getType3()) 
-				|| "Treasure".equals(card.getType4()))
-			for (Card theCard : player.getAction()) {
-				if (theCard.getName().equals(card.getName()))	
-					player.removeCardFromAction(card);
-			}
-		else if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || "Victory".equals(card.getType3()) || "Victory".equals(card.getType4()))
-			for (Card theCard : player.getAction()) {
-				if (theCard.getName().equals(card.getName()))	
-					player.removeCardFromAction(card);
-			}
-	}*/
-
 	public void Copper(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Copper being played");
 		if (playerTurnCounter == 1) {
