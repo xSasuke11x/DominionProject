@@ -365,11 +365,6 @@ public class CardEffects {
 		// +2 Coins
 		player.addExtraCoins(2);
 			
-		//Card card = new Card(null, null, null, null, null, null, null, null, null);
-		// This is the card on top of the deck
-		/*if (player.getDeck().size() != 0) {
-			//Card card = player.getDeck().get(0);
-		}*/
 		try {
 			Card card = player.getDeck().get(0);	// Get the top card of the deck
 			player.addCardToDiscardPile(card);		// Add a copy of the top of the deck to the discard pile
@@ -390,17 +385,16 @@ public class CardEffects {
 						int IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the Action card discarded
 						player.addCardToCardsInPlay(card);					// Add a copy of the top of the deck to the discard pile
 						player.removeCardFromDiscardPile(card);				// Remove the top card of the deck
-						getCardEffect(IDOfCard, kingdoms, playerTurnCounter, players);			// Play the Action card
+						getCardEffect(IDOfCard, kingdoms, playerTurnCounter, players).run();			// Play the Action card
+						break;
 					} else {
 						System.out.println("You chose not to play " + card.getName());
 						System.out.println();
 						break;
 					}
 				}
-			} else {
+			} else
 				System.out.println(card.getName() + " is not an Action card");
-				System.out.println();
-			}
 		} catch (IndexOutOfBoundsException e) {
 			if (player.getDiscardPile().size() > 0) {		// Re-shuffle the deck if drawing a card doesn't work
 				System.out.println("You have no more cards to draw. Reshuffling deck");
@@ -429,7 +423,7 @@ public class CardEffects {
 							int IDOfCard = Integer.parseInt(card.getID());
 							player.addCardToCardsInPlay(card);
 							player.removeCardFromDiscardPile(card);
-							getCardEffect(IDOfCard, kingdoms, playerTurnCounter, players);
+							getCardEffect(IDOfCard, kingdoms, playerTurnCounter, players).run();
 							break;
 						} else {
 							System.out.println("You chose not to play " + card.getName());
@@ -437,35 +431,11 @@ public class CardEffects {
 							break;
 						}
 					}
-				}
+				} else
+					System.out.println(card.getName() + " is not an Action card");
 			} else
 				System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
 		}
-		
-		// Discard the top card of the deck and add it to the discard pile
-		/*player.addCardToDiscardPile(card);
-		player.removeCardFromDeck(card);*/
-		
-		//System.out.println("You discarded " + card);
-		
-		// If the top card of the discard pile is an action card...
-		/*if ("Action".equals(card.getType1())) {
-			System.out.println(player.getDiscardPile().get(0).getName() + " is an Action card. Would you like to play it? Press [y] for yes or [n] for no.");
-			
-			@SuppressWarnings("resource")
-			Scanner scan = new Scanner(System.in);
-			String choice;
-			while (scan.hasNext()) {
-				choice = scan.nextLine();
-				
-				// If the player chooses to play the Action card, remove the card from the discard pile and add it to the player's cards in play
-				if (choice.toLowerCase().equals("y")) {
-					player.addCardToCardsInPlay(card);
-					player.removeCardFromDiscardPile(card);
-				} else 
-					break;
-			}
-		}*/
 	}
 	
 	public void Village(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {

@@ -144,11 +144,15 @@ public class Player {
 	}
 	
 	public void addCardToDiscardPile(Card card) {
+		Collections.reverse(getDiscardPile());
 		discardPile.add(card);
+		Collections.reverse(getDiscardPile());
 	}
 	
 	public void addCardToCardsInPlay(Card card) {
+		Collections.reverse(getCardsInPlay());
 		cardsInPlay.add(card);
+		Collections.reverse(getCardsInPlay());
 	}
 	
 	public void addCardToDeck(Card card) {
