@@ -62,6 +62,7 @@ public class CardEffects {
 			Card card = player.getDeck().get(0);
 			player.drawCard(card);
 			System.out.println("You drew " + card);
+			printCardsInHand(player);
 		} catch (IndexOutOfBoundsException e) {
 			if (player.getDiscardPile().size() > 0) {		// Reshuffle the deck if drawing a card doesn't work
 				System.out.println("You have no more cards to draw. Reshuffling deck");
@@ -74,6 +75,7 @@ public class CardEffects {
 				Card card = player.getDeck().get(0);
 				player.drawCard(card);		// Draw a card
 				System.out.println("You drew " + card);
+				printCardsInHand(player);
 			} else
 				System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
 		}
@@ -264,7 +266,6 @@ public class CardEffects {
 		for (int i = 0; i < 2; i++) {
 			attemptDrawFromDeck(player);
 		}
-		printCardsInHand(player);		// Print out the hand
 	}
 	
 	public void Harbinger(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
@@ -281,9 +282,15 @@ public class CardEffects {
 		
 		// Effect
 		if (player.getDiscardPile().size() != 0) {
-			System.out.println("Look through the discard pile and place it onto your deck");
-			System.out.println("Press a number between 0 and " + (player.getDiscardPile().size() - 1) + "to place a card from"
+			System.out.println("Look through the discard pile, choose a card and place it onto your deck");
+			System.out.println("Press a number between 0 and " + (player.getDiscardPile().size() - 1) + " to place a card from"
 					+ " your discard pile onto the deck");
+			
+			// Print out the cards with the value
+			System.out.println("Cards in discard pile:");
+			for (int i = 0; i < player.getDiscardPile().size(); i++) {
+				System.out.println(i + " = " + player.getDiscardPile().get(i));
+			}
 			
 			@SuppressWarnings("resource")
 			Scanner scan = new Scanner(System.in);
@@ -291,33 +298,35 @@ public class CardEffects {
 			while (scan.hasNext()) {
 				int choice = scan.nextInt();
 				
-				// Print out the cards with the value
-				System.out.println("Cards in discard pile:");
-				for (int i = 0; i < player.getDiscardPile().size(); i++) {
-					System.out.println(i + " = " + player.getDiscardPile().get(i));
-				}
-				
 				// Remove the chosen card from the hand and add it to the discard pile
 				if (choice >= 0 || choice <= player.getDiscardPile().size() - 1) {
 					// Get the selected card
 					Card card = player.getDiscardPile().get(choice);
-					System.out.println("You selected " + card + " to place onto your deck");
 					
 					// Add the card from the discard pile onto the deck
 					player.addCardToDeck(card);
+					System.out.println("You selected " + card + " to place onto your deck");
 					
 					// Remove the card from the discard pile
 					player.removeCardFromDiscardPile(card);
 					
 					break;
 				} else {
-					System.out.println("Invalid input. Press a number between 0 and " + (player.getDiscardPile().size() - 1) + "to place a card from "
+					System.out.println("Invalid input. Press a number between 0 and " + (player.getDiscardPile().size() - 1) + " to place a card from "
 							+ "your discard pile onto the deck");
+					
+					// Print out the cards with the value
+					System.out.println("Cards in discard pile:");
+					for (int i = 0; i < player.getDiscardPile().size(); i++) {
+						System.out.println(i + " = " + player.getDiscardPile().get(i));
+					}
 					//choice = scan.nextInt();
 				}
 			}
-		} else
+		} else {
+			System.out.println();
 			System.out.println("Your discard pile is empty");
+		}
 	}
 	
 	public void Merchant(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
@@ -421,6 +430,7 @@ public class CardEffects {
 							player.addCardToCardsInPlay(card);
 							player.removeCardFromDiscardPile(card);
 							getCardEffect(IDOfCard, kingdoms, playerTurnCounter, players);
+							break;
 						} else {
 							System.out.println("You chose not to play " + card.getName());
 							System.out.println();
@@ -514,10 +524,11 @@ public class CardEffects {
 				player.addCardToDiscardPile(card);
 				System.out.println("You gained a " + card.getName());
 				
-				// Remove the card from the kingdom
+				// Remove the card from the kingdom and set how many cards are left in the supply
 				kingdoms.removeCardFromSupplyList(card);
 				int numLeft = Integer.parseInt(card.getNumLeft());
 				card.setNumLeft(Integer.toString(numLeft - 1));
+				break;
 			} else {
 				System.out.println("Invalid number. Press a number between 0 and " + (fourCostKingdoms.size() - 1) + " to gain the card");
 				//choice = scan.nextInt();

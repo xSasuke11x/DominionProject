@@ -19,6 +19,7 @@ public class GameFlow {
 		int initialDraw = 5;
 		for (int i = 0; i < initialDraw; i++) {
 			if (playerTurnCounter == 1) {	
+				Collections.reverse(player.getDeck());
 				try {
 					Card card = player.getDeck().get(0);
 					player.drawCard(card);
@@ -32,6 +33,7 @@ public class GameFlow {
 						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
 				}
 			} else if (playerTurnCounter == 2) {
+				Collections.reverse(player.getDeck());
 				try {
 					Card card = player.getDeck().get(0);
 					player.drawCard(card);
@@ -45,6 +47,7 @@ public class GameFlow {
 						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
 				}
 			} else if (playerTurnCounter == 3) {
+				Collections.reverse(player.getDeck());
 				try {
 					Card card = player.getDeck().get(0);
 					player.drawCard(card);
@@ -58,6 +61,7 @@ public class GameFlow {
 						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
 				}
 			} else {
+				Collections.reverse(player.getDeck());
 				try {
 					Card card = player.getDeck().get(0);
 					player.drawCard(card);
@@ -156,6 +160,9 @@ public class GameFlow {
 			// Choices must be a number between -1 and the size of the number of actions in the player's hand
 			if (choice >= 0 && choice <= player.getAction().size() && player.getNumActions() > 0) {
 				while (player.getAction().size() != 0) {
+					if (choice == -1)
+						break;
+					
 					Card card = player.getAction().get(choice);
 					int IDOfCard = Integer.parseInt(card.getID());
 					
@@ -173,7 +180,7 @@ public class GameFlow {
 						System.out.println();
 						choice = scan.nextInt();
 					} else {
-						System.out.println("You have no Action cards to play. Press -1 to continue");
+						System.out.println("You have no Action cards to play and/or you ran out of Actions to play Action cards. Press -1 to continue");
 						choice = scan.nextInt();
 						break;
 					}

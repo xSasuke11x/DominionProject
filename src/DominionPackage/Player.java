@@ -152,7 +152,9 @@ public class Player {
 	}
 	
 	public void addCardToDeck(Card card) {
+		Collections.reverse(getDeck());
 		deck.add(card);
+		Collections.reverse(getDeck());
 	}
 	
 	public void addCardToAction(Card card) {

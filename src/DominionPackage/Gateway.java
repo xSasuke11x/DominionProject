@@ -1,6 +1,7 @@
 package DominionPackage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Gateway {
@@ -39,8 +40,10 @@ public class Gateway {
 		GameFlow gf = new GameFlow();
 		
 		// Shuffle the cards in each player's deck
-		for (Player player : players)
+		for (Player player : players) {
 			player.shuffleDeck(player.getDeck());
+			Collections.reverse(player.getDeck());
+		}
 		
 		// Initiate gameplay
 		for (; gf.getWinCondition() == false;) {
