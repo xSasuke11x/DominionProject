@@ -330,7 +330,6 @@ public class GameFlow {
 			} else {
 				System.out.println("Invalid choice. Press -1 to not buy any cards");
 				System.out.println("Press a number between 0 and " + (kingdomChoices.size() - 1) + " to buy that kingdom");
-				choice = scan.nextInt();
 			}
 		}
 	}

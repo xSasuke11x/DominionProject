@@ -499,7 +499,7 @@ public class CardEffects {
 		}
 		
 		// Let the player choose a kingdom
-		System.out.println("Press a number between 1 and " + fourCostKingdoms.size() + " to gain the card");
+		System.out.println("Press a number between 0 and " + (fourCostKingdoms.size() - 1) + " to gain the card");
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		int choice;
@@ -508,15 +508,16 @@ public class CardEffects {
 			
 			// Choices must be a number between 0 and the size of the 4-cost kingdoms list
 			if (choice > 0 && choice <= fourCostKingdoms.size() - 1) {
-				List<Card> kingdom = new ArrayList<Card>();
-				kingdom = fourCostKingdoms.get(choice);
+				Card card = fourCostKingdoms.get(choice).get(0);
 				
 				// Add the card from the kingdom to the discard pile
-				player.addCardToDiscardPile(kingdom.get(0));
-				System.out.println("You gained a " + kingdom.get(0).getName());
+				player.addCardToDiscardPile(card);
+				System.out.println("You gained a " + card.getName());
 				
 				// Remove the card from the kingdom
-				kingdoms.removeCardFromSupplyList(kingdom.get(0));
+				kingdoms.removeCardFromSupplyList(card);
+				int numLeft = Integer.parseInt(card.getNumLeft());
+				card.setNumLeft(Integer.toString(numLeft - 1));
 			} else {
 				System.out.println("Invalid number. Press a number between 0 and " + (fourCostKingdoms.size() - 1) + " to gain the card");
 				//choice = scan.nextInt();
