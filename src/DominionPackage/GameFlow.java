@@ -278,17 +278,19 @@ public class GameFlow {
 		
 		// If Merchant was played, add an extra coin
 		int silverCounter = 0;
+		int merchantCounter = 0;
 		boolean merchantPlayed = false;
 		for (Card card : player.getCardsInPlay()) {
 			if ("Merchant".equals(card.getName())) {
 				merchantPlayed = true;
+				merchantCounter++;
 			}
 			if ("Silver".equals(card.getName())) {
 				silverCounter++;
 			}
 		}
 		if (silverCounter > 0 && merchantPlayed == true)
-			player.addExtraCoins(1);
+			player.addExtraCoins(1 * merchantCounter);
 		
 		System.out.println("Total coins in play: " + player.getExtraCoins());
 		System.out.println();

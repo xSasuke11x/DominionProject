@@ -340,20 +340,6 @@ public class CardEffects {
 		
 		// +1 Action
 		player.addNumActions(1);
-		
-		/*int silverCounter = 0;
-		
-		// Get the cards in play and see if any of them are Silver
-		for (Card card : player.getCardsInPlay()) {
-			if ("Silver".equals(card.getName())) {
-				silverCounter++;
-				break;
-			}
-		}
-		
-		// If a silver was played, get an extra coin for this turn
-		if (silverCounter > 0)
-			player.addExtraCoins(1);*/
 	}
 	
 	public void Vassal(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
