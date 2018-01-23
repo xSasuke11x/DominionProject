@@ -23,7 +23,7 @@ public class GameFlow {
 					Card card = player.getDeck().get(0);
 					player.drawCard(card);
 				} catch (IndexOutOfBoundsException e) {
-					if (player.getDeck().size() > 0 || player.getDiscardPile().size() > 0) {
+					if (player.getDiscardPile().size() > 0) {
 						System.out.println("You have no more cards to draw. Reshuffling deck");
 						restartDeck(player);
 						Card card = player.getDeck().get(0);
@@ -36,7 +36,7 @@ public class GameFlow {
 					Card card = player.getDeck().get(0);
 					player.drawCard(card);
 				} catch (IndexOutOfBoundsException e) {
-					if (player.getDeck().size() > 0 || player.getDiscardPile().size() > 0) {
+					if (player.getDiscardPile().size() > 0) {
 						System.out.println("You have no more cards to draw. Reshuffling deck");
 						restartDeck(player);
 						Card card = player.getDeck().get(0);
@@ -49,7 +49,7 @@ public class GameFlow {
 					Card card = player.getDeck().get(0);
 					player.drawCard(card);
 				} catch (IndexOutOfBoundsException e) {
-					if (player.getDeck().size() > 0 || player.getDiscardPile().size() > 0) {
+					if (player.getDiscardPile().size() > 0) {
 						System.out.println("You have no more cards to draw. Reshuffling deck");
 						restartDeck(player);
 						Card card = player.getDeck().get(0);
@@ -62,7 +62,7 @@ public class GameFlow {
 					Card card = player.getDeck().get(0);
 					player.drawCard(card);
 				} catch (IndexOutOfBoundsException e) {
-					if (player.getDeck().size() > 0 || player.getDiscardPile().size() > 0) {
+					if (player.getDiscardPile().size() > 0) {
 						System.out.println("You have no more cards to draw. Reshuffling deck");
 						restartDeck(player);
 						Card card = player.getDeck().get(0);

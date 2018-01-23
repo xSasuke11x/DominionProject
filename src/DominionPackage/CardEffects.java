@@ -18,7 +18,7 @@ public class CardEffects {
 		effects.put(4, () -> Platinum(kingdoms, playerTurnCounter, players));
 		effects.put(10, () -> Cellar(kingdoms, playerTurnCounter, players));
 		effects.put(11, () -> Chapel(kingdoms, playerTurnCounter, players));
-		effects.put(12, () -> Moat(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
+		effects.put(12, () -> Moat(kingdoms, playerTurnCounter, players));
 		effects.put(13, () -> Harbinger(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(14, () -> Merchant(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(15, () -> Vassal(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
@@ -106,7 +106,8 @@ public class CardEffects {
 	}
 	
 	public void Cellar(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
-		System.out.println("Playing Cellar");
+		System.out.println("Cellar being played");
+		System.out.println();
 		
 		Player player = players.get(playerTurnCounter - 1);
 		
@@ -195,7 +196,7 @@ public class CardEffects {
 	}
 	
 	public void Chapel(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
-		System.out.println("Playing Chapel");
+		System.out.println("Chapel being played");
 		System.out.println();
 		
 		Player player = players.get(playerTurnCounter - 1);
@@ -250,21 +251,33 @@ public class CardEffects {
 		}
 	}
 	
-	public void Moat(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
-		if (playerTurnCounter == 1) {
-			Card card = player1.getDeck().get(0);
-			Card card2 = player1.getDeck().get(1);
-			
-			// +2 Cards
-			player1.drawCard(card);
-			System.out.println("You drew " + card);
-			player1.drawCard(card2);
-			System.out.println("You drew " + card);
-			System.out.println();
-			System.out.println("Your hand: ");
-			for (Card card3 : player1.getCardsInHand())
-				System.out.println(card3);
+	public void Moat(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Moat being played");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		
+		for (int i = 0; i < 2; i++) {
+			try {
+				Card card = player.getDeck().get(0);
+				player.drawCard(card);		// Try to draw a card
+				System.out.println("You drew " + card);
+			} catch (IndexOutOfBoundsException e) {
+				if (player.getDiscardPile().size() > 0) {		// Reshuffle the deck if drawing a card doesn't work
+					System.out.println("You have no more cards to draw. Reshuffling deck");
+					while (player.getDiscardPile().size() != 0) {
+						Card card = player.getDiscardPile().get(0);
+						player.addCardToDeck(card);			// Add the card from the discard pile to the deck
+						player.removeCardFromDiscardPile(card);			// Remove the card from the discard pile
+					}
+					Card card = player.getDeck().get(0);
+					player.drawCard(card);		// Draw a card
+					System.out.println("You drew " + card);
+				} else
+					System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
+			}
 		}
+		printCardsInHand(player);		// Print out the hand
 	}
 	
 	public void Harbinger(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
