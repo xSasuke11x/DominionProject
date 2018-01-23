@@ -19,14 +19,14 @@ public class CardEffects {
 		effects.put(10, () -> Cellar(kingdoms, playerTurnCounter, players));
 		effects.put(11, () -> Chapel(kingdoms, playerTurnCounter, players));
 		effects.put(12, () -> Moat(kingdoms, playerTurnCounter, players));
-		effects.put(13, () -> Harbinger(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		effects.put(14, () -> Merchant(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		effects.put(15, () -> Vassal(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		effects.put(16, () -> Village(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		/*effects.put(17, () -> Workshop(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
+		effects.put(13, () -> Harbinger(kingdoms, playerTurnCounter, players));
+		effects.put(14, () -> Merchant(kingdoms, playerTurnCounter, players));
+		effects.put(15, () -> Vassal(kingdoms, playerTurnCounter, players));
+		effects.put(16, () -> Village(kingdoms, playerTurnCounter, players));
+		effects.put(17, () -> Workshop(kingdoms, playerTurnCounter, players));
 		effects.put(18, () -> Bureaucrat(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		effects.put(19, () -> Gardens(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		effects.put(20, () -> Militia(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
+		effects.put(19, () -> Gardens(kingdoms, playerTurnCounter, players));
+		/*effects.put(20, () -> Militia(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(21, () -> Moneylender(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(22, () -> Poacher(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(23, () -> Remodel(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
@@ -54,6 +54,28 @@ public class CardEffects {
 		System.out.println("Cards in hand:");
 		for (int i = 0; i < player.getCardsInHand().size(); i++) {
 			System.out.println(i + " = " + player.getCardsInHand().get(i).getName());
+		}
+	}
+	
+	public void attemptDrawFromDeck(Player player) {
+		try {
+			Card card = player.getDeck().get(0);
+			player.drawCard(card);
+			System.out.println("You drew " + card);
+		} catch (IndexOutOfBoundsException e) {
+			if (player.getDiscardPile().size() > 0) {		// Reshuffle the deck if drawing a card doesn't work
+				System.out.println("You have no more cards to draw. Reshuffling deck");
+				while (player.getDiscardPile().size() != 0) {
+					Card card = player.getDiscardPile().get(0);
+					player.addCardToDeck(card);			// Add the card from the discard pile to the deck
+					player.removeCardFromDiscardPile(card);			// Remove the card from the discard pile
+				}
+				Collections.shuffle(player.getDeck());
+				Card card = player.getDeck().get(0);
+				player.drawCard(card);		// Draw a card
+				System.out.println("You drew " + card);
+			} else
+				System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
 		}
 	}
 	
@@ -147,9 +169,6 @@ public class CardEffects {
 				System.out.println("You chose to remove " + card.getName() + " from your hand");
 				player.removeCardFromHand(card);
 				
-				// Remove the card from the type list
-				//player.removeCardFromTypeList(card);
-				
 				// Add the card that was removed from the hand to the discard pile
 				player.addCardToDiscardPile(card);
 				
@@ -174,22 +193,7 @@ public class CardEffects {
 		
 		for (int i = 0; i < numDiscard; i++) {
 			// Draw the top card from the deck and remove it from the deck
-			if (player.getDeck().size() != 0) {
-				Card card = player.getDeck().get(0);
-				player.drawCard(card);
-				System.out.println("You drew " + card);
-			} else {
-				System.out.println("Your deck is empty. Reshuffling now");
-				while (player.getDiscardPile().size() != 0) {
-					Card card = player.getDiscardPile().get(0);
-					player.addCardToDeck(card);
-					player.removeCardFromDiscardPile(card);
-				}
-				Collections.shuffle(player.getDeck());
-				Card card2 = player.getDeck().get(0);
-				player.drawCard(card2);
-				System.out.println("You drew " + card2);
-			}
+			attemptDrawFromDeck(player);
 		}
 		
 		printCardsInHand(player);
@@ -258,128 +262,113 @@ public class CardEffects {
 		Player player = players.get(playerTurnCounter - 1);
 		
 		for (int i = 0; i < 2; i++) {
-			try {
-				Card card = player.getDeck().get(0);
-				player.drawCard(card);		// Try to draw a card
-				System.out.println("You drew " + card);
-			} catch (IndexOutOfBoundsException e) {
-				if (player.getDiscardPile().size() > 0) {		// Reshuffle the deck if drawing a card doesn't work
-					System.out.println("You have no more cards to draw. Reshuffling deck");
-					while (player.getDiscardPile().size() != 0) {
-						Card card = player.getDiscardPile().get(0);
-						player.addCardToDeck(card);			// Add the card from the discard pile to the deck
-						player.removeCardFromDiscardPile(card);			// Remove the card from the discard pile
-					}
-					Card card = player.getDeck().get(0);
-					player.drawCard(card);		// Draw a card
-					System.out.println("You drew " + card);
-				} else
-					System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
-			}
+			attemptDrawFromDeck(player);
 		}
 		printCardsInHand(player);		// Print out the hand
 	}
 	
-	public void Harbinger(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
-		if (playerTurnCounter == 1) {
+	public void Harbinger(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Harbinger being played");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
 			
-			// +1 Card
-			Card card = player1.getDeck().get(0);
-			player1.drawCard(card);
-			System.out.println("You drew " + card);
+		// +1 Card
+		attemptDrawFromDeck(player);
+		
+		// +1 Action
+		player.addNumActions(1);
+		
+		// Effect
+		if (player.getDiscardPile().size() != 0) {
+			System.out.println("Look through the discard pile and place it onto your deck");
+			System.out.println("Press a number between 0 and " + (player.getDiscardPile().size() - 1) + "to place a card from"
+					+ " your discard pile onto the deck");
 			
-			// +1 Action
-			player1.addNumActions(1);
+			@SuppressWarnings("resource")
+			Scanner scan = new Scanner(System.in);
 			
-			// Effect
-			if (player1.getDiscardPile().size() != 0) {
-				System.out.println("Look through the discard pile and place it onto your deck");
-				System.out.println("Press -1 to cancel the effect or press a number between 0 and " + (player1.getDiscardPile().size() - 1) + "to place a card from"
-						+ " your discard pile onto the deck");
+			while (scan.hasNext()) {
+				int choice = scan.nextInt();
 				
-				@SuppressWarnings("resource")
-				Scanner scan = new Scanner(System.in);
-				//boolean continueLooping = true;
-				
-				while (scan.hasNext()) {
-					int choice = scan.nextInt();
-					
-					// Print out the cards with the value
-					System.out.println("Cards in discard pile:");
-					for (int i = 0; i < player1.getDiscardPile().size(); i++) {
-						System.out.println((i + 1) + " = " + player1.getDiscardPile().get(i).getName());
-					}
-					
-					// Remove the chosen card from the hand and add it to the discard pile
-					if (choice == -1) {
-						break;
-					} else if (choice >= 0 || choice <= player1.getDiscardPile().size() - 1) {
-						
-						// Get the selected card
-						Card card2 = player1.getDiscardPile().get(choice);
-						System.out.println("You selected " + card2 + " to place onto your deck");
-						
-						// Remove the card from the discard pile
-						player1.removeCardFromDiscardPile(card);
-						
-						// Add the card that was removed from the hand to the deck
-						player1.addCardToDeck(card);
-						
-						//continueLooping = false;
-						break;
-					} else {
-						System.out.println("Invalid input. Press -1 to cancel the effect or press a number between 0 and " + (player1.getDiscardPile().size() - 1) + 
-								"to place a card from your discard pile onto the deck");
-						choice = scan.nextInt();
-					}
+				// Print out the cards with the value
+				System.out.println("Cards in discard pile:");
+				for (int i = 0; i < player.getDiscardPile().size(); i++) {
+					System.out.println(i + " = " + player.getDiscardPile().get(i));
 				}
-			} else
-				System.out.println("Your discard pile is empty");
-		}
-	}
-	
-	public void Merchant(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
-		if (playerTurnCounter == 1) {
-			
-			// +1 Card
-			player1.drawCard(player1.getDeck().get(0));
-			
-			// +1 Action
-			player1.addNumActions(1);
-			
-			int silverCounter = 0;
-			
-			
-			// Get the cards in play and see if any of them are Silver
-			for (Card card : player1.getCardsInPlay()) {
-				if (card.getName().equals("Silver"))
-					silverCounter++;
+				
+				// Remove the chosen card from the hand and add it to the discard pile
+				if (choice >= 0 || choice <= player.getDiscardPile().size() - 1) {
+					// Get the selected card
+					Card card = player.getDiscardPile().get(choice);
+					System.out.println("You selected " + card + " to place onto your deck");
+					
+					// Add the card from the discard pile onto the deck
+					player.addCardToDeck(card);
+					
+					// Remove the card from the discard pile
+					player.removeCardFromDiscardPile(card);
+					
+					break;
+				} else {
+					System.out.println("Invalid input. Press a number between 0 and " + (player.getDiscardPile().size() - 1) + "to place a card from "
+							+ "your discard pile onto the deck");
+					//choice = scan.nextInt();
+				}
 			}
-			
-			// If a silver was played, get an extra coin for this turn
-			if (silverCounter >= 1)
-				player1.addExtraCoins(1);
-		}
+		} else
+			System.out.println("Your discard pile is empty");
 	}
 	
-	public void Vassal(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
-		if (playerTurnCounter == 1) {
+	public void Merchant(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Merchant being played");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
 			
-			// +2 Coins
-			player1.addExtraCoins(2);
+		// +1 Card
+		attemptDrawFromDeck(player);	
+		
+		// +1 Action
+		player.addNumActions(1);
+		
+		/*int silverCounter = 0;
+		
+		// Get the cards in play and see if any of them are Silver
+		for (Card card : player.getCardsInPlay()) {
+			if ("Silver".equals(card.getName())) {
+				silverCounter++;
+				break;
+			}
+		}
+		
+		// If a silver was played, get an extra coin for this turn
+		if (silverCounter > 0)
+			player.addExtraCoins(1);*/
+	}
+	
+	public void Vassal(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Vassal being played");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
 			
-			// This is the card on top of the deck
-			Card card = player1.getDeck().get(0);
+		// +2 Coins
+		player.addExtraCoins(2);
 			
-			// Discard the top card of the deck and add it to the discard pile
-			player1.addCardToDiscardPile(card);
-			player1.removeCardFromDeck(card);
-			
+		//Card card = new Card(null, null, null, null, null, null, null, null, null);
+		// This is the card on top of the deck
+		/*if (player.getDeck().size() != 0) {
+			//Card card = player.getDeck().get(0);
+		}*/
+		try {
+			Card card = player.getDeck().get(0);	// Get the top card of the deck
+			player.addCardToDiscardPile(card);		// Add a copy of the top of the deck to the discard pile
+			player.removeCardFromDeck(card);		// Remove the top card of the deck
 			System.out.println("You discarded " + card);
 			
-			// If the top card of the discard pile is an action card...
-			if ("Action".equals(card.getType1())) {
-				System.out.println(player1.getDiscardPile().get(0).getName() + " is an Action card. Would you like to play it? Press [y] for yes or [n] for no.");
+			if ("Action".equals(card.getType1())) {			// The card discarded is an Action card
+				System.out.println(player.getDiscardPile().get(0).getName() + " is an Action card. Would you like to play it? Press [y] for yes or [n] for no.");
 				
 				@SuppressWarnings("resource")
 				Scanner scan = new Scanner(System.in);
@@ -389,72 +378,148 @@ public class CardEffects {
 					
 					// If the player chooses to play the Action card, remove the card from the discard pile and add it to the player's cards in play
 					if (choice.toLowerCase().equals("y")) {
-						player1.addCardToCardsInPlay(card);
-						player1.removeCardFromDiscardPile(card);
-					} else 
+						int IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the Action card discarded
+						player.addCardToCardsInPlay(card);					// Add a copy of the top of the deck to the discard pile
+						player.removeCardFromDiscardPile(card);				// Remove the top card of the deck
+						getCardEffect(IDOfCard, kingdoms, playerTurnCounter, players);			// Play the Action card
+					} else {
+						System.out.println("You chose not to play " + card.getName());
+						System.out.println();
 						break;
-				}
-			}
-		}
-	}
-	
-	public void Village(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
-		if (playerTurnCounter == 1) {
-			
-			// +1 Card
-			player1.drawCard(player1.getDeck().get(0));
-			
-			// +1 Action
-			player1.addNumActions(2);
-		}
-	}
-	
-	public void Workshop(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
-		if (playerTurnCounter == 1) {
-			
-			List<List<Card>> fourCostKingdoms = new ArrayList<List<Card>>();
-			
-			// Add all 4-cost kingdoms to the fourCostKingdoms list
-			for (List<Card> kingdom : kingdoms.supplyList) {
-				try {
-					if (Integer.parseInt(kingdom.get(0).getCost()) <= 4) {
-						fourCostKingdoms.add(kingdom);
 					}
-				} catch (NumberFormatException ex) {
-					// Catch is for formality to catch out integer parsing errors. The Try block still parses all 4-cost kingdoms correctly.
 				}
+			} else {
+				System.out.println(card.getName() + " is not an Action card");
+				System.out.println();
 			}
+		} catch (IndexOutOfBoundsException e) {
+			if (player.getDiscardPile().size() > 0) {		// Re-shuffle the deck if drawing a card doesn't work
+				System.out.println("You have no more cards to draw. Reshuffling deck");
+				while (player.getDiscardPile().size() != 0) {
+					Card card = player.getDiscardPile().get(0);
+					player.addCardToDeck(card);				// Add the card from the discard pile to the deck
+					player.removeCardFromDiscardPile(card);			// Remove the card from the discard pile
+				}
+				Collections.shuffle(player.getDeck());		// Shuffle the deck
+				Card card = player.getDeck().get(0);		// Get the top card of the deck
+				player.addCardToDiscardPile(card);			// Add a copy of the top of the deck to the discard pile
+				player.removeCardFromDeck(card);			// Remove the top card of the deck
+				System.out.println("You discarded " + card);
+				
+				if ("Action".equals(card.getType1())) {
+					System.out.println(player.getDiscardPile().get(0).getName() + " is an Action card. Would you like to play it? Press [y] for yes or [n] for no.");
+					
+					@SuppressWarnings("resource")
+					Scanner scan = new Scanner(System.in);
+					String choice;
+					while (scan.hasNext()) {
+						choice = scan.nextLine();
+						
+						// If the player chooses to play the Action card, remove the card from the discard pile and add it to the player's cards in play
+						if (choice.toLowerCase().equals("y")) {
+							int IDOfCard = Integer.parseInt(card.getID());
+							player.addCardToCardsInPlay(card);
+							player.removeCardFromDiscardPile(card);
+							getCardEffect(IDOfCard, kingdoms, playerTurnCounter, players);
+						} else {
+							System.out.println("You chose not to play " + card.getName());
+							System.out.println();
+							break;
+						}
+					}
+				}
+			} else
+				System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
+		}
+		
+		// Discard the top card of the deck and add it to the discard pile
+		/*player.addCardToDiscardPile(card);
+		player.removeCardFromDeck(card);*/
+		
+		//System.out.println("You discarded " + card);
+		
+		// If the top card of the discard pile is an action card...
+		/*if ("Action".equals(card.getType1())) {
+			System.out.println(player.getDiscardPile().get(0).getName() + " is an Action card. Would you like to play it? Press [y] for yes or [n] for no.");
 			
-			// Print out the 4-cost kingdoms
-			int i = 1;
-			System.out.println("The following are the 4-cost kingdoms:");
-			for (List<Card> kingdom : fourCostKingdoms) {
-				System.out.println(i + " = " + kingdom);
-				i++;
-			}
-			
-			// Let the player choose a kingdom
-			System.out.println("Press a number between 1 and " + fourCostKingdoms.size() + " to gain the card");
 			@SuppressWarnings("resource")
 			Scanner scan = new Scanner(System.in);
 			String choice;
 			while (scan.hasNext()) {
 				choice = scan.nextLine();
 				
-				// Choices must be a number between 1 and the size of the 4-cost kingdoms list
-				if (Integer.parseInt(choice) > 0 && Integer.parseInt(choice) <= fourCostKingdoms.size()) {
-					List<Card> kingdom = new ArrayList<Card>();
-					kingdom = fourCostKingdoms.get(Integer.parseInt(choice) - 1);
-					
-					// Add the card from the kingdom to the discard pile
-					player1.addCardToDiscardPile(kingdom.get(0));
-					
-					// Remove the card from the kingdom
-					kingdoms.removeCardFromSupplyList(kingdom.get(0));
-				} else {
-					System.out.println("Invalid number. Please press a number between 1 and " + fourCostKingdoms.size() + " to gain the card");
-					choice = scan.nextLine();
+				// If the player chooses to play the Action card, remove the card from the discard pile and add it to the player's cards in play
+				if (choice.toLowerCase().equals("y")) {
+					player.addCardToCardsInPlay(card);
+					player.removeCardFromDiscardPile(card);
+				} else 
+					break;
+			}
+		}*/
+	}
+	
+	public void Village(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Village being played");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+			
+		// +1 Card
+		attemptDrawFromDeck(player);
+			
+		// +2 Actions
+		player.addNumActions(2);
+	}
+	
+	public void Workshop(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Workshop being played");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		
+		List<List<Card>> fourCostKingdoms = new ArrayList<List<Card>>();
+		
+		// Add all 4-cost kingdoms to the fourCostKingdoms list
+		for (List<Card> kingdom : kingdoms.supplyList) {
+			try {
+				if (Integer.parseInt(kingdom.get(0).getCost()) <= 4) {
+					fourCostKingdoms.add(kingdom);
 				}
+			} catch (NumberFormatException ex) {
+				// Catch is for formality to catch out integer parsing errors. The Try block still parses all 4-cost kingdoms correctly.
+			}
+		}
+		
+		// Print out the 4-cost kingdoms
+		int i = 0;
+		System.out.println("The following are the 4-cost kingdoms:");
+		for (List<Card> kingdom : fourCostKingdoms) {
+			System.out.println(i + " = " + kingdom.get(0));
+			i++;
+		}
+		
+		// Let the player choose a kingdom
+		System.out.println("Press a number between 1 and " + fourCostKingdoms.size() + " to gain the card");
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		int choice;
+		while (scan.hasNext()) {
+			choice = scan.nextInt();
+			
+			// Choices must be a number between 0 and the size of the 4-cost kingdoms list
+			if (choice > 0 && choice <= fourCostKingdoms.size() - 1) {
+				List<Card> kingdom = new ArrayList<Card>();
+				kingdom = fourCostKingdoms.get(choice);
+				
+				// Add the card from the kingdom to the discard pile
+				player.addCardToDiscardPile(kingdom.get(0));
+				System.out.println("You gained a " + kingdom.get(0).getName());
+				
+				// Remove the card from the kingdom
+				kingdoms.removeCardFromSupplyList(kingdom.get(0));
+			} else {
+				System.out.println("Invalid number. Press a number between 0 and " + (fourCostKingdoms.size() - 1) + " to gain the card");
+				//choice = scan.nextInt();
 			}
 		}
 	}
@@ -524,35 +589,13 @@ public class CardEffects {
 		}
 	}
 	
-	public void Gardens(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
-		if (playerTurnCounter == 1) {
-			
-			// Set totalNumCards to the sum of the cards in the deck and the hand 
-			int totalNumCards = player1.getCardsInHand().size() + player1.getDeck().size();
-			
-			// Add the total to the extra victory points for that player
-			player1.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
-		} else if (playerTurnCounter == 2) {
-			
-			// Set totalNumCards to the sum of the cards in the deck and the hand 
-			int totalNumCards = player2.getCardsInHand().size() + player2.getDeck().size();
-			
-			// Add the total to the extra victory points for that player
-			player2.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
-		} else if (playerTurnCounter == 3) {
-			
-			// Set totalNumCards to the sum of the cards in the deck and the hand 
-			int totalNumCards = player3.getCardsInHand().size() + player3.getDeck().size();
-			
-			// Add the total to the extra victory points for that player
-			player3.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
-		} else if (playerTurnCounter == 4) {
-			
-			// Set totalNumCards to the sum of the cards in the deck and the hand 
-			int totalNumCards = player4.getCardsInHand().size() + player4.getDeck().size();
-			
-			// Add the total to the extra victory points for that player
-			player4.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
-		}
+	public void Gardens(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		Player player = players.get(playerTurnCounter - 1);
+		
+		// Set totalNumCards to the sum of the cards in the deck and the hand 
+		int totalNumCards = player.getCardsInHand().size() + player.getDeck().size();
+		
+		// Add the total to the extra victory points for that player
+		player.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
 	}
 }

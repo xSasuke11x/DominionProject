@@ -218,7 +218,7 @@ public class GameFlow {
 		CardEffects ce = new CardEffects();
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
-		int choice;
+		int choice, IDOfCard = 0;
 		
 		printTreasuresInHand(player);
 		
@@ -235,7 +235,7 @@ public class GameFlow {
 			// Choices must be a number between -2 and the size of the player's hand
 			if (choice >= 0 && choice <= player.getTreasure().size() - 1) {
 				Card card = player.getTreasure().get(choice);		// Get the first card in the Treasure list
-				int IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the first card in the Treasure list
+				IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the first card in the Treasure list
 				
 				player.addCardToCardsInPlay(card);			// Put the treasure in play
 				player.removeCardFromHand(card);			// Remove the card from the hand
@@ -251,7 +251,7 @@ public class GameFlow {
 			} else if (choice == -1) {
 				while (player.getTreasure().size() != 0) {
 					Card card = player.getTreasure().get(0);			// Get the first card in the Treasure list
-					int IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the first card in the Treasure list
+					IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the first card in the Treasure list
 					
 					player.addCardToCardsInPlay(card);			// Put the treasure in play
 					player.removeCardFromHand(card);			// Remove the card from the hand
@@ -268,6 +268,20 @@ public class GameFlow {
 			}
 			printTreasuresInHand(player);
 		}
+		
+		// If Merchant was played, add an extra coin
+		int silverCounter = 0;
+		boolean merchantPlayed = false;
+		for (Card card : player.getCardsInPlay()) {
+			if ("Merchant".equals(card.getName())) {
+				merchantPlayed = true;
+			}
+			if ("Silver".equals(card.getName())) {
+				silverCounter++;
+			}
+		}
+		if (silverCounter > 0 && merchantPlayed == true)
+			player.addExtraCoins(1);
 		
 		System.out.println("Total coins in play: " + player.getExtraCoins());
 		System.out.println();
