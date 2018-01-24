@@ -24,7 +24,7 @@ public class CardEffects {
 		effects.put(15, () -> Vassal(kingdoms, playerTurnCounter, players));
 		effects.put(16, () -> Village(kingdoms, playerTurnCounter, players));
 		effects.put(17, () -> Workshop(kingdoms, playerTurnCounter, players));
-		effects.put(18, () -> Bureaucrat(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
+		effects.put(18, () -> Bureaucrat(kingdoms, playerTurnCounter, players));
 		effects.put(19, () -> Gardens(kingdoms, playerTurnCounter, players));
 		/*effects.put(20, () -> Militia(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(21, () -> Moneylender(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
@@ -492,69 +492,154 @@ public class CardEffects {
 		}
 	}
 	
-	public void Bureaucrat(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
-		if (playerTurnCounter == 1) {
-			
-			// Gain a Silver onto the deck
-			player1.addCardToDeck(kingdoms.silver.get(0));
-			
-			// Remove the Silver from the supply list
-			kingdoms.removeCardFromSupplyList(kingdoms.silver.get(0));
-			
-			// For two players...
-			if (player1.getNumPlayers() == 2) {
-				System.out.println("All other players should now look away until they say it is ok to look.");
+	public void Bureaucrat(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Bureaucrat being played");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		List<Player> copyPlayers = new ArrayList<Player>();
+		List<Player> sublistPlayers = new ArrayList<Player>();
+		int i = 0, turnCheck = 0;
+		
+		// Copy over each player to a new copy list and assign it the same turn counter from the players list
+		for (Player aPlayer : players) {
+			copyPlayers.add(aPlayer);
+			copyPlayers.get(i).setTurnCounter(playerTurnCounter);
+			i++;
+			playerTurnCounter++;
+			if (player.getNumPlayers() == 2)
+				playerTurnCounter = 1;
+			else if (player.getNumPlayers() == 3 && playerTurnCounter == 3)
+				playerTurnCounter = 1;
+			else if (player.getNumPlayers() == 4 && playerTurnCounter == 4)
+				playerTurnCounter = 1;
+		}
+		// Only add players to another new list whose turn isn't the current player
+		for (Player aPlayer : copyPlayers) {
+			if (aPlayer.getTurnCounter() != player.getTurnCounter())
+				sublistPlayers.add(aPlayer);
+		}
+		//player.addCardToDeck(kingdoms.silver.get(0));		// Gain a Silver onto the deck
+		//System.out.println("TEST: Num of sublistPlayers = " + sublistPlayers.size());
+		/*for (int j = 0; j < kingdoms.getSupplyList().get(j).size(); j++) {
+			if (Integer.parseInt(kingdoms.getSupplyList().get(j).get(0).getNumLeft()) > 0)
+				player.addCardToDeck(kingdoms.silver.get(0));		// Gain a Silver onto the deck
+			else
+				System.out.println("There are no more Silver cards to gain from the Supply list");
+		}*/
+		
+		// Gain a Silver card
+		for (List<Card> kingdom : kingdoms.getSupplyList()) {								
+			if (Integer.parseInt(kingdom.get(0).getNumLeft()) > 0 && "Silver".equals(kingdoms.getSupplyList().get(0).get(0).getID())) {
+				Card card = kingdom.get(0);
 				
-				// Delay next output for 3 seconds
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					// Do nothing
-				}
+				// Place the Silver onto the deck
+				player.addCardToDeck(card);
 				
-				// Print out the cards in the hand
-				int i = 1;
-				List<Card> vicCardsInHand = new ArrayList<Card>();
-				Card returnedCard = new Card(null, null, null, null, null, null, null, null, null);
-				
+				// Remove the Silver from the supply list
+				kingdoms.removeCardFromSupplyList(card);
+				break;
+			}
+			//j++;
+		}
+		
+		// Iterate through each other player based on turn number
+		for (Player thePlayer : sublistPlayers) {
+			int j = 0;
+			System.out.println("This is Player " + thePlayer.getTurnCounter());
+			
+			if (thePlayer.getVictory().size() > 0) {
+				// Print out the Victory cards in hand
 				System.out.println("Here are the victory cards in your hand:");
-				
-				for (Card card : player2.getCardsInHand()) {
-					if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || 
-						"Victory".equals(card.getType3()) || "Victory".equals(card.getType4())) {
-						vicCardsInHand.add(card);
-						System.out.println(i + " = " + card.getName());
-					}
-					i++;
+				for (Card card : thePlayer.getVictory()) {
+					System.out.println(j + " = " + card);
+					j++;
 				}
 				
-				System.out.println("Press a number between 1 and " + vicCardsInHand.size() + " to place the card back onto the deck.");
+				System.out.println("Press a number between 0 and " + (thePlayer.getVictory().size() - 1) + " to place the card back onto the deck.");
 				
 				@SuppressWarnings("resource")
 				Scanner scan = new Scanner(System.in);
-				String choice;
+				int choice;
 				while (scan.hasNext()) {
-					choice = scan.nextLine();
+					choice = scan.nextInt();
 					
-					if (Integer.parseInt(choice) > 0 && Integer.parseInt(choice) <= vicCardsInHand.size()) {
-						// Put a victory card from the hand onto the deck
-						returnedCard = vicCardsInHand.get(Integer.parseInt(choice) - 1);
-						player2.addCardToDeck(returnedCard);
-						
-						// Remove the first card from the hand that has the same name as the target card
-						for (Card card : player2.getCardsInHand()) {
-							if (returnedCard.getName().equals(card.getName())) {
-								player2.getCardsInHand().remove(card);
-								break;
-							}
-						}
+					if (choice >= 0 && choice <= thePlayer.getVictory().size() - 1) {
+						Card returnedCard = thePlayer.getVictory().get(choice);
+						thePlayer.addCardToDeck(returnedCard);				// Put a Victory card from the hand onto the deck
+						thePlayer.removeCardFromHand(returnedCard);			// Remove the Victory card from the hand and remove it from the type list
+						turnCheck++;
+						break;
 					} else {
-						System.out.println("Invalid choice. Press a number between 1 and " + vicCardsInHand.size() + " to place the card back onto the deck.");
-						choice = scan.nextLine();
+						System.out.println("Invalid choice. Press a number between 0 and " + (thePlayer.getVictory().size() - 1) 
+								+ " to place the card back onto the deck.");
+						//choice = scan.nextInt();
 					}
 				}
+			} else {
+				System.out.println("Player " + thePlayer.getTurnCounter() + " has no Victory cards");
+				System.out.println("Revealing the hand now");
+				printCardsInHand(thePlayer);
+				turnCheck++;
 			}
+			if ((player.getNumPlayers() == 2 && turnCheck == 1) || (player.getNumPlayers() == 3 && turnCheck == 2) 
+					|| (player.getNumPlayers() == 4 && turnCheck == 3))
+				break;		// Exit if all the players have returned a card or has revealed their hand
 		}
+		
+		// For two players...
+		/*if (player.getNumPlayers() == 2) {
+			System.out.println("All other players should now look away until they say it is ok to look.");
+			
+			// Delay next output for 3 seconds
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// Do nothing
+			}
+			
+			// Print out the cards in the hand
+			//int i = 0;
+			List<Card> vicCardsInHand = new ArrayList<Card>();
+			Card returnedCard = new Card(null, null, null, null, null, null, null, null, null);
+			
+			System.out.println("Here are the victory cards in your hand:");
+			
+			for (Card card : player2.getCardsInHand()) {
+				if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || "Victory".equals(card.getType3()) 
+						|| "Victory".equals(card.getType4())) {
+					vicCardsInHand.add(card);
+					System.out.println(i + " = " + card.getName());
+				}
+				i++;
+			}
+			
+			System.out.println("Press a number between 0 and " + (vicCardsInHand.size() - 1) + " to place the card back onto the deck.");
+			
+			@SuppressWarnings("resource")
+			Scanner scan = new Scanner(System.in);
+			String choice;
+			while (scan.hasNext()) {
+				choice = scan.nextLine();
+				
+				if (Integer.parseInt(choice) > 0 && Integer.parseInt(choice) <= vicCardsInHand.size()) {
+					// Put a victory card from the hand onto the deck
+					returnedCard = vicCardsInHand.get(Integer.parseInt(choice) - 1);
+					player2.addCardToDeck(returnedCard);
+					
+					// Remove the first card from the hand that has the same name as the target card
+					for (Card card : player2.getCardsInHand()) {
+						if (returnedCard.getName().equals(card.getName())) {
+							player2.getCardsInHand().remove(card);
+							break;
+						}
+					}
+				} else {
+					System.out.println("Invalid choice. Press a number between 1 and " + vicCardsInHand.size() + " to place the card back onto the deck.");
+					choice = scan.nextLine();
+				}
+			}
+		}*/
 	}
 	
 	public void Gardens(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
