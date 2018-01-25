@@ -27,8 +27,8 @@ public class CardEffects {
 		effects.put(18, () -> Bureaucrat(kingdoms, playerTurnCounter, players));
 		effects.put(19, () -> Gardens(kingdoms, playerTurnCounter, players));
 		effects.put(20, () -> Militia(kingdoms, playerTurnCounter, players));
-		/*effects.put(21, () -> Moneylender(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		effects.put(22, () -> Poacher(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
+		effects.put(21, () -> Moneylender(kingdoms, playerTurnCounter, players));
+		/*effects.put(22, () -> Poacher(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(23, () -> Remodel(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(24, () -> Smithy(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(25, () -> ThroneRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
@@ -650,5 +650,42 @@ public class CardEffects {
 				break;		// Exit if all the players have discarded down to 3 cards in their hand
 			}
 		}
+	}
+	
+	public void Moneylender(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Moneylender being played");
+		System.out.println("Trash a Copper from your hand. If you do, +3 Coins");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		String choice;
+		
+		if (player.getCardsInHand().size() != 0) {
+			System.out.println("Do you want to trash a copper for +3 Coins? Press [y] for yes or [n] for no.");
+			while (scan.hasNext()) {
+				choice = scan.nextLine();
+				
+				if (choice.toLowerCase().equals("y")) {
+					// Search through the hand for a copper
+					for (Card card : player.getCardsInHand()) {
+						if ("Copper".equals(card.getName())) {
+							kingdoms.trash.add(card);				// Add the card to the player's discard pile
+							System.out.println("You trashed a " + card.getName());
+							player.removeCardFromHand(card);		// Remove the card from the player's hand
+							player.addExtraCoins(3);				// Add 3 extra coins to that player
+							break;
+						}
+					}
+					break;
+				} else {
+					System.out.println("You chose not to discard a copper");		// The player chose not to discard a Copper
+					break;
+				}
+			}
+		} else
+			System.out.println("You have no cards in your hand to discard");		// No cards in hand
 	}
 }
