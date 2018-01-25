@@ -9,6 +9,7 @@ public class TemporaryCardEffects {
 	public void Moneylender(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
 		if (playerTurnCounter == 1) {
 			
+			@SuppressWarnings("resource")
 			Scanner scan = new Scanner(System.in);
 			String choice;
 			int handLimit = 1;
@@ -74,6 +75,7 @@ public class TemporaryCardEffects {
 				// Keep in mind that there might not be cards in the hand to discard
 				if (player1.getCardsInHand().size() > 0) {
 					// Do actions while cards exist in the hand
+					@SuppressWarnings("resource")
 					Scanner scan = new Scanner(System.in);
 					String choice;
 					
@@ -119,6 +121,7 @@ public class TemporaryCardEffects {
 			
 			if (player1.getCardsInHand().size() > 0) {
 				System.out.println("Choose a number between 1 and " + player1.getCardsInHand().size() + " to trash.");
+				@SuppressWarnings("resource")
 				Scanner scan = new Scanner(System.in);
 				int choice;
 				boolean cardDiscarded = false;
@@ -171,6 +174,7 @@ public class TemporaryCardEffects {
 						
 						// Let the player choose a kingdom
 						System.out.println("Press a number between 1 and " + twoMoreCostKingdoms.size() + " to gain the card");
+						@SuppressWarnings("resource")
 						Scanner scan2 = new Scanner(System.in);
 						String choice2;
 						while (scan.hasNext()) {
