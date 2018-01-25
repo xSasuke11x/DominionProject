@@ -2,6 +2,7 @@ package DominionPackage;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,7 +18,31 @@ public class GameFlow {
 		
 		// Draw 5 cards
 		int initialDraw = 5;
-		for (int i = 0; i < initialDraw; i++) {
+		for (Player aPlayer : players) {
+			if (aPlayer.getCardsInHand().size() == 0) {
+				for (int i = 0; i < initialDraw; i++) {
+					Collections.reverse(aPlayer.getDeck());
+					try {
+						Card card = aPlayer.getDeck().get(0);
+						aPlayer.drawCard(card);
+					} catch (IndexOutOfBoundsException e) {
+						if (aPlayer.getDiscardPile().size() > 0) {
+							System.out.println("You have no more cards to draw. Reshuffling deck");
+							restartDeck(aPlayer);
+							Card card = aPlayer.getDeck().get(0);
+							aPlayer.drawCard(card);
+						} else
+							if (aPlayer.getCardsInHand().size() == 0)
+								break;		// There are not enough players so they have no hand
+							else
+								System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
+								// There are not enough cards in the deck to draw due to situations like Chapel
+					}
+				}
+			}
+		}
+		
+		/*for (int i = 0; i < initialDraw; i++) {
 			if (playerTurnCounter == 1) {	
 				Collections.reverse(player.getDeck());
 				try {
@@ -75,7 +100,7 @@ public class GameFlow {
 						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
 				}
 			}
-		}
+		}*/
 		
 		// Print the cards in the hand
 		printCardsInHand(player);
@@ -378,7 +403,7 @@ public class GameFlow {
 		resetNumActionsLeft(players);
 		resetNumBuysLeft(players);
 		resetExtraCoins(players);
-		checkWinCondition(kingdoms);
+		checkWinCondition(kingdoms, players);
 		
 		//return winCondition;
 	}
@@ -391,7 +416,7 @@ public class GameFlow {
 		}
 	}
 	
-	public void checkWinCondition(Kingdom kingdoms) {
+	public void checkWinCondition(Kingdom kingdoms, List<Player> players) {
 		//boolean winCondition = false;
 		int supplyCount = 0;
 		
@@ -406,6 +431,34 @@ public class GameFlow {
 			}
 			if (supplyCount == 3) {
 				setWinCondition(true);
+			}
+		}
+		
+		if (getWinCondition() == true) {
+			// Return all players' cards in their hand to the deck
+			System.out.println("Returning all cards in all players' hands back to their deck");
+			for (Player player : players) {
+				while (player.getCardsInHand().size() != 0) {
+					Card card = player.getCardsInHand().get(0);
+					player.addCardToDeck(card);
+					player.removeCardFromHand(card);
+				}
+			}
+			
+			// Return all players' cards in their discard pile to the deck
+			System.out.println("Returning all cards in all players' discard pile back to their deck");
+			for (Player player : players) {
+				while (player.getDiscardPile().size() != 0) {
+					Card card = player.getDiscardPile().get(0);
+					player.addCardToDeck(card);
+					player.removeCardFromDiscardPile(card);
+				}
+			}
+			
+			// Sort each players' deck by ID number
+			System.out.println("Sorting each players' deck by the card's ID number");
+			for (Player player : players) {
+				player.getDeck().sort(Comparator.comparing(Card::getID));
 			}
 		}
 		

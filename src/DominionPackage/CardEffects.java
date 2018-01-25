@@ -26,8 +26,8 @@ public class CardEffects {
 		effects.put(17, () -> Workshop(kingdoms, playerTurnCounter, players));
 		effects.put(18, () -> Bureaucrat(kingdoms, playerTurnCounter, players));
 		effects.put(19, () -> Gardens(kingdoms, playerTurnCounter, players));
-		/*effects.put(20, () -> Militia(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		effects.put(21, () -> Moneylender(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
+		effects.put(20, () -> Militia(kingdoms, playerTurnCounter, players));
+		/*effects.put(21, () -> Moneylender(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(22, () -> Poacher(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(23, () -> Remodel(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(24, () -> Smithy(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
@@ -131,6 +131,7 @@ public class CardEffects {
 	
 	public void Cellar(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Cellar being played");
+		System.out.println("Effect: Discard any number of cards. +1 Card per card discarded");
 		System.out.println();
 		
 		Player player = players.get(playerTurnCounter - 1);
@@ -139,7 +140,6 @@ public class CardEffects {
 		player.addNumActions(1);
 		
 		// Effect
-		System.out.println("Discard card(s) and redraw the same amount.");
 		// Print out the cards with the value
 		printCardsInHand(player);
 		System.out.println("Press -1 to not discard cards");
@@ -203,13 +203,12 @@ public class CardEffects {
 	
 	public void Chapel(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Chapel being played");
+		System.out.println("Effect: Trash up to 4 cards from your hand");
 		System.out.println();
 		
 		Player player = players.get(playerTurnCounter - 1);
 			
 		// Effect
-		System.out.println("Trash card(s) up to 4");
-		
 		// Do nothing if the player has no cards in their hand
 		if (player.getCardsInHand().size() == 0)
 			System.out.println("You have no cards in your hand to trash");
@@ -239,9 +238,6 @@ public class CardEffects {
 				player.removeCardFromHand(card);
 				System.out.println("You trashed " + card.getName());
 				
-				// Remove the card from the type list
-				//player.removeCardFromTypeList(card);
-				
 				// Add the card that was removed from the hand to the trash pile
 				kingdoms.trash.add(card);
 				
@@ -270,6 +266,7 @@ public class CardEffects {
 	
 	public void Harbinger(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Harbinger being played");
+		System.out.println("Effect: Look through your discard pile. You may put a card from it onto your deck");
 		System.out.println();
 		
 		Player player = players.get(playerTurnCounter - 1);
@@ -320,7 +317,6 @@ public class CardEffects {
 					for (int i = 0; i < player.getDiscardPile().size(); i++) {
 						System.out.println(i + " = " + player.getDiscardPile().get(i));
 					}
-					//choice = scan.nextInt();
 				}
 			}
 		} else {
@@ -331,6 +327,7 @@ public class CardEffects {
 	
 	public void Merchant(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Merchant being played");
+		System.out.println("Effect: The first time you play a Silver this turn, +1 Coin");
 		System.out.println();
 		
 		Player player = players.get(playerTurnCounter - 1);
@@ -344,6 +341,7 @@ public class CardEffects {
 	
 	public void Vassal(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Vassal being played");
+		System.out.println("Effect: Discard the top card of your deck. If it is an Action card, you may play it");
 		System.out.println();
 		
 		Player player = players.get(playerTurnCounter - 1);
@@ -439,6 +437,7 @@ public class CardEffects {
 	
 	public void Workshop(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Workshop being played");
+		System.out.println("Effect: Gain a card costing up to 4 Coins");
 		System.out.println();
 		
 		Player player = players.get(playerTurnCounter - 1);
@@ -487,76 +486,53 @@ public class CardEffects {
 				break;
 			} else {
 				System.out.println("Invalid number. Press a number between 0 and " + (fourCostKingdoms.size() - 1) + " to gain the card");
-				//choice = scan.nextInt();
 			}
 		}
 	}
 	
 	public void Bureaucrat(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Bureaucrat being played");
+		System.out.println("Effect: Each other player reveals a Victory card from his hand and puts it on his deck (or reveals a hand with no Victory cards)");
 		System.out.println();
 		
 		Player player = players.get(playerTurnCounter - 1);
-		List<Player> copyPlayers = new ArrayList<Player>();
 		List<Player> sublistPlayers = new ArrayList<Player>();
-		int i = 0, turnCheck = 0;
+		int turnCheck = 0;
 		
-		// Copy over each player to a new copy list and assign it the same turn counter from the players list
+		// Add each player to a new list who isn't the current player
 		for (Player aPlayer : players) {
-			copyPlayers.add(aPlayer);
-			copyPlayers.get(i).setTurnCounter(playerTurnCounter);
-			i++;
-			playerTurnCounter++;
-			if (player.getNumPlayers() == 2)
-				playerTurnCounter = 1;
-			else if (player.getNumPlayers() == 3 && playerTurnCounter == 3)
-				playerTurnCounter = 1;
-			else if (player.getNumPlayers() == 4 && playerTurnCounter == 4)
-				playerTurnCounter = 1;
+			if (aPlayer.getTurnCounter() != player.getTurnCounter()) {
+				sublistPlayers.add(aPlayer);		// Add players to a new sublist that aren't the current player's turn
+			}
 		}
-		// Only add players to another new list whose turn isn't the current player
-		for (Player aPlayer : copyPlayers) {
-			if (aPlayer.getTurnCounter() != player.getTurnCounter())
-				sublistPlayers.add(aPlayer);
-		}
-		//player.addCardToDeck(kingdoms.silver.get(0));		// Gain a Silver onto the deck
-		//System.out.println("TEST: Num of sublistPlayers = " + sublistPlayers.size());
-		/*for (int j = 0; j < kingdoms.getSupplyList().get(j).size(); j++) {
-			if (Integer.parseInt(kingdoms.getSupplyList().get(j).get(0).getNumLeft()) > 0)
-				player.addCardToDeck(kingdoms.silver.get(0));		// Gain a Silver onto the deck
-			else
-				System.out.println("There are no more Silver cards to gain from the Supply list");
-		}*/
 		
 		// Gain a Silver card
-		for (List<Card> kingdom : kingdoms.getSupplyList()) {								
-			if (Integer.parseInt(kingdom.get(0).getNumLeft()) > 0 && "Silver".equals(kingdoms.getSupplyList().get(0).get(0).getID())) {
+		for (List<Card> kingdom : kingdoms.getSupplyList()) {
+			if (Integer.parseInt(kingdom.get(0).getNumLeft()) > 0 && "Silver".equals(kingdom.get(0).getName())) {
 				Card card = kingdom.get(0);
 				
-				// Place the Silver onto the deck
-				player.addCardToDeck(card);
+				player.addCardToDeck(card);			// Place the Silver onto the deck
+				System.out.println("You gained a Silver card");
 				
-				// Remove the Silver from the supply list
-				kingdoms.removeCardFromSupplyList(card);
+				kingdoms.removeCardFromSupplyList(card);		// Remove the Silver from the supply list
 				break;
 			}
-			//j++;
 		}
 		
 		// Iterate through each other player based on turn number
 		for (Player thePlayer : sublistPlayers) {
-			int j = 0;
+			int i = 0;
 			System.out.println("This is Player " + thePlayer.getTurnCounter());
 			
 			if (thePlayer.getVictory().size() > 0) {
 				// Print out the Victory cards in hand
-				System.out.println("Here are the victory cards in your hand:");
+				System.out.println("Here are the victory cards in player " + thePlayer.getTurnCounter() + "'s hand:");
 				for (Card card : thePlayer.getVictory()) {
-					System.out.println(j + " = " + card);
-					j++;
+					System.out.println(i + " = " + card);
+					i++;
 				}
 				
-				System.out.println("Press a number between 0 and " + (thePlayer.getVictory().size() - 1) + " to place the card back onto the deck.");
+				System.out.println("Press a number between 0 and " + (thePlayer.getVictory().size() - 1) + " to place the card back onto the deck");
 				
 				@SuppressWarnings("resource")
 				Scanner scan = new Scanner(System.in);
@@ -565,20 +541,20 @@ public class CardEffects {
 					choice = scan.nextInt();
 					
 					if (choice >= 0 && choice <= thePlayer.getVictory().size() - 1) {
-						Card returnedCard = thePlayer.getVictory().get(choice);
+						Card returnedCard = thePlayer.getVictory().get(choice);		// Get the selected Victory card in the hand
 						thePlayer.addCardToDeck(returnedCard);				// Put a Victory card from the hand onto the deck
+						System.out.println("You placed " + returnedCard.getName() + " back onto the deck");
 						thePlayer.removeCardFromHand(returnedCard);			// Remove the Victory card from the hand and remove it from the type list
 						turnCheck++;
 						break;
 					} else {
 						System.out.println("Invalid choice. Press a number between 0 and " + (thePlayer.getVictory().size() - 1) 
 								+ " to place the card back onto the deck.");
-						//choice = scan.nextInt();
 					}
 				}
 			} else {
 				System.out.println("Player " + thePlayer.getTurnCounter() + " has no Victory cards");
-				System.out.println("Revealing the hand now");
+				System.out.println("Revealing " + thePlayer.getTurnCounter() + "'s hand now");
 				printCardsInHand(thePlayer);
 				turnCheck++;
 			}
@@ -586,69 +562,93 @@ public class CardEffects {
 					|| (player.getNumPlayers() == 4 && turnCheck == 3))
 				break;		// Exit if all the players have returned a card or has revealed their hand
 		}
-		
-		// For two players...
-		/*if (player.getNumPlayers() == 2) {
-			System.out.println("All other players should now look away until they say it is ok to look.");
-			
-			// Delay next output for 3 seconds
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				// Do nothing
-			}
-			
-			// Print out the cards in the hand
-			//int i = 0;
-			List<Card> vicCardsInHand = new ArrayList<Card>();
-			Card returnedCard = new Card(null, null, null, null, null, null, null, null, null);
-			
-			System.out.println("Here are the victory cards in your hand:");
-			
-			for (Card card : player2.getCardsInHand()) {
-				if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || "Victory".equals(card.getType3()) 
-						|| "Victory".equals(card.getType4())) {
-					vicCardsInHand.add(card);
-					System.out.println(i + " = " + card.getName());
-				}
-				i++;
-			}
-			
-			System.out.println("Press a number between 0 and " + (vicCardsInHand.size() - 1) + " to place the card back onto the deck.");
-			
-			@SuppressWarnings("resource")
-			Scanner scan = new Scanner(System.in);
-			String choice;
-			while (scan.hasNext()) {
-				choice = scan.nextLine();
-				
-				if (Integer.parseInt(choice) > 0 && Integer.parseInt(choice) <= vicCardsInHand.size()) {
-					// Put a victory card from the hand onto the deck
-					returnedCard = vicCardsInHand.get(Integer.parseInt(choice) - 1);
-					player2.addCardToDeck(returnedCard);
-					
-					// Remove the first card from the hand that has the same name as the target card
-					for (Card card : player2.getCardsInHand()) {
-						if (returnedCard.getName().equals(card.getName())) {
-							player2.getCardsInHand().remove(card);
-							break;
-						}
-					}
-				} else {
-					System.out.println("Invalid choice. Press a number between 1 and " + vicCardsInHand.size() + " to place the card back onto the deck.");
-					choice = scan.nextLine();
-				}
-			}
-		}*/
 	}
 	
 	public void Gardens(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Gardens being played");
+		System.out.println("Effect: Worth 1 Victory Point for every 10 cards in your deck (rounded down)");
+		System.out.println();
+		
 		Player player = players.get(playerTurnCounter - 1);
 		
-		// Set totalNumCards to the sum of the cards in the deck and the hand 
-		int totalNumCards = player.getCardsInHand().size() + player.getDeck().size();
+		// Set totalNumCards to the sum of the cards in the deck - all cards will have been sent back to the deck by other functions at the end of the game
+		int totalNumCards = player.getDeck().size();
 		
 		// Add the total to the extra victory points for that player
 		player.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
+		System.out.println("Player " + player.getTurnCounter() + " gained " + (int)Math.floor(totalNumCards / 10) + " Victory points");
+	}
+	
+	public void Militia(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Militia being played");
+		System.out.println("Effect: Each other player discards down to 3 cards in hand");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		List<Player> sublistPlayers = new ArrayList<Player>();
+		int turnCheck = 0;
+		
+		// +2 Coins
+		player.addExtraCoins(2);
+		
+		// Add each player to a new list who isn't the current player
+		for (Player aPlayer : players) {
+			if (aPlayer.getTurnCounter() != player.getTurnCounter()) {
+				sublistPlayers.add(aPlayer);		// Add players to a new sublist that aren't the current player's turn
+			}
+		}
+		
+		// Iterate through each other player based on turn number
+		for (Player thePlayer : sublistPlayers) {
+			if (thePlayer.getCardsInHand().size() < 4) {
+				System.out.println("Player " + thePlayer.getTurnCounter() + " has at most 3 cards in their hand");
+				continue;
+			}
+			
+			System.out.println("This is Player " + thePlayer.getTurnCounter() + "'s hand");
+			while (thePlayer.getCardsInHand().size() > 3) {
+				if (thePlayer.getCardsInHand().size() > 0) {
+					// Print out the other player's hand
+					printCardsInHand(thePlayer);
+					System.out.println();
+					System.out.println("Press a number between 0 and " + (thePlayer.getCardsInHand().size() - 1) + " to discard that card");
+					
+					@SuppressWarnings("resource")
+					Scanner scan = new Scanner(System.in);
+					int choice;
+					while (scan.hasNext()) {
+						choice = scan.nextInt();
+						
+						if (choice >= 0 && choice <= thePlayer.getCardsInHand().size() - 1) {
+							Card card = thePlayer.getCardsInHand().get(choice);		// Get the selected card in the hand
+							thePlayer.addCardToDiscardPile(card);				// Put a card from the hand to the discard pile
+							System.out.println("Player " + thePlayer.getTurnCounter() + " chose to discard " + card.getName());
+							thePlayer.removeCardFromHand(card);			// Remove the card from the hand and remove it from the type list
+							if (thePlayer.getCardsInHand().size() > 3) {
+								// Print out the other player's hand
+								printCardsInHand(thePlayer);
+								System.out.println();
+								System.out.println("Press a number between 0 and " + (thePlayer.getCardsInHand().size() - 1) + " to discard that card");
+							}
+							else {
+								turnCheck++;		// The player is done so increase turnCheck to indicate they are finished
+								break;
+							}
+						} else {
+							System.out.println("Invalid choice. Press a number between 0 and " + (thePlayer.getCardsInHand().size() - 1) + " to discard that card");
+						}
+					}
+				}
+			}
+			printCardsInHand(thePlayer);
+			if (thePlayer.getCardsInHand().size() < 4) {
+				System.out.println("Player " + thePlayer.getTurnCounter() + " now has at most 3 cards in their hand");
+			}
+			if ((player.getNumPlayers() == 2 && turnCheck == 1) || (player.getNumPlayers() == 3 && turnCheck == 2) 
+					|| (player.getNumPlayers() == 4 && turnCheck == 3)) {
+				System.out.println("All players have discarded down to at most 3 cards in their hand");
+				break;		// Exit if all the players have discarded down to 3 cards in their hand
+			}
+		}
 	}
 }

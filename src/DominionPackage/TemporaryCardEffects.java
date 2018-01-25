@@ -6,61 +6,6 @@ import java.util.Scanner;
 
 public class TemporaryCardEffects {
 	
-	public void Militia(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
-		if (playerTurnCounter == 1) {
-			
-			// +2 Coins
-			player1.addExtraCoins(2);
-			
-			// For two players...
-			if (player1.getNumPlayers() == 2) {
-				System.out.println("All other players should now look away until they say it is ok to look. First player to resolve the effect is to the left"
-						+ " of the preson who played Militia");
-				
-				// Delay next output for 3 seconds
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					// Do nothing
-				}
-				
-				// Print out the cards in the player's hand
-				int i;
-				Scanner scan = new Scanner(System.in);
-				String choice;
-				System.out.println("Here are the cards in Player " + (playerTurnCounter + 1) + "'s hand:");
-				
-				// Repeat while the player has more than 3 cards in their hand
-				while (player2.getCardsInHand().size() > 3) {
-					i = 1;
-					for (Card card : player2.getCardsInHand()) {
-						System.out.println(i + " = " + card.getName());
-						i++;
-					}
-					
-					System.out.println("Press a number between 1 and " + player2.getCardsInHand().size() + " to place the card back onto the deck. This will"
-							+ " repeat until you have 3 cards left in your hand");
-					
-					choice = scan.nextLine();
-					
-					if (Integer.parseInt(choice) > 0 && Integer.parseInt(choice) <= player2.getCardsInHand().size()) {
-						Card card = player2.getCardsInHand().get(Integer.parseInt(choice));
-						
-						// Put the selected card onto the deck
-						player2.addCardToDeck(card);
-						
-						// Remove the selected card from the player's hand
-						player2.removeCardFromHand(card);
-					} else {
-						System.out.println("Invalid choice. Press a number between 1 and " + player2.getCardsInHand().size() 
-								+ " to place the card back onto the deck.");
-						choice = scan.nextLine();
-					}
-				}
-			}
-		}
-	}
-	
 	public void Moneylender(Kingdom kingdoms, int playerTurnCounter, List<Player> players, Player player1, Player player2, Player player3, Player player4) {
 		if (playerTurnCounter == 1) {
 			

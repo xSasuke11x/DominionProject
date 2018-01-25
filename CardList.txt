@@ -17,3 +17,4 @@ Village/Action/"null"/"null"/"null"/+1 Card | +2 Actions/16/3/10/
 Workshop/Action/"null"/"null"/"null"/Gain a card costing up to 4 coins./17/3/10/
 Bureaucrat/Action/Attack/"null"/"null"/Gain a Silver onto your deck. Each other player reveals a Victory card from their hand and puts it onto their deck (or reveals a hand with no Victory cards)./18/4/10/
 Gardens/Victory/"null"/"null"/"null"/Worth 1 Victory Point per 10 cards you have (round down)./19/4/12/
+Militia/Action/Attack/"null"/"null"/+2 Coins | Each other player discards down to 3 cards in hand./20/4/10/

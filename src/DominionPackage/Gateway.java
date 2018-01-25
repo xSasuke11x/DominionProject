@@ -75,6 +75,24 @@ public class Gateway {
 				playerTurnCounter = 1;
 			}
 		}
+		
+		if (gf.getWinCondition() == true) {
+			calculateGardens(kingdoms, players);
+		}
+	}
+	
+	public static void calculateGardens(Kingdom kingdoms, List<Player> players) {
+		CardEffects ce = new CardEffects();
+		
+		// Play Gardens and add score to extra Victory points
+		for (Player player : players) {
+			for (Card card : player.getDeck()) {
+				if ("19".equals(card.getID())) {
+					int IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the Action card discarded
+					ce.getCardEffect(IDOfCard, kingdoms, player.getTurnCounter(), players).run();			// Play the Action card
+				}
+			}
+		}
 	}
 
 	/*public static int setupNumPlayers() {
