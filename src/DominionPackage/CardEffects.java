@@ -29,8 +29,8 @@ public class CardEffects {
 		effects.put(20, () -> Militia(kingdoms, playerTurnCounter, players));
 		effects.put(21, () -> Moneylender(kingdoms, playerTurnCounter, players));
 		effects.put(22, () -> Poacher(kingdoms, playerTurnCounter, players));
-		/*effects.put(23, () -> Remodel(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		effects.put(24, () -> Smithy(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
+		effects.put(23, () -> Remodel(kingdoms, playerTurnCounter, players));
+		/*effects.put(24, () -> Smithy(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(25, () -> ThroneRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
 		effects.put(26, () -> Bandit(kingdoms, playerTurnCounter, player1, player2, player3, player4));
 		effects.put(27, () -> CouncilRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
@@ -446,13 +446,13 @@ public class CardEffects {
 		
 		// Add all 4-cost kingdoms to the fourCostKingdoms list
 		for (List<Card> kingdom : kingdoms.supplyList) {
-			try {
-				if (Integer.parseInt(kingdom.get(0).getCost()) <= 4 && Integer.parseInt(kingdom.get(0).getNumLeft()) != 0) {
+			if (kingdom.size() != 0) {
+				if (Integer.parseInt(kingdom.get(0).getCost()) <= 4) {
 					fourCostKingdoms.add(kingdom);
 				}
-			} catch (NumberFormatException ex) {
+			} /*catch (NumberFormatException ex) {
 				// Catch is for formality to catch out integer parsing errors. The Try block still parses all 4-cost kingdoms correctly.
-			}
+			}*/
 		}
 		
 		// Print out the 4-cost kingdoms
@@ -477,12 +477,12 @@ public class CardEffects {
 				
 				// Add the card from the kingdom to the discard pile
 				player.addCardToDiscardPile(card);
-				System.out.println("You gained a " + card.getName());
+				System.out.println("You gained " + card.getName());
 				
 				// Remove the card from the kingdom and set how many cards are left in the supply
 				kingdoms.removeCardFromSupplyList(card);
 				int numLeft = Integer.parseInt(card.getNumLeft());
-				card.setNumLeft(Integer.toString(numLeft - 1));
+				card.setNumLeft(Integer.toString(numLeft - 1));			// Manually remove 1 card from the supply
 				break;
 			} else {
 				System.out.println("Invalid number. Press a number between 0 and " + (fourCostKingdoms.size() - 1) + " to gain the card");
@@ -517,6 +517,8 @@ public class CardEffects {
 					System.out.println("You gained a Silver card");
 					
 					kingdoms.removeCardFromSupplyList(card);		// Remove the Silver from the supply list
+					int numLeft = Integer.parseInt(card.getNumLeft());
+					card.setNumLeft(Integer.toString(numLeft - 1));
 					break;
 				}
 			}
@@ -726,7 +728,7 @@ public class CardEffects {
 				Scanner scan = new Scanner(System.in);
 				int choice;
 				
-				System.out.println("Discard a card per empty supply pile.");
+				System.out.println("Discard a card per empty supply pile");
 				while (numDiscarded < numEmptyKingdoms && scan.hasNext()) {
 					// Print out the hand
 					System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to discard that card.");
@@ -738,11 +740,8 @@ public class CardEffects {
 					if (choice >= 0 && choice <= player.getCardsInHand().size() - 1) {
 						Card card = player.getCardsInHand().get(choice);
 						
-						// Add the card to the discard pile.
-						player.addCardToDiscardPile(card);
-						
-						// Remove a card from the player's hand
-						player.removeCardFromHand(card);
+						player.addCardToDiscardPile(card);			// Add the card to the discard pile
+						player.removeCardFromHand(card);			// Remove a card from the player's hand
 						
 						numDiscarded++;
 						
@@ -751,13 +750,87 @@ public class CardEffects {
 						}
 						else
 							break;
-					} else {
+					} else
 						System.out.println("Invalid input. Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to discard that card.");
-					}
 				}
 			}
-		} else {
+		} else
 			System.out.println("There are no empty kingdoms");
-		}
+	}
+	
+	public void Remodel(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Remodel being played");
+		System.out.println("Trash a card from your hand. Gain a card costing up to +2 Coins more than the trashed card");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		
+		// Effect
+		if (player.getCardsInHand().size() > 0) {
+			System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) 
+					+ " to trash the card to gain a card costing up to 2 more than it");
+			// Print out the cards with the value
+			printCardsInHand(player);
+						
+			@SuppressWarnings("resource")
+			Scanner scan = new Scanner(System.in);
+			int choice;
+			
+			while (scan.hasNext()) {
+				choice = scan.nextInt();
+				
+				if (choice >= 0 && choice <= player.getCardsInHand().size() - 1) {		// Remove the chosen card from the hand and add it to the discard pile
+					Card card = player.getCardsInHand().get(choice);		// Get the selected card
+					player.removeCardFromHand(card);		// Remove the card from the hand
+					System.out.println("You chose to trash " + card.getName());
+					kingdoms.trash.add(card);				// Add the card that was removed from the hand to the trash pile
+					
+					List<List<Card>> twoMoreCostKingdoms = new ArrayList<List<Card>>();
+					
+					// Add all kingdoms to the twoMoreCostKingdoms list that cost at most 2 more than the discarded card
+					for (List<Card> kingdom : kingdoms.getSupplyList()) {
+						if (kingdom.size() != 0) {
+							if (Integer.parseInt(kingdom.get(0).getCost()) <= Integer.parseInt(card.getCost()) + 2) {
+								twoMoreCostKingdoms.add(kingdom);		// Add the kingdom to the list
+							}
+						} 
+					}
+						
+					// Print out the twoMoreCostKingdoms list
+					int j = 0;
+					System.out.println("The following are the kingdoms that cost up to two more than " + card.getName() + ":");
+					for (List<Card> kingdom : twoMoreCostKingdoms) {
+						System.out.println(j + " = " + kingdom.get(0));
+						j++;
+					}
+					
+					// Let the player choose a kingdom
+					System.out.println("Press a number between 0 and " + (twoMoreCostKingdoms.size() - 1) + " to gain the card");
+					@SuppressWarnings("resource")
+					Scanner scan2 = new Scanner(System.in);
+					int choice2;
+					while (scan2.hasNext()) {
+						choice2 = scan2.nextInt();
+						
+						// Choices must be a number between 0 and the size of the twoMoreCostKingdoms - 1 list
+						if (choice2 >= 0 && choice2 <= twoMoreCostKingdoms.size() - 1) {
+							List<Card> kingdom = twoMoreCostKingdoms.get(choice2);
+							player.addCardToDiscardPile(kingdom.get(0));			// Add the card from the kingdom to the discard pile
+							System.out.println("You gained " + kingdom.get(0).getName());
+							kingdoms.removeCardFromSupplyList(kingdom.get(0));		// Remove the card from the kingdom
+							int numLeft = Integer.parseInt(card.getNumLeft());
+							kingdom.get(0).setNumLeft(Integer.toString(numLeft - 1));		// Manually remove 1 card from the supply
+							break;
+						} else {
+							System.out.println("Invalid input. Press a number between 0 and " + (twoMoreCostKingdoms.size() - 1) + " to gain the card");
+						}
+					}
+					break;
+				} else
+					System.out.println("Invalid input. Press a number between 0 and " + (player.getCardsInHand().size() - 1) 
+							+ " to trash the card to gain a card costing up to 2 more than it");
+			}
+		} else
+			System.out.println("You do not have enough cards in your hand to trash");
 	}
 }
