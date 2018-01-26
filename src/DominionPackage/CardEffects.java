@@ -30,8 +30,8 @@ public class CardEffects {
 		effects.put(21, () -> Moneylender(kingdoms, playerTurnCounter, players));
 		effects.put(22, () -> Poacher(kingdoms, playerTurnCounter, players));
 		effects.put(23, () -> Remodel(kingdoms, playerTurnCounter, players));
-		/*effects.put(24, () -> Smithy(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		effects.put(25, () -> ThroneRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
+		effects.put(24, () -> Smithy(kingdoms, playerTurnCounter, players));
+		/*effects.put(25, () -> ThroneRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
 		effects.put(26, () -> Bandit(kingdoms, playerTurnCounter, player1, player2, player3, player4));
 		effects.put(27, () -> CouncilRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
 		effects.put(28, () -> Festival(kingdoms, playerTurnCounter, player1, player2, player3, player4));
@@ -832,5 +832,16 @@ public class CardEffects {
 			}
 		} else
 			System.out.println("You do not have enough cards in your hand to trash");
+	}
+	
+	public void Smithy(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Smithy being played");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		
+		for (int i = 0; i < 3; i++) {
+			attemptDrawFromDeck(player);
+		}
 	}
 }
