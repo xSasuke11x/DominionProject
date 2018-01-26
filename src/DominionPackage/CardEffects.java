@@ -28,8 +28,8 @@ public class CardEffects {
 		effects.put(19, () -> Gardens(kingdoms, playerTurnCounter, players));
 		effects.put(20, () -> Militia(kingdoms, playerTurnCounter, players));
 		effects.put(21, () -> Moneylender(kingdoms, playerTurnCounter, players));
-		/*effects.put(22, () -> Poacher(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
-		effects.put(23, () -> Remodel(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
+		effects.put(22, () -> Poacher(kingdoms, playerTurnCounter, players));
+		/*effects.put(23, () -> Remodel(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(24, () -> Smithy(kingdoms, playerTurnCounter, players, players.get(0), players.get(1), players.get(2), players.get(3)));
 		effects.put(25, () -> ThroneRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
 		effects.put(26, () -> Bandit(kingdoms, playerTurnCounter, player1, player2, player3, player4));
@@ -447,7 +447,7 @@ public class CardEffects {
 		// Add all 4-cost kingdoms to the fourCostKingdoms list
 		for (List<Card> kingdom : kingdoms.supplyList) {
 			try {
-				if (Integer.parseInt(kingdom.get(0).getCost()) <= 4) {
+				if (Integer.parseInt(kingdom.get(0).getCost()) <= 4 && Integer.parseInt(kingdom.get(0).getNumLeft()) != 0) {
 					fourCostKingdoms.add(kingdom);
 				}
 			} catch (NumberFormatException ex) {
@@ -508,14 +508,17 @@ public class CardEffects {
 		
 		// Gain a Silver card
 		for (List<Card> kingdom : kingdoms.getSupplyList()) {
-			if (Integer.parseInt(kingdom.get(0).getNumLeft()) > 0 && "Silver".equals(kingdom.get(0).getName())) {
-				Card card = kingdom.get(0);
-				
-				player.addCardToDeck(card);			// Place the Silver onto the deck
-				System.out.println("You gained a Silver card");
-				
-				kingdoms.removeCardFromSupplyList(card);		// Remove the Silver from the supply list
-				break;
+			//if (Integer.parseInt(kingdom.get(0).getNumLeft()) > 0) {
+			if (kingdom.size() > 0) {
+				if ("Silver".equals(kingdom.get(0).getName())) {
+					Card card = kingdom.get(0);
+					
+					player.addCardToDeck(card);			// Place the Silver onto the deck
+					System.out.println("You gained a Silver card");
+					
+					kingdoms.removeCardFromSupplyList(card);		// Remove the Silver from the supply list
+					break;
+				}
 			}
 		}
 		
@@ -654,7 +657,7 @@ public class CardEffects {
 	
 	public void Moneylender(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
 		System.out.println("Moneylender being played");
-		System.out.println("Trash a Copper from your hand. If you do, +3 Coins");
+		System.out.println("Effect: Trash a Copper from your hand. If you do, +3 Coins");
 		System.out.println();
 		
 		Player player = players.get(playerTurnCounter - 1);
@@ -687,5 +690,74 @@ public class CardEffects {
 			}
 		} else
 			System.out.println("You have no cards in your hand to discard");		// No cards in hand
+	}
+	
+	public void Poacher(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Poacher being played");
+		System.out.println("Effect: Discard a card per empty supply pile");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		int numEmptyKingdoms = 0, numDiscarded = 0;
+		
+		// +1 Card
+		attemptDrawFromDeck(player);
+		
+		// +1 Action
+		player.addNumActions(1);
+		
+		// +1 Coin
+		player.addExtraCoins(1);
+		
+		// Keep a running count of how many empty supply piles there are
+		for (List<Card> kingdom : kingdoms.getSupplyList()) {
+			if (kingdom.get(0).equals(null)) {
+				numEmptyKingdoms++;
+			}
+		}
+		
+		// Discard a card for each empty supply pile
+		if (numEmptyKingdoms > 0) {
+			if (player.getCardsInHand().size() == 0)
+				System.out.println("You have no cards to discard");
+			else {
+				// Do actions while cards exist in the hand
+				@SuppressWarnings("resource")
+				Scanner scan = new Scanner(System.in);
+				int choice;
+				
+				System.out.println("Discard a card per empty supply pile.");
+				while (numDiscarded < numEmptyKingdoms && scan.hasNext()) {
+					// Print out the hand
+					System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to discard that card.");
+					printCardsInHand(player);
+					
+					choice = scan.nextInt();
+					
+					// Valid number
+					if (choice >= 0 && choice <= player.getCardsInHand().size() - 1) {
+						Card card = player.getCardsInHand().get(choice);
+						
+						// Add the card to the discard pile.
+						player.addCardToDiscardPile(card);
+						
+						// Remove a card from the player's hand
+						player.removeCardFromHand(card);
+						
+						numDiscarded++;
+						
+						if (numDiscarded < numEmptyKingdoms) {
+							System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to discard another card.");
+						}
+						else
+							break;
+					} else {
+						System.out.println("Invalid input. Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to discard that card.");
+					}
+				}
+			}
+		} else {
+			System.out.println("There are no empty kingdoms");
+		}
 	}
 }

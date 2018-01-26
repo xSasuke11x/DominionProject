@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Kingdom {
 	
-	private int vicTwoPlayers = 8, vicThreePlusPlayers = 12, totalNumCards = 21;
+	private int vicTwoPlayers = 8, vicThreePlusPlayers = 12, totalNumCards = 22;
 	
 	// Allocate space for each of the 19 kingdoms and the trash pile
 	public List<Card> copper = new ArrayList<Card>();
@@ -342,6 +342,15 @@ public class Kingdom {
 	public List<List<Card>> getSupplyList() {
 		return supplyList;
 	}
+	
+	/*public void removeKingdomFromSupplyList(List<List<Card>> kingdoms) {
+		for (List<Card> kingdom : kingdoms) {
+			System.out.println("TEST: kingdom size is " + kingdom.size());
+			if (kingdom.size() == 0) {
+				kingdoms.remove(kingdom);
+			}
+		}
+	}*/
 	
 	public void removeCardFromSupplyList(Card card) {
 		// Search through each kingdom in the supply list

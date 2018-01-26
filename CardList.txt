@@ -19,3 +19,4 @@ Bureaucrat/Action/Attack/"null"/"null"/Gain a Silver onto your deck. Each other 
 Gardens/Victory/"null"/"null"/"null"/Worth 1 Victory Point per 10 cards you have (round down)./19/4/12/
 Militia/Action/Attack/"null"/"null"/+2 Coins | Each other player discards down to 3 cards in hand./20/4/10/
 Moneylender/Action/"null"/"null"/"null"/You may trash a Copper from your hand for +3 Coins./21/4/10/
+Poacher/Action/"null"/"null"/"null"/+1 Card | +1 Action | +1 Coin/Discard a card per empty Supple pile./22/4/10/

@@ -372,10 +372,12 @@ public class GameFlow {
 		List<List<Card>> availableToBuy = new ArrayList<List<Card>>();
 		int i = 0;
 		for (List<Card> kingdom : kingdoms.getSupplyList()) {
-			if (Integer.parseInt(kingdom.get(0).getCost()) <= player.getExtraCoins()) {
-				System.out.println(i + " = " + kingdom.get(0));
-				availableToBuy.add(kingdom);
-				i++;
+			if (kingdom.size() != 0) {
+				if (Integer.parseInt(kingdom.get(0).getCost()) <= player.getExtraCoins()) {
+					System.out.println(i + " = " + kingdom.get(0));
+					availableToBuy.add(kingdom);
+					i++;
+				}
 			}
 		}
 		
