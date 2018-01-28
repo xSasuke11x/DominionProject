@@ -318,6 +318,7 @@ public class GameFlow {
 			player.addExtraCoins(1 * merchantCounter);
 		
 		System.out.println("Total coins in play: " + player.getExtraCoins());
+		System.out.println("Total buys left: " + player.getNumBuys());
 		System.out.println();
 		buyCards(player, kingdoms);
 	}
@@ -348,15 +349,19 @@ public class GameFlow {
 		System.out.println("Press -1 to not buy any cards");
 		System.out.println("Press a number between 0 and " + (kingdomChoices.size() - 1) + " to buy that kingdom");
 		while (scan.hasNext()) {
+			if (player.getNumBuys() == 0)
+				break;
+			
 			choice = scan.nextInt();
 			
 			if (choice >= 0 && choice <= kingdomChoices.size() && Integer.parseInt(kingdomChoices.get(choice).get(0).getNumLeft()) > 0) {
 				Card card = kingdomChoices.get(choice).get(0);
 				System.out.println("Adding " + card.getName() + " to discard pile");
-				player.addCardToDiscardPile(card);
-				kingdoms.removeCardFromSupplyList(card);
+				player.addCardToDiscardPile(card);		// Add the bought card to the discard pile
+				kingdoms.removeCardFromSupplyList(card);		// Remove the card from the supply
 				int numLeft = Integer.parseInt(card.getNumLeft());
-				card.setNumLeft(Integer.toString(numLeft - 1));
+				card.setNumLeft(Integer.toString(numLeft - 1));		// Manually reduce the number of cards left by 1
+				player.addNumBuys(-1);		// Reduce the number of buys this turn by 1
 				break;
 			} else if (choice == -1) {
 				System.out.println("You chose not to buy anything");

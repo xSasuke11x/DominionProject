@@ -31,17 +31,17 @@ public class CardEffects {
 		effects.put(22, () -> Poacher(kingdoms, playerTurnCounter, players));
 		effects.put(23, () -> Remodel(kingdoms, playerTurnCounter, players));
 		effects.put(24, () -> Smithy(kingdoms, playerTurnCounter, players));
-		/*effects.put(25, () -> ThroneRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(26, () -> Bandit(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(27, () -> CouncilRoom(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(28, () -> Festival(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(29, () -> Laboratory(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(30, () -> Library(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(31, () -> Market(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(32, () -> Mine(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(33, () -> Sentry(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(34, () -> Witch(kingdoms, playerTurnCounter, player1, player2, player3, player4));
-		effects.put(35, () -> Artisan(kingdoms, playerTurnCounter, player1, player2, player3, player4));*/
+		effects.put(25, () -> ThroneRoom(kingdoms, playerTurnCounter, players));
+		/*effects.put(26, () -> Bandit(kingdoms, playerTurnCounter, players));
+		effects.put(27, () -> CouncilRoom(kingdoms, playerTurnCounter, players));
+		effects.put(28, () -> Festival(kingdoms, playerTurnCounter, players));
+		effects.put(29, () -> Laboratory(kingdoms, playerTurnCounter, players));
+		effects.put(30, () -> Library(kingdoms, playerTurnCounter, players));
+		effects.put(31, () -> Market(kingdoms, playerTurnCounter, players));
+		effects.put(32, () -> Mine(kingdoms, playerTurnCounter, players));
+		effects.put(33, () -> Sentry(kingdoms, playerTurnCounter, players));
+		effects.put(34, () -> Witch(kingdoms, playerTurnCounter, players));
+		effects.put(35, () -> Artisan(kingdoms, playerTurnCounter, players));*/
 		
 		// Invoke the command by:
         //int cmd = 1;
@@ -843,5 +843,103 @@ public class CardEffects {
 		for (int i = 0; i < 3; i++) {
 			attemptDrawFromDeck(player);
 		}
+	}
+	
+	public void ThroneRoom(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Throne Room being played");
+		System.out.println("You may play an Action card from your hand twice");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		Card card = new Card(null, null, null, null, null, null, null, null, null);
+		int resolvingTR = 1, i = 0, throneroomID = 25;
+		
+		if (player.getAction().size() != 0) {
+			System.out.println("Action cards in hand:");
+			for (Card aCard : player.getAction()) {
+				System.out.println(aCard.getName());
+			}
+			System.out.println("Do you want to play an additional Action card from your hand twice? Press [y] for yes or [n] for no.");
+			
+			@SuppressWarnings("resource")
+			Scanner scan = new Scanner(System.in);
+			String choice;
+			while (scan.hasNext()) {
+				choice = scan.nextLine();
+				
+				// If the player chooses to play the Action card, play the card twice
+				if (choice.toLowerCase().equals("y")) {
+					System.out.println("Press -1 to not play an Action card");
+					System.out.println("Press a number between 0 and " + (player.getAction().size() - 1) + " to play the Action card twice");
+					// Print out the cards with the value
+					System.out.println("Action cards in hand:");
+					for (Card aCard : player.getAction()) {
+						System.out.println(i + " = " + aCard.getName());
+						i++;
+					}
+					i = 0;
+					System.out.println();
+					
+					@SuppressWarnings("resource")
+					Scanner scan2 = new Scanner(System.in);
+					int choice2;
+					while (scan2.hasNext()) {
+						choice2 = scan2.nextInt();
+						
+						if (choice2 >= 0 && choice2 <= player.getAction().size() - 1) {
+							card = player.getAction().get(choice2);
+							if (Integer.parseInt(card.getID()) != throneroomID && resolvingTR != 0) {		// The card is not Throne Room
+								int IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the Action card that is going to be played
+								player.addCardToCardsInPlay(card);					// Put the card in play
+								System.out.println("You played " + card.getName());
+								player.removeCardFromHand(card);					// Remove the card from the hand
+								resolvingTR--;
+								player.addNumActions(-1);
+								getCardEffect(IDOfCard, kingdoms, playerTurnCounter, players).run();			// Play the Action card once
+								getCardEffect(IDOfCard, kingdoms, playerTurnCounter, players).run();			// Play the Action card again
+								if (resolvingTR == 0)
+									break;
+								System.out.println("Press -1 to not play an Action card");
+								System.out.println("Press a number between 0 and " + (player.getAction().size() - 1) + " to play the Action card twice");
+								// Print out the cards with the value
+								System.out.println("Action cards in hand:");
+								for (Card aCard : player.getAction()) {
+									System.out.println(i + " = " + aCard.getName());
+									i++;
+								}
+								i = 0;
+							} else {		// The card is Throne Room
+								player.addCardToCardsInPlay(card);					// Put the card in play
+								System.out.println("You played another Throne Room");
+								player.removeCardFromHand(card);					// Remove the card from the hand
+								resolvingTR++;		// Increment counter to indicate another Throne Room needs to be resolved
+								System.out.println("Press -1 to not play an Action card");
+								System.out.println("Press a number between 0 and " + (player.getAction().size() - 1) + " to play the Action card twice");
+								// Print out the cards with the value
+								System.out.println("Action cards in hand:");
+								for (Card aCard : player.getAction()) {
+									System.out.println(i + " = " + aCard.getName());
+									i++;
+								}
+								i = 0;
+							}
+						} else if (choice2 == -1) {
+							System.out.println("You chose not to play an Action card");
+							break;
+						} else {
+							System.out.println("Invalid input. Press -1 to not play an Action card.");
+							System.out.println("Press a number between 0 and " + (player.getAction().size() - 1) 
+									+ " to play the Action card twice");
+						}
+					}
+					break;
+				} else {
+					System.out.println("You chose not to play an Action card");
+					System.out.println();
+					break;
+				}
+			}
+		} else
+			System.out.println("You have no more Action cards in your hand to play");
 	}
 }

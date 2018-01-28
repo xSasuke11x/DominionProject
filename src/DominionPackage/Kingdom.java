@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Kingdom {
 	
-	private int vicTwoPlayers = 8, vicThreePlusPlayers = 12, totalNumCards = 24;
+	private int vicTwoPlayers = 8, vicThreePlusPlayers = 12, totalNumCards = 25;
 	
 	// Allocate space for each of the 19 kingdoms and the trash pile
 	public List<Card> copper = new ArrayList<Card>();
@@ -358,10 +358,12 @@ public class Kingdom {
 			//System.out.println("Test " + kingdom + " size = " + kingdom.size());
 			
 			// If the card of concern has the same name as the kingdom, remove a card from that kingdom
-			if (card.getName().equals(kingdom.get(0).getName())) {
-				kingdom.remove(0);
-				//System.out.println("Test kingdom size after remove = " + kingdom.size());
-				break;
+			if (kingdom.size() != 0) {
+				if (card.getName().equals(kingdom.get(0).getName())) {
+					kingdom.remove(0);
+					//System.out.println("Test kingdom size after remove = " + kingdom.size());
+					break;
+				}
 			}
 		}
 		
