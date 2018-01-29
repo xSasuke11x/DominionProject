@@ -27,3 +27,4 @@ Bandit/Action/Attack/"null"/"null"/Gain a Gold. Each other player reveals the to
 Council Room/Action/"null"/"null"/"null"/+4 Cards | +1 Buy | Each other player draws a card./27/5/10/
 Festival/Action/"null"/"null"/"null"/+2 Actions | +1 Buy | +2 Coins/28/5/10/
 Laboratory/Action/"null"/"null"/"null"/+2 Cards | +1 Action/29/5/10/
+Library/Action/"null"/"null"/"null"/Draw until you have 7 cards in hand, skipping any Action cards you choose to; set those aside, discarding them afterwards./30/5/10/

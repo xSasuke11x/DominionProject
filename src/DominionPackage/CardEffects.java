@@ -36,8 +36,8 @@ public class CardEffects {
 		effects.put(27, () -> CouncilRoom(kingdoms, playerTurnCounter, players));
 		effects.put(28, () -> Festival(kingdoms, playerTurnCounter, players));
 		effects.put(29, () -> Laboratory(kingdoms, playerTurnCounter, players));
-		/*effects.put(30, () -> Library(kingdoms, playerTurnCounter, players));
-		effects.put(31, () -> Market(kingdoms, playerTurnCounter, players));
+		effects.put(30, () -> Library(kingdoms, playerTurnCounter, players));
+		/*effects.put(31, () -> Market(kingdoms, playerTurnCounter, players));
 		effects.put(32, () -> Mine(kingdoms, playerTurnCounter, players));
 		effects.put(33, () -> Sentry(kingdoms, playerTurnCounter, players));
 		effects.put(34, () -> Witch(kingdoms, playerTurnCounter, players));
@@ -1056,5 +1056,44 @@ public class CardEffects {
 			attemptDrawFromDeck(player);	// Attempt draw from deck
 		
 		player.addNumActions(1);		// +1 Action
+	}
+	
+	public void Library(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Library being played");
+		System.out.println("Effect: Draw until you have 7 cards in hand, skipping any Action cards oyu choose to; set aside those cards, discarding them"
+				+ " afterwards");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		
+		while (player.getCardsInHand().size() != 7) {
+			if (player.getDeck().size() > 0) {
+				printCardsInHand(player);		// Print out the cards in the hand
+				attemptDrawFromDeck(player);		// Attempt to draw a card from the deck
+				Card card = player.getCardsInHand().get(0);
+				if ("Action".equals(card.getType1())) {			// Ask to discard the drawn card if the type is an Action card
+					System.out.println(card.getName() + " is an Action card. Do you want to discard it? Press [y] to discard it or [n] to keep it");
+					
+					@SuppressWarnings("resource")
+					Scanner scan = new Scanner(System.in);
+					String choice;
+					while (scan.hasNext()) {
+						choice = scan.nextLine();
+						
+						if (choice.toLowerCase().equals("y")) {
+							player.addCardToDiscardPile(card);		// Discard the card the player just drew to the discard pile
+							player.removeCardFromHand(card);		// Remove the card the player just drew from the hand
+						}
+					}
+				}
+			} else if (player.getDeck().size() == 0 && player.getDiscardPile().size() > 0) {
+				GameFlow gf = new GameFlow();
+				System.out.println("You have no more cards to draw. Reshuffling discard pile into the deck");
+				gf.restartDeck(player);			// Reshuffle the discard pile into the deck
+			} else {
+				System.out.println("You have no more cards in your deck to draw and you have more cards in your discard pile to reshuffle");
+				break;
+			}
+		}
 	}
 }
