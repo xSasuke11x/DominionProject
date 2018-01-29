@@ -35,8 +35,8 @@ public class CardEffects {
 		effects.put(26, () -> Bandit(kingdoms, playerTurnCounter, players));
 		effects.put(27, () -> CouncilRoom(kingdoms, playerTurnCounter, players));
 		effects.put(28, () -> Festival(kingdoms, playerTurnCounter, players));
-		/*effects.put(29, () -> Laboratory(kingdoms, playerTurnCounter, players));
-		effects.put(30, () -> Library(kingdoms, playerTurnCounter, players));
+		effects.put(29, () -> Laboratory(kingdoms, playerTurnCounter, players));
+		/*effects.put(30, () -> Library(kingdoms, playerTurnCounter, players));
 		effects.put(31, () -> Market(kingdoms, playerTurnCounter, players));
 		effects.put(32, () -> Mine(kingdoms, playerTurnCounter, players));
 		effects.put(33, () -> Sentry(kingdoms, playerTurnCounter, players));
@@ -1044,5 +1044,17 @@ public class CardEffects {
 		player.addNumActions(2);		// +2 Actions
 		player.addNumBuys(1);			// +1 Buy
 		player.addExtraCoins(2);		// +2 Coins
+	}
+	
+	public void Laboratory(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Laboratory being played");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		
+		for (int i = 0; i < 2; i++)
+			attemptDrawFromDeck(player);	// Attempt draw from deck
+		
+		player.addNumActions(1);		// +1 Action
 	}
 }
