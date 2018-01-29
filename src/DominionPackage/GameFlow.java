@@ -31,12 +31,11 @@ public class GameFlow {
 							restartDeck(aPlayer);
 							Card card = aPlayer.getDeck().get(0);
 							aPlayer.drawCard(card);
-						} else
-							if (aPlayer.getCardsInHand().size() == 0)
-								break;		// There are not enough players so they have no hand
-							else
-								System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
-								// There are not enough cards in the deck to draw due to situations like Chapel
+						} else {
+							//if (aPlayer.getCardsInHand().size() == 0)
+							System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
+							break;
+						}
 					}
 				}
 			}

@@ -23,3 +23,4 @@ Poacher/Action/"null"/"null"/"null"/+1 Card | +1 Action | +1 Coin/Discard a card
 Remodel/Action/"null"/"null"/"null"/Trash a card from your hand. Gain a card costing up to 2 Coins more than it./23/4/10/
 Smithy/Action/"null"/"null"/"null"/+3 Cards/24/4/10/
 Throne Room/Action/"null"/"null"/"null"/You may play an Action card from your hand twice./25/4/10/
+Bandit/Action/Attack/"null"/"null"/Gain a Gold. Each other player reveals the top 2 cards of their deck, trashes a revealed Treasure other than Copper, and discards the rest./26/5/10/

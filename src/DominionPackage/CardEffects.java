@@ -32,8 +32,8 @@ public class CardEffects {
 		effects.put(23, () -> Remodel(kingdoms, playerTurnCounter, players));
 		effects.put(24, () -> Smithy(kingdoms, playerTurnCounter, players));
 		effects.put(25, () -> ThroneRoom(kingdoms, playerTurnCounter, players));
-		/*effects.put(26, () -> Bandit(kingdoms, playerTurnCounter, players));
-		effects.put(27, () -> CouncilRoom(kingdoms, playerTurnCounter, players));
+		effects.put(26, () -> Bandit(kingdoms, playerTurnCounter, players));
+		/*effects.put(27, () -> CouncilRoom(kingdoms, playerTurnCounter, players));
 		effects.put(28, () -> Festival(kingdoms, playerTurnCounter, players));
 		effects.put(29, () -> Laboratory(kingdoms, playerTurnCounter, players));
 		effects.put(30, () -> Library(kingdoms, playerTurnCounter, players));
@@ -508,7 +508,6 @@ public class CardEffects {
 		
 		// Gain a Silver card
 		for (List<Card> kingdom : kingdoms.getSupplyList()) {
-			//if (Integer.parseInt(kingdom.get(0).getNumLeft()) > 0) {
 			if (kingdom.size() > 0) {
 				if ("Silver".equals(kingdom.get(0).getName())) {
 					Card card = kingdom.get(0);
@@ -941,5 +940,81 @@ public class CardEffects {
 			}
 		} else
 			System.out.println("You have no more Action cards in your hand to play");
+	}
+	
+	public void Bandit(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Bandit being played");
+		System.out.println("Effect: Each other player reveals the top 2 cards of their deck, trashes a revealed treasure other than Copper, and discards the rest");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		List<Player> sublistPlayers = new ArrayList<Player>();
+		
+		// Add each player to a new list who isn't the current player
+		for (Player aPlayer : players) {
+			if (aPlayer.getTurnCounter() != player.getTurnCounter()) {
+				sublistPlayers.add(aPlayer);		// Add players to a new sublist that aren't the current player's turn
+			}
+		}
+		
+		// Gain a Gold card
+		for (List<Card> kingdom : kingdoms.getSupplyList()) {
+			if (kingdom.size() > 0) {
+				if ("Gold".equals(kingdom.get(0).getName())) {
+					Card card = kingdom.get(0);
+					
+					player.addCardToDeck(card);			// Place the Gold onto the deck
+					System.out.println("You gained a Gold card");
+					
+					kingdoms.removeCardFromSupplyList(card);		// Remove the Gold from the supply list
+					int numLeft = Integer.parseInt(card.getNumLeft());
+					card.setNumLeft(Integer.toString(numLeft - 1));		// Manually reduce the number of cards left in that kingdom
+					break;
+				}
+			}
+		}
+		
+		// Iterate through each other player based on turn number and trash the card if it is a Treasure, back onto the deck if it is a Copper, and discard the rest
+		for (Player thePlayer : sublistPlayers) {
+			Card card = new Card(null, null, null, null, null, null, null, null, null);
+			System.out.println("This is Player " + thePlayer.getTurnCounter());
+			for (int i = 0; i < 2; i++) {
+				// Attempt to reveal the top card
+				try {
+					Collections.reverse(thePlayer.getDeck());
+					card = thePlayer.getDeck().get(0);		// Reveal the top card of the deck
+					Collections.reverse(thePlayer.getDeck());
+				} catch (IndexOutOfBoundsException e) {
+					if (thePlayer.getDiscardPile().size() > 0) {
+						System.out.println("You have no more cards to reveal. Reshuffling deck");
+						GameFlow gf = new GameFlow();
+						gf.restartDeck(thePlayer);		// Transfer cards from the discard pile to the deck
+						Collections.reverse(thePlayer.getDeck());
+						card = thePlayer.getDeck().get(0);		// Reveal the top card of the deck
+						Collections.reverse(thePlayer.getDeck());
+					} else {
+						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
+						break;
+					}
+				}
+				
+				System.out.println("You are revealing " + card);
+				
+				if ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2()) || "Treasure".equals(card.getType3()) 
+						|| "Treasure".equals(card.getType4())) {		// The card is a Treasure card
+					if ("Copper".equals(card.getName())) {
+						System.out.println("Placing Copper back onto the deck");
+						thePlayer.addCardToDeck(card);			// Add the card back onto the deck since it is a Copper card
+					} else {
+						player.removeCardFromDeck(card);		// Remove the card from the deck and remove it from the type list
+						System.out.println("You trashed " + card.getName());
+						kingdoms.trash.add(card);		// Add the card that was removed from the deck to the trash pile
+					}
+				} else {		// The card is not a Treasure card
+					thePlayer.addCardToDiscardPile(card);		// Discard the card since it is not a Treasure card
+					System.out.println("Discarding " + card.getName() + " since it is not a Copper or a Treasure card");
+				}
+			}
+		}
 	}
 }
