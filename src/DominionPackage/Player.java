@@ -161,6 +161,13 @@ public class Player {
 		Collections.reverse(getDeck());
 	}
 	
+	public void addCardToHand(Card card) {
+		Collections.reverse(getDeck());
+		hand.add(card);
+		addCardToTypeList(card);
+		Collections.reverse(getDeck());
+	}
+	
 	public void addCardToAction(Card card) {
 		action.add(card);
 	}

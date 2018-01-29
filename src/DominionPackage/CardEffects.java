@@ -38,14 +38,14 @@ public class CardEffects {
 		effects.put(29, () -> Laboratory(kingdoms, playerTurnCounter, players));
 		effects.put(30, () -> Library(kingdoms, playerTurnCounter, players));
 		effects.put(31, () -> Market(kingdoms, playerTurnCounter, players));
-		/*effects.put(32, () -> Mine(kingdoms, playerTurnCounter, players));
-		effects.put(33, () -> Sentry(kingdoms, playerTurnCounter, players));
+		effects.put(32, () -> Mine(kingdoms, playerTurnCounter, players));
+		/*effects.put(33, () -> Sentry(kingdoms, playerTurnCounter, players));
 		effects.put(34, () -> Witch(kingdoms, playerTurnCounter, players));
 		effects.put(35, () -> Artisan(kingdoms, playerTurnCounter, players));*/
 		
 		// Invoke the command by:
         //int cmd = 1;
-        //commands.get(cmd).run();   // Prints "Teleport"
+        //commands.get(cmd).run();
 		
 		return effects.get(IDOfCard);
 	}
@@ -659,7 +659,7 @@ public class CardEffects {
 		String choice;
 		
 		if (player.getCardsInHand().size() != 0) {
-			System.out.println("Do you want to trash a copper for +3 Coins? Press [y] for yes or [n] for no.");
+			System.out.println("Do you want to trash a Copper for +3 Coins? Press [y] for yes or [n] for no.");
 			while (scan.hasNext()) {
 				choice = scan.nextLine();
 				
@@ -981,8 +981,12 @@ public class CardEffects {
 						card = thePlayer.getDeck().get(0);		// Reveal the top card of the deck
 						Collections.reverse(thePlayer.getDeck());
 					} else {
-						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
-						break;
+						if (thePlayer.getCardsInHand().size() == 0) {		// If Player 3 or Player 4 is not in the game
+							break;
+						} else {
+							System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
+							break;
+						}
 					}
 				}
 				
@@ -1107,5 +1111,107 @@ public class CardEffects {
 		player.addNumActions(1);		// +1 Action
 		player.addNumBuys(1);			// +1 Buy
 		player.addExtraCoins(1);		// +1 Coins
+	}
+	
+	public void Mine(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Mine being played");
+		System.out.println("Effect: You may trash a Treasure from your hand. Gain a Treasure to your hand costing up to +3 Coins more than it");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		int i = 0, j = 0;
+		
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		String choice;
+		
+		if (player.getCardsInHand().size() != 0) {
+			System.out.println("Do you want to trash a Treasure card for +3 Coins? Press [y] for yes or [n] for no.");
+			while (scan.hasNext()) {
+				choice = scan.nextLine();
+				
+				if (choice.toLowerCase().equals("y")) {
+					System.out.println("Press -1 to not trash a card");
+					System.out.println("Press a number between 0 and " + (player.getTreasure().size() - 1) + " to trash that card");
+					
+					// Print the Treasures in the hand
+					for (Card card : player.getTreasure()) {
+						System.out.println(i + " = " + card);
+						i++;
+					}
+					
+					@SuppressWarnings("resource")
+					Scanner scan2 = new Scanner(System.in);
+					int choice2;
+					while (scan2.hasNext()) {
+						choice2 = scan2.nextInt();
+						
+						if (choice2 >= 0 && choice2 <= player.getTreasure().size() - 1) {
+							// Remove the chosen card from the hand and add it to the trash pile
+							Card card = player.getTreasure().get(choice2);		// Card is equal to the a card in the Treasure list
+							player.removeCardFromHand(card);		// Remove the selected card from your hand
+							System.out.println("You trashed " + card.getName());
+							kingdoms.trash.add(card);		// Add the card that was removed from the hand to the trash pile
+							
+							// Populate the list of kingdoms that cost +3 Coins more than the trashed card
+							List<List<Card>> threeMoreCostKingdoms = new ArrayList<List<Card>>();
+							
+							for (List<Card> kingdom : kingdoms.getSupplyList()) {
+								if (kingdom.size() != 0) {
+									if ("Treasure".equals(kingdom.get(0).getType1()) || "Treasure".equals(kingdom.get(0).getType2()) ||
+											"Treasure".equals(kingdom.get(0).getType3()) || "Treasure".equals(kingdom.get(0).getType4())) {
+										if (Integer.parseInt(kingdom.get(0).getCost()) <= Integer.parseInt(card.getCost()) + 3) {
+											threeMoreCostKingdoms.add(kingdom);		// Add the kingdom to the list
+										}
+									}
+								} 
+							}
+							
+							// Print out the list of available +3 Cost kingdoms
+							System.out.println("The following are the kingdoms that cost up to two more than " + card.getName() + ":");
+							for (List<Card> kingdom : threeMoreCostKingdoms) {
+								System.out.println(j + " = " + kingdom.get(0));
+								j++;
+							}
+							
+							System.out.println("Press a number between 0 and " + (threeMoreCostKingdoms.size() - 1) + " to gain the card");
+							@SuppressWarnings("resource")
+							Scanner scan3 = new Scanner(System.in);
+							int choice3;
+							while (scan3.hasNext()) {
+								choice3 = scan3.nextInt();
+								
+								// Choices must be a number between 0 and the size of the twoMoreCostKingdoms - 1 list
+								if (choice3 >= 0 && choice3 <= threeMoreCostKingdoms.size() - 1) {
+									List<Card> kingdom = threeMoreCostKingdoms.get(choice3);
+									player.addCardToHand(kingdom.get(0));			// Add the card from the kingdom to the player's hand
+									System.out.println("You gained " + kingdom.get(0).getName() + " to your hand");
+									kingdoms.removeCardFromSupplyList(kingdom.get(0));		// Remove the card from the kingdom
+									int numLeft = Integer.parseInt(card.getNumLeft());
+									kingdom.get(0).setNumLeft(Integer.toString(numLeft - 1));		// Manually remove 1 card from the supply
+									printCardsInHand(player);
+									break;
+								} else {
+									System.out.println("Invalid input. Press a number between 0 and " + (threeMoreCostKingdoms.size() - 1) + " to gain the card"
+											+ " to your hand");
+								}
+							}
+						} else if (choice2 == -1) {
+							System.out.println("You chose not to trash a card from your hand");
+							break;
+						} else {
+							System.out.println("Invalid input. Press -1 to not trash a card");
+							System.out.println("Press a number between 0 and " + (player.getTreasure().size() - 1) + " to trash that card");
+						}
+						break;
+					}
+					break;
+				} else {
+					System.out.println("You chose not to trash a Treasure card for +3 Coins");		// The player chose not to discard a Copper
+					break;
+				}
+			}
+		} else
+			System.out.println("You have no cards in your hand to discard");		// No cards in hand
 	}
 }

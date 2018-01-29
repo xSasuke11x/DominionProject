@@ -32,9 +32,12 @@ public class GameFlow {
 							Card card = aPlayer.getDeck().get(0);
 							aPlayer.drawCard(card);
 						} else {
-							//if (aPlayer.getCardsInHand().size() == 0)
-							System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
-							break;
+							if (aPlayer.getCardsInHand().size() == 0) {		// If Player 3 or Player 4 is not in the game
+								break;
+							} else {
+								System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
+								break;
+							}
 						}
 					}
 				}
