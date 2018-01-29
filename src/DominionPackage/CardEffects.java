@@ -33,8 +33,8 @@ public class CardEffects {
 		effects.put(24, () -> Smithy(kingdoms, playerTurnCounter, players));
 		effects.put(25, () -> ThroneRoom(kingdoms, playerTurnCounter, players));
 		effects.put(26, () -> Bandit(kingdoms, playerTurnCounter, players));
-		/*effects.put(27, () -> CouncilRoom(kingdoms, playerTurnCounter, players));
-		effects.put(28, () -> Festival(kingdoms, playerTurnCounter, players));
+		effects.put(27, () -> CouncilRoom(kingdoms, playerTurnCounter, players));
+		/*effects.put(28, () -> Festival(kingdoms, playerTurnCounter, players));
 		effects.put(29, () -> Laboratory(kingdoms, playerTurnCounter, players));
 		effects.put(30, () -> Library(kingdoms, playerTurnCounter, players));
 		effects.put(31, () -> Market(kingdoms, playerTurnCounter, players));
@@ -136,8 +136,7 @@ public class CardEffects {
 		
 		Player player = players.get(playerTurnCounter - 1);
 		
-		// +1 Action
-		player.addNumActions(1);
+		player.addNumActions(1);		// +1 Action
 		
 		// Effect
 		// Print out the cards with the value
@@ -193,10 +192,8 @@ public class CardEffects {
 			}
 		}
 		
-		for (int i = 0; i < numDiscard; i++) {
-			// Draw the top card from the deck and remove it from the deck
-			attemptDrawFromDeck(player);
-		}
+		for (int i = 0; i < numDiscard; i++)
+			attemptDrawFromDeck(player);		// Draw the top card from the deck and remove it from the deck
 		
 		printCardsInHand(player);
 	}
@@ -271,11 +268,9 @@ public class CardEffects {
 		
 		Player player = players.get(playerTurnCounter - 1);
 			
-		// +1 Card
-		attemptDrawFromDeck(player);
+		attemptDrawFromDeck(player);		// +1 Card
 		
-		// +1 Action
-		player.addNumActions(1);
+		player.addNumActions(1);		// +1 Action
 		
 		// Effect
 		if (player.getDiscardPile().size() != 0) {
@@ -332,11 +327,9 @@ public class CardEffects {
 		
 		Player player = players.get(playerTurnCounter - 1);
 			
-		// +1 Card
-		attemptDrawFromDeck(player);	
+		attemptDrawFromDeck(player);		// +1 Card
 		
-		// +1 Action
-		player.addNumActions(1);
+		player.addNumActions(1);		// +1 Action
 	}
 	
 	public void Vassal(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
@@ -346,8 +339,7 @@ public class CardEffects {
 		
 		Player player = players.get(playerTurnCounter - 1);
 			
-		// +2 Coins
-		player.addExtraCoins(2);
+		player.addExtraCoins(2);		// +2 Coins
 			
 		try {
 			Card card = player.getDeck().get(0);	// Get the top card of the deck
@@ -592,8 +584,7 @@ public class CardEffects {
 		List<Player> sublistPlayers = new ArrayList<Player>();
 		int turnCheck = 0;
 		
-		// +2 Coins
-		player.addExtraCoins(2);
+		player.addExtraCoins(2);		// +2 Coins
 		
 		// Add each player to a new list who isn't the current player
 		for (Player aPlayer : players) {
@@ -701,14 +692,11 @@ public class CardEffects {
 		Player player = players.get(playerTurnCounter - 1);
 		int numEmptyKingdoms = 0, numDiscarded = 0;
 		
-		// +1 Card
-		attemptDrawFromDeck(player);
+		attemptDrawFromDeck(player);		// +1 Card
 		
-		// +1 Action
-		player.addNumActions(1);
+		player.addNumActions(1);		// +1 Action
 		
-		// +1 Coin
-		player.addExtraCoins(1);
+		player.addExtraCoins(1);		// +1 Coin
 		
 		// Keep a running count of how many empty supply piles there are
 		for (List<Card> kingdom : kingdoms.getSupplyList()) {
@@ -1015,6 +1003,35 @@ public class CardEffects {
 					System.out.println("Discarding " + card.getName() + " since it is not a Copper or a Treasure card");
 				}
 			}
+		}
+	}
+	
+	public void CouncilRoom(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Council Room being played");
+		System.out.println("Effect: Each other player draws a card");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		List<Player> sublistPlayers = new ArrayList<Player>();
+		
+		for (int i = 0; i < 4; i++) {		// +4 cards
+			attemptDrawFromDeck(player);		// Attempt to draw a card
+		}
+		
+		player.addNumBuys(1);		// +1 Buy
+		
+		// Add each player to a new list who isn't the current player
+		for (Player aPlayer : players) {
+			if (aPlayer.getTurnCounter() != player.getTurnCounter()) {
+				sublistPlayers.add(aPlayer);		// Add players to a new sublist that aren't the current player's turn
+			}
+		}
+		
+		// Iterate through each other player based on turn number and draw a card
+		for (Player thePlayer : sublistPlayers) {
+			System.out.println("This is Player " + thePlayer.getTurnCounter());
+			System.out.println();
+			attemptDrawFromDeck(thePlayer);
 		}
 	}
 }
