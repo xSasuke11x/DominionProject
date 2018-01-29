@@ -34,8 +34,8 @@ public class CardEffects {
 		effects.put(25, () -> ThroneRoom(kingdoms, playerTurnCounter, players));
 		effects.put(26, () -> Bandit(kingdoms, playerTurnCounter, players));
 		effects.put(27, () -> CouncilRoom(kingdoms, playerTurnCounter, players));
-		/*effects.put(28, () -> Festival(kingdoms, playerTurnCounter, players));
-		effects.put(29, () -> Laboratory(kingdoms, playerTurnCounter, players));
+		effects.put(28, () -> Festival(kingdoms, playerTurnCounter, players));
+		/*effects.put(29, () -> Laboratory(kingdoms, playerTurnCounter, players));
 		effects.put(30, () -> Library(kingdoms, playerTurnCounter, players));
 		effects.put(31, () -> Market(kingdoms, playerTurnCounter, players));
 		effects.put(32, () -> Mine(kingdoms, playerTurnCounter, players));
@@ -1033,5 +1033,16 @@ public class CardEffects {
 			System.out.println();
 			attemptDrawFromDeck(thePlayer);
 		}
+	}
+	
+	public void Festival(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Festival being played");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		
+		player.addNumActions(2);		// +2 Actions
+		player.addNumBuys(1);			// +1 Buy
+		player.addExtraCoins(2);		// +2 Coins
 	}
 }

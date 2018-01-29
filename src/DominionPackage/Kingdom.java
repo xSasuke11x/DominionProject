@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Kingdom {
 	
-	private int vicTwoPlayers = 8, vicThreePlusPlayers = 12, totalNumCards = 27;
+	private int vicTwoPlayers = 8, vicThreePlusPlayers = 12, totalNumCards = 28;
 	
 	// Allocate space for each of the 19 kingdoms and the trash pile
 	public List<Card> copper = new ArrayList<Card>();

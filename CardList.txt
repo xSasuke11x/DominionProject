@@ -25,3 +25,4 @@ Smithy/Action/"null"/"null"/"null"/+3 Cards/24/4/10/
 Throne Room/Action/"null"/"null"/"null"/You may play an Action card from your hand twice./25/4/10/
 Bandit/Action/Attack/"null"/"null"/Gain a Gold. Each other player reveals the top 2 cards of their deck, trashes a revealed Treasure other than Copper, and discards the rest./26/5/10/
 Council Room/Action/"null"/"null"/"null"/+4 Cards | +1 Buy | Each other player draws a card./27/5/10/
+Festival/Action/"null"/"null"/"null"/+2 Actions | +1 Buy | +2 Coins/28/5/10/
