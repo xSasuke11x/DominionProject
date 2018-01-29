@@ -28,3 +28,4 @@ Council Room/Action/"null"/"null"/"null"/+4 Cards | +1 Buy | Each other player d
 Festival/Action/"null"/"null"/"null"/+2 Actions | +1 Buy | +2 Coins/28/5/10/
 Laboratory/Action/"null"/"null"/"null"/+2 Cards | +1 Action/29/5/10/
 Library/Action/"null"/"null"/"null"/Draw until you have 7 cards in hand, skipping any Action cards you choose to; set those aside, discarding them afterwards./30/5/10/
+Market/Action/"null"/"null"/"null"/+1 Card | +1 Action | +1 Buy | +1 Coin/31/5/10/

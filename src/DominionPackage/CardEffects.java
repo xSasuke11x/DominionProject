@@ -37,8 +37,8 @@ public class CardEffects {
 		effects.put(28, () -> Festival(kingdoms, playerTurnCounter, players));
 		effects.put(29, () -> Laboratory(kingdoms, playerTurnCounter, players));
 		effects.put(30, () -> Library(kingdoms, playerTurnCounter, players));
-		/*effects.put(31, () -> Market(kingdoms, playerTurnCounter, players));
-		effects.put(32, () -> Mine(kingdoms, playerTurnCounter, players));
+		effects.put(31, () -> Market(kingdoms, playerTurnCounter, players));
+		/*effects.put(32, () -> Mine(kingdoms, playerTurnCounter, players));
 		effects.put(33, () -> Sentry(kingdoms, playerTurnCounter, players));
 		effects.put(34, () -> Witch(kingdoms, playerTurnCounter, players));
 		effects.put(35, () -> Artisan(kingdoms, playerTurnCounter, players));*/
@@ -1095,5 +1095,17 @@ public class CardEffects {
 				break;
 			}
 		}
+	}
+	
+	public void Market(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Market being played");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		
+		attemptDrawFromDeck(player);		// Attempt to draw a card from the deck
+		player.addNumActions(1);		// +1 Action
+		player.addNumBuys(1);			// +1 Buy
+		player.addExtraCoins(1);		// +1 Coins
 	}
 }
