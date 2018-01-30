@@ -40,8 +40,8 @@ public class CardEffects {
 		effects.put(31, () -> Market(kingdoms, playerTurnCounter, players));
 		effects.put(32, () -> Mine(kingdoms, playerTurnCounter, players));
 		effects.put(33, () -> Sentry(kingdoms, playerTurnCounter, players));
-		/*effects.put(34, () -> Witch(kingdoms, playerTurnCounter, players));
-		effects.put(35, () -> Artisan(kingdoms, playerTurnCounter, players));*/
+		effects.put(34, () -> Witch(kingdoms, playerTurnCounter, players));
+		effects.put(35, () -> Artisan(kingdoms, playerTurnCounter, players));
 		
 		// Invoke the command by:
         //int cmd = 1;
@@ -464,7 +464,7 @@ public class CardEffects {
 			choice = scan.nextInt();
 			
 			// Choices must be a number between 0 and the size of the 4-cost kingdoms list
-			if (choice > 0 && choice <= fourCostKingdoms.size() - 1) {
+			if (choice >= 0 && choice <= fourCostKingdoms.size() - 1) {
 				Card card = fourCostKingdoms.get(choice).get(0);
 				
 				// Add the card from the kingdom to the discard pile
@@ -1224,10 +1224,8 @@ public class CardEffects {
 		List<Card> cards = new ArrayList<Card>();
 		boolean visited = false;
 		
-		//attemptDrawFromDeck(player);	// Attempt draw from deck
 		player.addNumActions(1);		// +1 Action
 		
-		//Card card = new Card(null, null, null, null, null, null, null, null, null);
 		for (int i = 0; i < 2; i++) {
 			// Attempt to reveal the top card
 			try {
@@ -1320,6 +1318,114 @@ public class CardEffects {
 					System.out.println("Invalid input. " + card.getName() + ": Press [1] to trash it, [2] to discard it, [3] to put it back onto the deck");
 				}
 				break;
+			}
+		}
+	}
+	
+	public void Witch(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Witch being played");
+		System.out.println("Effect: Each other player gains a Curse");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		List<Player> sublistPlayers = new ArrayList<Player>();
+		
+		for (int i = 0; i < 2; i++)
+			attemptDrawFromDeck(player);
+		
+		// Add each player to a new list who isn't the current player
+		for (Player aPlayer : players) {
+			if (aPlayer.getTurnCounter() != player.getTurnCounter()) {
+				sublistPlayers.add(aPlayer);		// Add players to a new sublist that aren't the current player's turn
+			}
+		}
+		
+		// Iterate through each other player based on turn number and give them a Curse card
+		for (Player thePlayer : sublistPlayers) {
+			for (List<Card> kingdom : kingdoms.getSupplyList()) {
+				if (kingdom.size() != 0 && "5".equals(kingdom.get(0).getID())) {		// Get a Curse card if one exists in the kingdom
+					Card card = kingdom.get(0);
+					thePlayer.addCardToDiscardPile(card);			// Add the Curse card to the discard pile
+					kingdoms.removeCardFromSupplyList(card);		// Remove the Curse from the supply list
+					int numLeft = Integer.parseInt(card.getNumLeft());
+					card.setNumLeft(Integer.toString(numLeft - 1));		// Manually reduce the number of cards left in that kingdom
+				} else
+					System.out.println("There are no more Curse cards to give out");
+			}
+		}
+	}
+	
+	public void Artisan(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Artisan being played");
+		System.out.println("Effect: Gain a card to your hand costing up to +5 Coins. Put a card from your hand onto your deck");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		
+		List<List<Card>> fiveCostKingdoms = new ArrayList<List<Card>>();
+		
+		// Add all 5-cost kingdoms to the fourCostKingdoms list
+		for (List<Card> kingdom : kingdoms.supplyList) {
+			if (kingdom.size() != 0) {
+				if (Integer.parseInt(kingdom.get(0).getCost()) <= 5) {
+					fiveCostKingdoms.add(kingdom);
+				}
+			}
+		}
+		
+		// Print out the 5-cost kingdoms
+		int i = 0;
+		System.out.println("The following are the 5-cost kingdoms:");
+		for (List<Card> kingdom : fiveCostKingdoms) {
+			System.out.println(i + " = " + kingdom.get(0));
+			i++;
+		}
+		
+		// Let the player choose a kingdom
+		System.out.println("Press a number between 0 and " + (fiveCostKingdoms.size() - 1) + " to gain the card");
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		int choice;
+		while (scan.hasNext()) {
+			choice = scan.nextInt();
+			
+			// Choices must be a number between 0 and the size of the 5-cost kingdoms list
+			if (choice >= 0 && choice <= fiveCostKingdoms.size() - 1) {
+				Card card = fiveCostKingdoms.get(choice).get(0);
+				
+				// Add the card from the kingdom to the discard pile
+				player.addCardToDiscardPile(card);
+				System.out.println("You gained " + card.getName());
+				
+				// Remove the card from the kingdom and set how many cards are left in the supply
+				kingdoms.removeCardFromSupplyList(card);
+				int numLeft = Integer.parseInt(card.getNumLeft());
+				card.setNumLeft(Integer.toString(numLeft - 1));			// Manually remove 1 card from the supply
+				break;
+			} else {
+				System.out.println("Invalid number. Press a number between 0 and " + (fiveCostKingdoms.size() - 1) + " to gain the card");
+			}
+		}
+		
+		System.out.println();
+		System.out.println("Put a card from your hand back onto the deck");
+		System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to place the card back onto the deck");
+		@SuppressWarnings("resource")
+		Scanner scan2 = new Scanner(System.in);
+		int choice2;
+		while (scan2.hasNext()) {
+			choice2 = scan2.nextInt();
+			
+			// Choices must be a number between 0 and the size of the player's hand
+			if (choice2 >= 0 && choice2 <= player.getCardsInHand().size() - 1) {
+				Card card = player.getCardsInHand().get(choice2);		// The card that the player chose from the hand
+				player.addCardToDeck(card);			// Add the chosen card on top of the deck
+				System.out.println("You gained " + card.getName());
+				player.removeCardFromHand(card);			// Remove the chosen card from the player's hand
+				break;
+			} else {
+				System.out.println("Invalid number. Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to place the card back"
+						+ " onto the deck");
 			}
 		}
 	}
