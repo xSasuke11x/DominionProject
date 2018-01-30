@@ -39,8 +39,8 @@ public class CardEffects {
 		effects.put(30, () -> Library(kingdoms, playerTurnCounter, players));
 		effects.put(31, () -> Market(kingdoms, playerTurnCounter, players));
 		effects.put(32, () -> Mine(kingdoms, playerTurnCounter, players));
-		/*effects.put(33, () -> Sentry(kingdoms, playerTurnCounter, players));
-		effects.put(34, () -> Witch(kingdoms, playerTurnCounter, players));
+		effects.put(33, () -> Sentry(kingdoms, playerTurnCounter, players));
+		/*effects.put(34, () -> Witch(kingdoms, playerTurnCounter, players));
 		effects.put(35, () -> Artisan(kingdoms, playerTurnCounter, players));*/
 		
 		// Invoke the command by:
@@ -1181,7 +1181,7 @@ public class CardEffects {
 							while (scan3.hasNext()) {
 								choice3 = scan3.nextInt();
 								
-								// Choices must be a number between 0 and the size of the twoMoreCostKingdoms - 1 list
+								// Choices must be a number between 0 and the size of the threeMoreCostKingdoms - 1 list
 								if (choice3 >= 0 && choice3 <= threeMoreCostKingdoms.size() - 1) {
 									List<Card> kingdom = threeMoreCostKingdoms.get(choice3);
 									player.addCardToHand(kingdom.get(0));			// Add the card from the kingdom to the player's hand
@@ -1207,11 +1207,120 @@ public class CardEffects {
 					}
 					break;
 				} else {
-					System.out.println("You chose not to trash a Treasure card for +3 Coins");		// The player chose not to discard a Copper
+					System.out.println("You chose not to trash a Treasure card for +3 Coins");		// The player chose not to trash a Treasure card
 					break;
 				}
 			}
 		} else
 			System.out.println("You have no cards in your hand to discard");		// No cards in hand
+	}
+	
+	public void Sentry(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
+		System.out.println("Sentry being played");
+		System.out.println("Effect: Look at the top 2 cards of your deck. Trash and/or discard any number of them. Put the rest back on top in any order");
+		System.out.println();
+		
+		Player player = players.get(playerTurnCounter - 1);
+		List<Card> cards = new ArrayList<Card>();
+		boolean visited = false;
+		
+		//attemptDrawFromDeck(player);	// Attempt draw from deck
+		player.addNumActions(1);		// +1 Action
+		
+		//Card card = new Card(null, null, null, null, null, null, null, null, null);
+		for (int i = 0; i < 2; i++) {
+			// Attempt to reveal the top card
+			try {
+				Collections.reverse(player.getDeck());
+				Card card = player.getDeck().get(0);		// Reveal the top card of the deck
+				attemptDrawFromDeck(player);
+				Collections.reverse(player.getDeck());
+				cards.add(card);		// Add the card to a short list
+			} catch (IndexOutOfBoundsException e) {
+				if (player.getDiscardPile().size() > 0) {
+					System.out.println("You have no more cards to reveal. Reshuffling deck");
+					GameFlow gf = new GameFlow();
+					gf.restartDeck(player);		// Transfer cards from the discard pile to the deck
+					Collections.reverse(player.getDeck());
+					Card card = player.getDeck().get(0);		// Reveal the top card of the deck
+					attemptDrawFromDeck(player);
+					Collections.reverse(player.getDeck());
+					cards.add(card);		// Add the card to a short list
+				} else {
+						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
+						break;
+				}
+			}
+		}
+		
+		System.out.println("The first card is: " + cards.get(0).getName());
+		System.out.println("The second card is: " + cards.get(1).getName());
+		
+		for (int i = 0; i < 2; i++) {
+			Card card = cards.get(i);
+			System.out.println(card.getName() + ": Press [1] to trash it, [2] to discard it, [3] to put it back onto the deck");
+			
+			@SuppressWarnings("resource")
+			Scanner scan = new Scanner(System.in);
+			int choice;
+			while (scan.hasNext()) {
+				choice = scan.nextInt();
+				
+				if (choice == 1) {
+					player.removeCardFromHand(card);		// Remove the first card in cards from your hand
+					System.out.println("You trashed " + card.getName());
+					kingdoms.trash.add(card);		// Add the card that was removed from the hand to the trash pile
+					if (visited == true)
+						break;
+					else {
+						visited = true;
+						break;
+					}
+				} else if (choice == 2) {
+					player.removeCardFromHand(card);		// Remove the first card in cards from your hand
+					System.out.println("You discarded " + card.getName());
+					player.addCardToDiscardPile(card);		// Add the card that was removed from the hand to the trash pile
+					if (visited == true)
+						break;
+					else {
+						visited = true;
+						break;
+					}
+				} else if (choice == 3) {
+					if (visited == false) {
+						player.removeCardFromHand(card);		// Remove the first card in cards from your hand
+						player.addCardToDeck(card);				// Add the first card to the deck
+						System.out.println("You placed " + card.getName() + " back onto the deck");
+						visited = true;
+						break;
+					} else {
+						System.out.println("Do you want " + card.getName() + " to be the next card you draw? Press [y] for yes or [n] for no");
+						@SuppressWarnings("resource")
+						Scanner scan2 = new Scanner(System.in);
+						String choice2;
+						while (scan2.hasNext()) {
+							choice2 = scan2.nextLine();
+							
+							if (choice2.equals("y")) {
+								player.removeCardFromHand(card);		// Remove the first card in cards from your hand
+								player.addCardToDeck(card);				// Add the first card to the deck
+								break;
+							} else {
+								Card tempCard = player.getDeck().get(0);		// Get the first card from the deck
+								player.drawCard(tempCard);				// Draw the first card
+								player.removeCardFromHand(card);		// Remove the second card from your hand
+								player.addCardToDeck(card);				// Add the second card onto the deck
+								player.addCardToDeck(tempCard);			// Add the first card onto the deck
+								break;
+							}
+						}
+						break;
+					}
+				} else {
+					System.out.println("Invalid input. " + card.getName() + ": Press [1] to trash it, [2] to discard it, [3] to put it back onto the deck");
+				}
+				break;
+			}
+		}
 	}
 }
