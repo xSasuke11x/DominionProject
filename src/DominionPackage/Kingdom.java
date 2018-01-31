@@ -30,8 +30,8 @@ public class Kingdom {
 	public List<Card> k8 = new ArrayList<Card>();
 	public List<Card> k9 = new ArrayList<Card>();
 	public List<Card> k10 = new ArrayList<Card>();
-	public List<List<Card>> kingdoms = new ArrayList<List<Card>>();
 	public List<Card> trash = new ArrayList<Card>();
+	public List<List<Card>> kingdoms = new ArrayList<List<Card>>();
 	public List<List<Card>> supplyList = new ArrayList<List<Card>>();
 	public List<List<Card>> treasureList = new ArrayList<List<Card>>();
 	public List<List<Card>> victoryList = new ArrayList<List<Card>>();
