@@ -8,11 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CardDatabase {
-	//private List<String[]> cardCreationList = new ArrayList<String[]>();
 	private List<Card> cardCreationList = new ArrayList<Card>();
 	private int totalNumCards = 102;
 	
-	//public List<String[]> getCardList() {
 	public List<Card> getCardList() {
 		return cardCreationList;
 	}
@@ -22,7 +20,6 @@ public class CardDatabase {
 		String name = null, type1 = null, type2 = null, type3 = null, type4 = null, effect = null, ID = null,  cost = null, numLeft = null;
 		String fileName = "CardList.txt";
 		String line;
-		//Card cp = new Card(name, type1, type2, effect1, effect2, effect3, effect4, effect5, cost, potion);
 		
 		try {
 			// Always wrap FileReader in BufferedReader.
@@ -58,22 +55,8 @@ public class CardDatabase {
 	                }
 	            	
 	                cardCreationList.add(cp);
-	                
-	                //System.out.println(cp.getName() + ", " + cp.getType1() + ", " + cp.getType2() + ", " + cp.getEffect1() + ", " + cp.getEffect2() 
-	                //	+ ", " + cp.getEffect3() + ", " + cp.getEffect4() + ", " + cp.getEffect5() + ", " + cp.getCost() + ", " + cp.getPotion());
 	            }
 	        }
-	        
-	        //System.out.println(cardCreationList.get(0));
-	        
-	        /*for (Card card : cardCreationList) {
-	        	System.out.println(card);
-			}*/
-	        
-	        //cp.addCardToDeck(card);
-        	//System.out.println(Arrays.toString(card));
-        	/*System.out.println(card.getName() + ", " + card.getType1() + ", " + card.getType2() + ", " + card.getEffect1() + ", " + card.getEffect2()
-        		+ ", " + card.getEffect3() + ", " + card.getEffect4() + ", " + card.getEffect5() + ", " + card.getCost() + ", " + card.getPotion());*/
 	        
 	        // Always close files.
 	        bufferedReader.close();
