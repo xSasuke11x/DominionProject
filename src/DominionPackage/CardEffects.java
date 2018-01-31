@@ -1072,9 +1072,8 @@ public class CardEffects {
 		
 		while (player.getCardsInHand().size() != 7) {
 			if (player.getDeck().size() > 0) {
-				printCardsInHand(player);		// Print out the cards in the hand
 				attemptDrawFromDeck(player);		// Attempt to draw a card from the deck
-				Card card = player.getCardsInHand().get(0);
+				Card card = player.getCardsInHand().get(player.getCardsInHand().size() - 1);
 				if ("Action".equals(card.getType1())) {			// Ask to discard the drawn card if the type is an Action card
 					System.out.println(card.getName() + " is an Action card. Do you want to discard it? Press [y] to discard it or [n] to keep it");
 					
@@ -1087,7 +1086,9 @@ public class CardEffects {
 						if (choice.toLowerCase().equals("y")) {
 							player.addCardToDiscardPile(card);		// Discard the card the player just drew to the discard pile
 							player.removeCardFromHand(card);		// Remove the card the player just drew from the hand
-						}
+							break;
+						} else 
+							break;
 					}
 				}
 			} else if (player.getDeck().size() == 0 && player.getDiscardPile().size() > 0) {
@@ -1409,6 +1410,7 @@ public class CardEffects {
 		
 		System.out.println();
 		System.out.println("Put a card from your hand back onto the deck");
+		printCardsInHand(player);
 		System.out.println("Press a number between 0 and " + (player.getCardsInHand().size() - 1) + " to place the card back onto the deck");
 		@SuppressWarnings("resource")
 		Scanner scan2 = new Scanner(System.in);
@@ -1420,7 +1422,7 @@ public class CardEffects {
 			if (choice2 >= 0 && choice2 <= player.getCardsInHand().size() - 1) {
 				Card card = player.getCardsInHand().get(choice2);		// The card that the player chose from the hand
 				player.addCardToDeck(card);			// Add the chosen card on top of the deck
-				System.out.println("You gained " + card.getName());
+				System.out.println("You put " + card.getName() + " back on top of the deck");
 				player.removeCardFromHand(card);			// Remove the chosen card from the player's hand
 				break;
 			} else {
