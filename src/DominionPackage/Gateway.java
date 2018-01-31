@@ -7,10 +7,8 @@ import java.util.List;
 public class Gateway {
 	
 	public static void main(String[] args) {
-		// Change this to test multiple players
 		int playerTurnCounter = 1;
 		
-		//boolean winCondition = false;
 		List<Player> players = new ArrayList<Player>();
 		
 		Player player1 = new Player();
@@ -34,9 +32,6 @@ public class Gateway {
 		Kingdom kingdoms = new Kingdom();
 		kingdoms.Setup(cd, player1.getNumPlayers(), players);
 		
-		//kingdoms.vicListSetup();
-		//System.out.println(kingdoms.victoryList.size());
-		
 		GameFlow gf = new GameFlow();
 		
 		// Shuffle the cards in each player's deck
@@ -46,7 +41,7 @@ public class Gateway {
 		}
 		
 		// Initiate gameplay
-		for (; gf.getWinCondition() == false;) {
+		while (gf.getWinCondition() == false) {
 			if (playerTurnCounter == 1) {
 				System.out.println();
 				System.out.println("It is player 1's turn");
@@ -78,6 +73,7 @@ public class Gateway {
 		
 		if (gf.getWinCondition() == true) {
 			calculateGardens(kingdoms, players);
+			announceWinner(players);
 		}
 	}
 	
@@ -92,6 +88,21 @@ public class Gateway {
 					ce.getCardEffect(IDOfCard, kingdoms, player.getTurnCounter(), players).run();			// Play the Action card
 				}
 			}
+		}
+	}
+	
+	public static void announceWinner(List<Player> players) {
+		int highestScore = 0, count = 0;
+		Player tempPlayer = new Player();
+		
+		for (Player player : players) {
+			if (player.getExtraVictoryPoints() > highestScore) {
+				highestScore = player.getExtraVictoryPoints();
+				tempPlayer = player;
+			}
+			count++;
+			if (count == 4)
+				System.out.println("The winner is Player " + tempPlayer.getTurnCounter() + " with " + highestScore + " points");
 		}
 	}
 

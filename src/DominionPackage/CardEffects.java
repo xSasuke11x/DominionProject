@@ -1332,6 +1332,7 @@ public class CardEffects {
 				if (kingdom.size() != 0 && "5".equals(kingdom.get(0).getID())) {		// Get a Curse card if one exists in the kingdom
 					Card card = kingdom.get(0);
 					thePlayer.addCardToDiscardPile(card);			// Add the Curse card to the discard pile
+					System.out.println("Player " + thePlayer.getTurnCounter() + " gained a Curse to their discard pile");
 					kingdoms.removeCardFromSupplyList(card);		// Remove the Curse from the supply list
 					int numLeft = Integer.parseInt(card.getNumLeft());
 					card.setNumLeft(Integer.toString(numLeft - 1));		// Manually reduce the number of cards left in that kingdom
