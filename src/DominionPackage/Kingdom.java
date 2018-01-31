@@ -44,20 +44,15 @@ public class Kingdom {
 		for (Card card : cd.getCardList()) {
 			for (int i = 0; i < Integer.parseInt(card.getNumLeft()); i++) {
 				if ("1".equals(card.getID())) {
-					// Populate Copper Pile
-					copper.add(card);
+					copper.add(card);			// Populate Copper Pile
 				} else if ("2".equals(card.getID())) {
-					// Populate Silver Pile
-					silver.add(card);
+					silver.add(card);			// Populate Silver Pile
 				} else if ("3".equals(card.getID())) {
-					// Populate Gold Pile
-					gold.add(card);
+					gold.add(card);				// Populate Gold Pile
 				} else if ("4".equals(card.getID())) {
-					// Populate Platinum Pile
-					platinum.add(card);
+					platinum.add(card);			// Populate Platinum Pile
 				} else if ("5".equals(card.getID()) && i < (numPlayers * 10) - 10) {
-					// Populate Curse pile based on number of players
-					curse.add(card);
+					curse.add(card);			// Populate Curse pile based on number of players
 				} 
 			}
 		}
@@ -138,8 +133,6 @@ public class Kingdom {
             	kingdoms.get(i).add(card);
             }
             
-            //System.out.println(subList.get(0).getType1().toString()); // Get the Type1 for each card
-            
             temp.add(card);
             iterator.remove();
         }
@@ -161,50 +154,15 @@ public class Kingdom {
         	setupVictories(kingdoms.get(j));
         }
         
-        //System.out.println(Arrays.toString(kingdoms.get(0).toArray()));
-        
-        /*
-        System.out.println(k1.size());
-        System.out.println(k2.size());
-        System.out.println(k3.size());
-        System.out.println(k4.size());
-        System.out.println(k5.size());
-        System.out.println(k6.size());
-        System.out.println(k7.size());
-        System.out.println(k8.size());
-        System.out.println(k9.size());
-        System.out.println(k10.size());
-        */
-        
-        //System.out.println();
-        
         // Print out the 10 kingdom cards
         for (Card card : temp) {
         	System.out.println(card.getName());
         }
-		
-        //System.out.println();
-        //System.out.println("Player1 deck = " + player1.getDeck()); // Prints out the deck list for the player
-		
-        //System.out.println(cd.getCardList().size());
-        
-        // Create list of actions
-        actionList = actListSetup();
-        
-        // Create list of treasures
-        treasureList = treasListSetup();
-        
-        // Create list of victories
-        victoryList = vicListSetup();
-        
-        // Create the overall supply list
-        supplyList = supplyListSetup();
-        
-        /*for (Card temp2 : estate) {
-        	System.out.println(temp2);
-        }*/
-        
-        //System.out.println(player1.getDeck());
+
+        actionList = actListSetup();			// Create list of actions
+        treasureList = treasListSetup();		// Create list of treasures
+        victoryList = vicListSetup();			// Create list of victories
+        supplyList = supplyListSetup();			// Create the overall supply list
 	}
 	
 	// If a kingdom is a victory card, change the number of cards from 10 to 8
@@ -342,15 +300,6 @@ public class Kingdom {
 	public List<List<Card>> getSupplyList() {
 		return supplyList;
 	}
-	
-	/*public void removeKingdomFromSupplyList(List<List<Card>> kingdoms) {
-		for (List<Card> kingdom : kingdoms) {
-			System.out.println("TEST: kingdom size is " + kingdom.size());
-			if (kingdom.size() == 0) {
-				kingdoms.remove(kingdom);
-			}
-		}
-	}*/
 	
 	public void removeCardFromSupplyList(Card card) {
 		// Search through each kingdom in the supply list

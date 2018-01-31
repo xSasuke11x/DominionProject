@@ -337,13 +337,10 @@ public class GameFlow {
 			discardHand(players.get(3));
 		}
 		
-		//resetCardsAvailable(players);
 		resetNumActionsLeft(players);
 		resetNumBuysLeft(players);
 		resetExtraCoins(players);
 		checkWinCondition(kingdoms, players);
-		
-		//return winCondition;
 	}
 	
 	public void discardHand(Player player) {

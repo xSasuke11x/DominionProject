@@ -23,8 +23,8 @@ public class Gateway {
 		Player player4 = new Player();
 		player4.setTurnCounter(4);
 		players.add(player4);
-		//int numPlayers = setupNumPlayers();
 		
+		// Populate the database with all of the available cards
 		CardDatabase cd = new CardDatabase();
 		cd.PopulateDatabase();
 		
@@ -70,51 +70,5 @@ public class Gateway {
 				playerTurnCounter = 1;
 			}
 		}
-		
-		/*if (gf.getWinCondition() == true) {
-			calculateGardens(kingdoms, players);
-			announceWinner(players);
-		}*/
 	}
-	
-	/*public static void calculateGardens(Kingdom kingdoms, List<Player> players) {
-		CardEffects ce = new CardEffects();
-		
-		// Play Gardens and add score to extra Victory points
-		for (Player player : players) {
-			for (Card card : player.getDeck()) {
-				if ("19".equals(card.getID())) {
-					int IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the Action card discarded
-					ce.getCardEffect(IDOfCard, kingdoms, player.getTurnCounter(), players).run();			// Play the Action card
-				}
-			}
-		}
-	}
-	
-	public static void announceWinner(List<Player> players) {
-		int highestScore = 0, count = 0;
-		List<Player> tempPlayers = new ArrayList<Player>();
-		
-		for (Player player : players) {
-			if (player.getExtraVictoryPoints() >= highestScore) {
-				highestScore = player.getExtraVictoryPoints();
-				System.out.println("TEST: score = " + highestScore);
-				tempPlayers.add(player);
-			}
-			count++;
-			if (count == 4) {
-				if (tempPlayers.size() == 1)
-					System.out.println("The winner is Player " + tempPlayers.get(0).getTurnCounter() + " with " + highestScore + " points");
-				else {
-					System.out.println("The winners are:");
-					for (Player aPlayer : tempPlayers)
-						System.out.println("Player " + aPlayer.getTurnCounter());
-				}
-			}
-		}
-	}*/
-
-	/*public static int setupNumPlayers() {
-		return 2;
-	}*/
 }
