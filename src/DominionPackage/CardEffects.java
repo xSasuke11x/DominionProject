@@ -1394,8 +1394,8 @@ public class CardEffects {
 				Card card = fiveCostKingdoms.get(choice).get(0);
 				
 				// Add the card from the kingdom to the discard pile
-				player.addCardToDiscardPile(card);
-				System.out.println("You gained " + card.getName());
+				player.addCardToHand(card);
+				System.out.println("You gained " + card.getName() + " to your hand");
 				
 				// Remove the card from the kingdom and set how many cards are left in the supply
 				kingdoms.removeCardFromSupplyList(card);
