@@ -549,7 +549,9 @@ public class CardEffects {
 		
 		// Add the total to the extra victory points for that player
 		player.addExtraVictoryPoints((int)Math.floor(totalNumCards / 10));
-		System.out.println("Player " + player.getTurnCounter() + " gained " + (int)Math.floor(totalNumCards / 10) + " Victory points");
+		System.out.println("Player " + player.getTurnCounter() + " gained " + (int)Math.floor(totalNumCards / 10) + " Victory points for having " 
+				+ totalNumCards + " in the deck");
+		System.out.println();
 	}
 	
 	public void Militia(Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
@@ -1317,7 +1319,7 @@ public class CardEffects {
 		List<Player> sublistPlayers = new ArrayList<Player>();
 		
 		for (int i = 0; i < 2; i++)
-			attemptDrawFromDeck(player);
+			attemptDrawFromDeck(player);		// Attempt to draw a card from the deck
 		
 		// Add each player to a new list who isn't the current player
 		for (Player aPlayer : players) {
@@ -1329,15 +1331,24 @@ public class CardEffects {
 		// Iterate through each other player based on turn number and give them a Curse card
 		for (Player thePlayer : sublistPlayers) {
 			for (List<Card> kingdom : kingdoms.getSupplyList()) {
-				if (kingdom.size() != 0 && "5".equals(kingdom.get(0).getID())) {		// Get a Curse card if one exists in the kingdom
-					Card card = kingdom.get(0);
-					thePlayer.addCardToDiscardPile(card);			// Add the Curse card to the discard pile
-					System.out.println("Player " + thePlayer.getTurnCounter() + " gained a Curse to their discard pile");
-					kingdoms.removeCardFromSupplyList(card);		// Remove the Curse from the supply list
-					int numLeft = Integer.parseInt(card.getNumLeft());
-					card.setNumLeft(Integer.toString(numLeft - 1));		// Manually reduce the number of cards left in that kingdom
-				} else
-					System.out.println("There are no more Curse cards to give out");
+				if (thePlayer.getCardsInHand().size() > 0 || thePlayer.getDeck().size() > 0 || thePlayer.getDiscardPile().size() > 0) {		// If the player exists
+					if (kingdom.size() != 0) {		// Enter if the kingdom is not empty
+						if ("5".equals(kingdom.get(0).getID())) {		// The kingdom is Curse
+							Card card = kingdom.get(0);			// Card is set to be Curse
+							thePlayer.addCardToDiscardPile(card);			// Add the Curse card to the discard pile
+							System.out.println();
+							System.out.println("Player " + thePlayer.getTurnCounter() + " gained a Curse to their discard pile");
+							kingdoms.removeCardFromSupplyList(card);		// Remove the Curse from the supply list
+							int numLeft = Integer.parseInt(card.getNumLeft());
+							card.setNumLeft(Integer.toString(numLeft - 1));		// Manually reduce the number of cards left in that kingdom
+							break;
+						}
+					} else {
+						if ("5".equals(kingdom.get(0).getID())) {		// There are no more Curses
+							System.out.println("There are no more Curse cards to give out");
+						}
+					}
+				}
 			}
 		}
 	}

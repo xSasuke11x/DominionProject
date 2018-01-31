@@ -2,7 +2,6 @@ package DominionPackage;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -142,8 +141,8 @@ public class GameFlow {
 						System.out.println();
 						choice = scan.nextInt();
 					} else {
-						System.out.println("You have no Action cards to play and/or you ran out of Actions to play Action cards. Press -1 to continue");
-						choice = scan.nextInt();
+						System.out.println("You have no Action cards to play and/or you ran out of Actions to play Action cards");
+						System.out.println();
 						break;
 					}
 				}
@@ -373,6 +372,8 @@ public class GameFlow {
 		}
 		
 		if (getWinCondition() == true) {
+			System.out.println("Game over!");
+			
 			// Return all players' cards in their hand to the deck
 			System.out.println("Returning all cards in all players' hands back to their deck");
 			for (Player player : players) {
@@ -393,10 +394,49 @@ public class GameFlow {
 				}
 			}
 			
-			// Sort each players' deck by ID number
+			// Calculate Victory Points
 			System.out.println("Sorting each players' deck by the card's ID number");
 			for (Player player : players) {
-				player.getDeck().sort(Comparator.comparing(Card::getID));
+				//player.getDeck().sort(Comparator.comparing(Card::getID));
+				for (Card card : player.getDeck()) {
+					if ("Estate".equals(card.getName()))
+						player.addExtraVictoryPoints(1);
+					else if ("Duchy".equals(card.getName()))
+						player.addExtraVictoryPoints(3);
+					else if ("Province".equals(card.getName()))
+						player.addExtraVictoryPoints(6);
+					else if ("Colony".equals(card.getName()))
+						player.addExtraVictoryPoints(10);
+					else if ("Gardens".equals(card.getName())) {
+						CardEffects ce = new CardEffects();
+						int IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the Action card discarded
+						ce.getCardEffect(IDOfCard, kingdoms, player.getTurnCounter(), players).run();			// Play the Action card
+					}
+				}
+			}
+			announceWinner(players);
+		}
+	}
+	
+	public void announceWinner(List<Player> players) {
+		int highestScore = 0, count = 0;
+		List<Player> tempPlayers = new ArrayList<Player>();
+		
+		for (Player player : players) {
+			if (player.getExtraVictoryPoints() >= highestScore) {
+				highestScore = player.getExtraVictoryPoints();
+				//System.out.println("TEST: score = " + highestScore);
+				tempPlayers.add(player);
+			}
+			count++;
+			if (count == 4) {
+				if (tempPlayers.size() == 1)
+					System.out.println("The winner is Player " + tempPlayers.get(0).getTurnCounter() + " with " + highestScore + " points");
+				else {
+					System.out.println("The winners are:");
+					for (Player aPlayer : tempPlayers)
+						System.out.println("Player " + aPlayer.getTurnCounter());
+				}
 			}
 		}
 	}

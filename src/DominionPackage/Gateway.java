@@ -71,13 +71,13 @@ public class Gateway {
 			}
 		}
 		
-		if (gf.getWinCondition() == true) {
+		/*if (gf.getWinCondition() == true) {
 			calculateGardens(kingdoms, players);
 			announceWinner(players);
-		}
+		}*/
 	}
 	
-	public static void calculateGardens(Kingdom kingdoms, List<Player> players) {
+	/*public static void calculateGardens(Kingdom kingdoms, List<Player> players) {
 		CardEffects ce = new CardEffects();
 		
 		// Play Gardens and add score to extra Victory points
@@ -93,18 +93,26 @@ public class Gateway {
 	
 	public static void announceWinner(List<Player> players) {
 		int highestScore = 0, count = 0;
-		Player tempPlayer = new Player();
+		List<Player> tempPlayers = new ArrayList<Player>();
 		
 		for (Player player : players) {
-			if (player.getExtraVictoryPoints() > highestScore) {
+			if (player.getExtraVictoryPoints() >= highestScore) {
 				highestScore = player.getExtraVictoryPoints();
-				tempPlayer = player;
+				System.out.println("TEST: score = " + highestScore);
+				tempPlayers.add(player);
 			}
 			count++;
-			if (count == 4)
-				System.out.println("The winner is Player " + tempPlayer.getTurnCounter() + " with " + highestScore + " points");
+			if (count == 4) {
+				if (tempPlayers.size() == 1)
+					System.out.println("The winner is Player " + tempPlayers.get(0).getTurnCounter() + " with " + highestScore + " points");
+				else {
+					System.out.println("The winners are:");
+					for (Player aPlayer : tempPlayers)
+						System.out.println("Player " + aPlayer.getTurnCounter());
+				}
+			}
 		}
-	}
+	}*/
 
 	/*public static int setupNumPlayers() {
 		return 2;
