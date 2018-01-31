@@ -1004,9 +1004,11 @@ public class CardEffects {
 		
 		// Iterate through each other player based on turn number and draw a card
 		for (Player thePlayer : sublistPlayers) {
-			System.out.println("This is Player " + thePlayer.getTurnCounter());
-			System.out.println();
-			attemptDrawFromDeck(thePlayer);
+			if (thePlayer.getCardsInHand().size() > 0 || thePlayer.getDeck().size() > 0 || thePlayer.getDiscardPile().size() > 0) {		// Must be an active player
+				System.out.println("This is Player " + thePlayer.getTurnCounter());
+				System.out.println();
+				attemptDrawFromDeck(thePlayer);			// Attempt a draw from the deck
+			}
 		}
 	}
 	

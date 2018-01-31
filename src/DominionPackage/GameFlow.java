@@ -44,66 +44,6 @@ public class GameFlow {
 			}
 		}
 		
-		/*for (int i = 0; i < initialDraw; i++) {
-			if (playerTurnCounter == 1) {	
-				Collections.reverse(player.getDeck());
-				try {
-					Card card = player.getDeck().get(0);
-					player.drawCard(card);
-				} catch (IndexOutOfBoundsException e) {
-					if (player.getDiscardPile().size() > 0) {
-						System.out.println("You have no more cards to draw. Reshuffling deck");
-						restartDeck(player);
-						Card card = player.getDeck().get(0);
-						player.drawCard(card);
-					} else
-						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
-				}
-			} else if (playerTurnCounter == 2) {
-				Collections.reverse(player.getDeck());
-				try {
-					Card card = player.getDeck().get(0);
-					player.drawCard(card);
-				} catch (IndexOutOfBoundsException e) {
-					if (player.getDiscardPile().size() > 0) {
-						System.out.println("You have no more cards to draw. Reshuffling deck");
-						restartDeck(player);
-						Card card = player.getDeck().get(0);
-						player.drawCard(card);
-					} else
-						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
-				}
-			} else if (playerTurnCounter == 3) {
-				Collections.reverse(player.getDeck());
-				try {
-					Card card = player.getDeck().get(0);
-					player.drawCard(card);
-				} catch (IndexOutOfBoundsException e) {
-					if (player.getDiscardPile().size() > 0) {
-						System.out.println("You have no more cards to draw. Reshuffling deck");
-						restartDeck(player);
-						Card card = player.getDeck().get(0);
-						player.drawCard(card);
-					} else
-						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
-				}
-			} else {
-				Collections.reverse(player.getDeck());
-				try {
-					Card card = player.getDeck().get(0);
-					player.drawCard(card);
-				} catch (IndexOutOfBoundsException e) {
-					if (player.getDiscardPile().size() > 0) {
-						System.out.println("You have no more cards to draw. Reshuffling deck");
-						restartDeck(player);
-						Card card = player.getDeck().get(0);
-						player.drawCard(card);
-					} else
-						System.out.println("You have no more cards to draw and there are no cards left in your discard pile to reshuffle");
-				}
-			}
-		}*/
-		
 		// Print the cards in the hand
 		printCardsInHand(player);
 		
@@ -143,13 +83,9 @@ public class GameFlow {
 	}
 	
 	public void actionPhaseSteps(Player player, Kingdom kingdoms, int playerTurnCounter, List<Player> players) {
-		// Add each type of card to their respective lists for the player
-		//availableCards(player);
-		
 		// Print available actions
 		if (player.getAction().size() != 0) {
 			printCardsInHand(player);			// Print the cards in the hand
-			//printActionsInHand(player);			// Print action cards in hand
 			playActionCards(player, kingdoms, playerTurnCounter, players);				// Play the card
 		} else
 			System.out.println("No available action cards to play");
@@ -192,7 +128,6 @@ public class GameFlow {
 					
 					Card card = player.getAction().get(choice);
 					int IDOfCard = Integer.parseInt(card.getID());
-					
 					player.addNumActions(-1);				// Use up an action
 					player.addCardToCardsInPlay(card);		// Add the card to play
 					player.removeCardFromHand(card);		// Remove the card from the hand and remove it from the type list
@@ -270,10 +205,8 @@ public class GameFlow {
 			if (choice >= 0 && choice <= player.getTreasure().size() - 1) {
 				Card card = player.getTreasure().get(choice);		// Get the first card in the Treasure list
 				IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the first card in the Treasure list
-				
 				player.addCardToCardsInPlay(card);			// Put the treasure in play
 				player.removeCardFromHand(card);			// Remove the card from the hand
-				
 				ce.getCardEffect(IDOfCard, kingdoms, playerTurnCounter, players).run();
 				System.out.println();
 				if (player.getTreasure().size() != 0) {
@@ -286,10 +219,8 @@ public class GameFlow {
 				while (player.getTreasure().size() != 0) {
 					Card card = player.getTreasure().get(0);			// Get the first card in the Treasure list
 					IDOfCard = Integer.parseInt(card.getID());		// Get the ID of the first card in the Treasure list
-					
 					player.addCardToCardsInPlay(card);			// Put the treasure in play
 					player.removeCardFromHand(card);			// Remove the card from the hand
-					
 					ce.getCardEffect(IDOfCard, kingdoms, playerTurnCounter, players).run();		// Run the card base on its ID
 				}
 				break;
@@ -328,7 +259,6 @@ public class GameFlow {
 	public void printTreasuresInHand(Player player) {
 		int i = 0;
 		System.out.println();
-		//printCardsInHand(player);
 		if (player.getTreasure().size() != 0) {
 			System.out.println("Treasures in hand:");
 			for (Card card : player.getTreasure()) {
@@ -426,7 +356,6 @@ public class GameFlow {
 	}
 	
 	public void checkWinCondition(Kingdom kingdoms, List<Player> players) {
-		//boolean winCondition = false;
 		int supplyCount = 0;
 		
 		if (kingdoms.province.size() == 0)
@@ -470,8 +399,6 @@ public class GameFlow {
 				player.getDeck().sort(Comparator.comparing(Card::getID));
 			}
 		}
-		
-		//return winCondition;
 	}
 	
 	public void restartDeck(Player player) {
@@ -508,39 +435,6 @@ public class GameFlow {
 			player.resetExtraCoins();
 		}
 	}
-	
-	/*public void availableCards(Player player) {
-		// Search through the hand for an action cards
-		Card card = new Card(null, null, null, null, null, null, null, null, null);
-		Iterator<Card> itr = player.getCardsInHand().iterator();
-		
-		while (itr.hasNext()) {
-			if (player.getCardsInHand().size() != 0)
-				card = itr.next();
-			if ("Action".equals(card.getType1())) {
-				//player.setActCardsAvailable(true);
-				player.addCardToAction(card);
-			}
-			if ("Treasure".equals(card.getType1()) || "Treasure".equals(card.getType2()) || "Treasure".equals(card.getType3()) || "Treasure".equals(card.getType4())) {
-				//player.setCoinCardsAvailable(true);
-				player.addCardToTreasure(card);
-			}
-			if ("Victory".equals(card.getType1()) || "Victory".equals(card.getType2()) || "Victory".equals(card.getType3()) || "Victory".equals(card.getType4())) {
-				//player.setVicCardsAvailable(true);
-				player.addCardToVictory(card);
-			}
-			if (card.getType1().equals("Curse")) {
-				//player.setCurseCardsAvailable(true);
-				player.addCardToCurse(card);
-			} else if (card.getType2().equals("Attack")) {
-				attCardsAvailable = true;
-			} else if (card.getType2().equals("Duration")) {
-				durCardsAvailable = true;
-			} else if (card.getType2().equals("Reaction")) {
-				reactCardsAvailable = true;
-			}
-		}
-	}*/
 	
 	public void setWinCondition(boolean winCondition) {
 		this.winCondition = winCondition;
