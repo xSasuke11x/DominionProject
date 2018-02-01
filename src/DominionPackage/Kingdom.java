@@ -43,29 +43,26 @@ public class Kingdom {
 		// Populate Base Piles
 		for (Card card : cd.getCardList()) {
 			for (int i = 0; i < Integer.parseInt(card.getNumLeft()); i++) {
-				if ("1".equals(card.getID())) {
+				if ("1".equals(card.getID())) 
 					copper.add(card);			// Populate Copper Pile
-				} else if ("2".equals(card.getID())) {
+				else if ("2".equals(card.getID())) 
 					silver.add(card);			// Populate Silver Pile
-				} else if ("3".equals(card.getID())) {
+				else if ("3".equals(card.getID()))
 					gold.add(card);				// Populate Gold Pile
-				} else if ("4".equals(card.getID())) {
+				else if ("4".equals(card.getID()))
 					platinum.add(card);			// Populate Platinum Pile
-				} else if ("5".equals(card.getID()) && i < (numPlayers * 10) - 10) {
+				else if ("5".equals(card.getID()) && i < (numPlayers * 10) - 10)
 					curse.add(card);			// Populate Curse pile based on number of players
-				} 
 			}
 		}
 		
 		// Populate Estate pile
 		if (numPlayers == 2) {
-			for (int i = 0; i < vicTwoPlayers + (3 * numPlayers); i++) {
+			for (int i = 0; i < vicTwoPlayers + (3 * numPlayers); i++)
 				estate.add(cd.getCardList().get(5));
-			}
 		} else {
-			for (int i = 0; i < vicThreePlusPlayers + (3 * numPlayers); i++) {
+			for (int i = 0; i < vicThreePlusPlayers + (3 * numPlayers); i++)
 				estate.add(cd.getCardList().get(5));
-			}
 		}
 		
 		// Populate Duchy, Province, and Colony piles
